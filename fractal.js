@@ -525,9 +525,6 @@ function draw(pickColor)
   var centerVal = math.complex($('center').value);
   lookAt = [centerVal.re, centerVal.im];
 
-  // if (parseFloat($('width').value) != zoom[0] || parseFloat($('height').value) != zoom[1]) {
-  //     reInitCanvas = true;
-  // }
   zoom = [parseFloat($('width').value), parseFloat($('height').value)];
 
   xRange = [lookAt[0]-zoom[0]/2, lookAt[0]+zoom[0]/2];
