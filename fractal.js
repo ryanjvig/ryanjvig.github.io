@@ -404,7 +404,6 @@ function getColorPicker()
   var p = $("colorScheme").value;
   // consider adding more options
   if ( p == "pickColorColor" ) return pickColorColor;
-  if ( p == "pickColorLinesOnly" ) return pickColorLinesOnly
   return pickColorGrayscale;
 }
 
@@ -725,13 +724,6 @@ function pickColorGrayscale(n, realPart, imagPart)
 
   var v = Math.floor((1 - (n / max_iterations)) * 255);
   return [v, v, v, 255];
-}
-
-function pickColorLinesOnly(n, realPart, imagPart)
-{
-  if ( n == max_iterations ) // did not converge
-    return interiorColor;
-  return [128,128,128,255];
 }
 
 function main()
