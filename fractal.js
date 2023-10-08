@@ -366,6 +366,7 @@ var expressionTermOps = [[new Operation(OperationType.Multiply, 'b'), new Operat
 var derivativeTerms = ['3z^2'];
 var derivativeTermOps = [[new Operation(OperationType.Multiply, 3), new Operation(OperationType.Multiply, 'b')]];
 var windowResized = false
+var comp_tolerance = Number.EPSILON
 math.config({
   number: 'BigNumber' // switches notation to decimal rather than fraction
 })
@@ -497,20 +498,14 @@ function metric_units(number)
 /*
  * Adjust aspect ratio based on plot ranges and canvas dimensions.
  */
-function adjustAspectRatio(xRange, yRange, canvas)
+function adjustAspectRatio(yRange, canvas)
 {
-  var rangeRatio = Math.abs(xRange[1]-xRange[0]) / Math.abs(yRange[1]-yRange[0]);
   var sratio = canvas.width / canvas.height;
-  if ( sratio > rangeRatio ) {
-    var xf = sratio / rangeRatio;
-    xRange[0] *= xf;
-    xRange[1] *= xf;
-      zoom[0] *= xf;
-  } else {
-    var yf = rangeRatio / sratio;
-    yRange[0] *= yf;
-    yRange[1] *= yf;
-      zoom[1] *= yf;
+  if ( sratio > 1 ) {
+    var scale = 1 / sratio;
+    yRange[0] *= scale;
+    yRange[1] *= scale;
+    zoom[1] *= scale;
   }
 }
 
@@ -522,23 +517,27 @@ function draw(pickColor)
 
   if ( lookAt === null ) lookAt = lookAtDefault;
   if ( zoom === null ) zoom = [zoomStart, zoomStart];
+
   var centerVal = math.complex($('center').value);
-  lookAt = [centerVal.re, centerVal.im];
-
-  zoom = [parseFloat($('width').value), parseFloat($('height').value)];
-
-  xRange = [lookAt[0]-zoom[0]/2, lookAt[0]+zoom[0]/2];
-  yRange = [lookAt[1]-zoom[1]/2, lookAt[1]+zoom[1]/2];
-
-  if(($('isSquare').checked && canvas.width != canvas.height) || windowResized) {
+  if(($('isSquare').checked && canvas.width != canvas.height) || windowResized || 
+      Math.abs(zoom[0] - parseFloat($('width').value)) >= comp_tolerance ||
+      Math.abs(lookAt[0] - centerVal.re) >= comp_tolerance ||
+      Math.abs(lookAt[1] - centerVal.im) >= comp_tolerance) {
+      
     windowResized = false;
     reInitCanvas = true;
   }
 
   if ( reInitCanvas ) {
     reInitCanvas = false;
+    lookAt = [centerVal.re, centerVal.im];
+    zoom = [parseFloat($('width').value), parseFloat($('width').value)];
+
+    xRange = [lookAt[0]-zoom[0]/2, lookAt[0]+zoom[0]/2];
+    yRange = [lookAt[1]-zoom[1]/2, lookAt[1]+zoom[1]/2];
 
     canvas = $('canvasFractal');
+
     if ($('isSquare').checked) {
       canvas.width = Math.min(window.innerWidth, window.innerHeight);
       canvas.height = Math.min(window.innerWidth, window.innerHeight);
@@ -548,13 +547,13 @@ function draw(pickColor)
     }
 
     ccanvas = $('canvasControls');
-    ccanvas.width  = window.innerWidth;
-    ccanvas.height = window.innerHeight;
+    ccanvas.width  = canvas.width;
+    ccanvas.height = canvas.height;
 
     ctx = canvas.getContext('2d');
     img = ctx.createImageData(canvas.width, 1);
 
-    adjustAspectRatio(xRange, yRange, canvas);
+    adjustAspectRatio(yRange, canvas);
   }
 
   max_iterations = parseInt($('steps').value, 10);
@@ -579,7 +578,9 @@ function draw(pickColor)
   // parse function expression
   expression = $('function').value;
   expression = math.parse(expression);
+  expression = math.simplify(expression, {}, {exactFractions: false})
   derivative = math.derivative(expression, 'z'); // set derivative here to best ensure proper evaluation
+  derivative = math.simplify(derivative, {}, {exactFractions: false})
   expression = math.format(expression, {'notation': 'fixed'}).replace(/[\s\*]/g,'');
   expressionTerms = expression.match(/(\+|\-)?[a-z0-9.^]+/gi);
   expressionTermOps = getOperations(expressionTerms);
@@ -628,7 +629,7 @@ function draw(pickColor)
     var startHeight = canvas.height;
     var startWidth = canvas.width;
     var lastUpdate = start;
-    var updateTimeout = parseFloat($('updateTimeout').value);
+    var updateTimeout = 200;
     var pixels = 0;
     var Ci = yRange[0];
     var sy = 0;
@@ -703,7 +704,7 @@ function pickColorColor(n, realPart, imagPart)
     return interiorColor;
 
   var key = realPart.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1') + ',' + imagPart.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1');
-  if (rootMap.has(key) == false) {  
+  if (rootMap.has(key) == false) {
     rootMap.set(key, Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255));
     console.log(`root val not found, setting new key val. realPart=${realPart}, imagPart=${imagPart}, key=${key}. color=${rootMap.get(key)}, iterations=${n}`);
   }
@@ -733,6 +734,7 @@ function main()
   $('resetButton').onclick = function(event)
   {
     $('settingsForm').reset();
+    rootMap.clear();
     zoom = [zoomStart, zoomStart];
     lookAt = lookAtDefault;
     reInitCanvas = true;
@@ -833,7 +835,6 @@ function main()
         // update client-facing values, 
         $('center').value = math.complex(x, y).toString();
         $('width').value = zoom[0].toString();
-        $('height').value = zoom[1].toString();
         draw(getColorPicker());
       }
     }

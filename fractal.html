@@ -39,6 +39,16 @@
       #bottom a { color: #666; }
       #bottom a:hover { color: #FF3B03; }
 
+      /* #canvasContainer {
+        background-color: transparent;
+        margin-right: auto;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      } */
+
       #canvasFractal {
         background-color: black;
         margin-right: auto;
@@ -185,14 +195,9 @@
             <input class="textInput" size="4" type="text" id="offset" value="0" title="may be any complex number (0 for 'true' Newton fractals)"/>
         </tr>
         <tr>
-          <td>Iterations</td>
+          <td>Max iterations</td>
           <td>
             <input class="textInput" size="4" type="text" id="steps" value="50" title="maximum iterations"/>
-        </tr>
-        <tr>
-          <td>Precision (10^(-n))</td>
-          <td> <input class="textInput" size="4" type="text"
-            id="precision" value="5" title="convergence tolerance" /> </td>
         </tr>
         <tr>
           <td>Color scheme</td>
@@ -211,17 +216,17 @@
         <tr>
           <td>Width</td>
             <td> <input class="textInput" size="4" type="text"
-              id="width" value="15" title="length of real axis to show" /> </td>
+              id="width" value="15" title="length of real axis to show (height will be scaled to appropriate aspect raatio)" /> </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Height</td>
             <td> <input class="textInput" size="4" type="text"
               id="height" value="15" title="length of imaginary axis to show" /> </td>
-        </tr>
+        </tr> -->
         <tr>
-          <td>Scanline update (ms)</td>
-          <td><input class="textInput" size="4" type="text"
-                id="updateTimeout" value="200" title="time to show scanline"/></td>
+          <td>Precision (10^(-n))</td>
+          <td> <input class="textInput" size="4" type="text"
+            id="precision" value="5" title="convergence tolerance" /> </td>
         </tr>
         <tr>
           <td>Draw as square?</td>
