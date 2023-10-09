@@ -194,6 +194,8 @@ function getOperations(terms) {
     if (term[0] == '-') {
       operations.push(new Operation(OperationType.Multiply, new ComplexNumber(-1, 0)));
       cur_ind++;
+    } else if(term[0] == '+') {
+      cur_ind++;
     }
     var coeff_real = '';
     var coeff_imag = '';
@@ -248,7 +250,12 @@ function getOperations(terms) {
           cur_ind += 2;
           var power = 1;
           if(cur_ind < term.length) {
-            power = parseInt(term[cur_ind]);
+              var pow_str = "";
+              while(cur_ind < term.length && term[cur_ind] != '-' && term[cur_ind] != '+') {
+                pow_str += term[cur_ind];
+                cur_ind++;
+              }
+              power = parseInt(pow_str);
           }
           for(var i = 0; i < power; i++) {
             operations.push(new Operation(OperationType.Multiply, 'b'));
@@ -365,8 +372,9 @@ var expressionTerms = ['z^3','-1'];
 var expressionTermOps = [[new Operation(OperationType.Multiply, 'b'), new Operation(OperationType.Multiply, 'b')],[new Operation(OperationType.Multiply, new ComplexNumber(-1, 0))]];
 var derivativeTerms = ['3z^2'];
 var derivativeTermOps = [[new Operation(OperationType.Multiply, 3), new Operation(OperationType.Multiply, 'b')]];
-var windowResized = false
-var comp_tolerance = Number.EPSILON
+var windowResized = false;
+var comp_tolerance = Number.EPSILON;
+var novaMode = false;
 math.config({
   number: 'BigNumber' // switches notation to decimal rather than fraction
 })
@@ -457,16 +465,30 @@ function iterateEquation(realStart, imagStart)
   var curTop = new ComplexNumber(tolerance, tolerance);
   var curBot = new ComplexNumber(1.0, 1.0);
   var cur_iteration = 0;
-  for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) >= tolerance || Math.abs(curTop.imag) >= tolerance); ++cur_iteration ) {
-    curTop = functionAt(curNum);
-    curBot = derivAt(curNum);
-    var diff = curTop.div(curBot);
-    diff = diff.mult(scalar);
-    curNum = curNum.sub(diff);
-    curNum = curNum.add(offset);
+  if(novaMode) {
+    for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) <= tolerance || Math.abs(curTop.imag) <= tolerance); ++cur_iteration ) {
+      curTop = functionAt(curNum);
+      curBot = derivAt(curNum);
+      var diff = curTop.div(curBot);
+      diff = diff.mult(scalar);
+      curNum = curNum.sub(diff);
+      curNum = curNum.add(offset);
+    }
+  } else {
+    for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) >= tolerance || Math.abs(curTop.imag) >= tolerance); ++cur_iteration ) {
+      curTop = functionAt(curNum);
+      curBot = derivAt(curNum);
+      var diff = curTop.div(curBot);
+      diff = diff.mult(scalar);
+      curNum = curNum.sub(diff);
+    }
   }
   // ensures divergence is marked as not converging (using the inverse comparison appears necessary to avoid false positives with large numbers)
-  if(!(Math.abs(curTop.real) < tolerance && Math.abs(curTop.imag) < tolerance)) {
+  if(novaMode) {
+    if(!(Math.abs(curTop.real) >= tolerance && Math.abs(curTop.imag) >= tolerance)) {
+      cur_iteration = max_iterations;
+    }
+  } else if(!(Math.abs(curTop.real) < tolerance && Math.abs(curTop.imag) < tolerance)) {
     cur_iteration = max_iterations;
   }
   return [cur_iteration, curNum.real, curNum.imag];
@@ -519,6 +541,16 @@ function draw(pickColor)
   if ( zoom === null ) zoom = [zoomStart, zoomStart];
 
   var centerVal = math.complex($('center').value);
+  if(getComplex($('offset').value).real != offset.real || getComplex($('offset').value).imag != offset.imag) {
+    if(offset.real == 0 && offset.imag == 0) {
+      novaMode = true;
+      reInitCanvas = true;
+    } else if(getComplex($('offset').value).real == 0 && getComplex($('offset').value).imag == 0) {
+      novaMode = false;
+      reInitCanvas = true;
+    }
+    offset = getComplex($('offset').value);
+  }
   if(($('isSquare').checked && canvas.width != canvas.height) || windowResized || 
       Math.abs(zoom[0] - parseFloat($('width').value)) >= comp_tolerance ||
       Math.abs(lookAt[0] - centerVal.re) >= comp_tolerance ||
@@ -529,6 +561,7 @@ function draw(pickColor)
   }
 
   if ( reInitCanvas ) {
+    console.log(novaMode);
     reInitCanvas = false;
     lookAt = [centerVal.re, centerVal.im];
     zoom = [parseFloat($('width').value), parseFloat($('width').value)];
@@ -573,7 +606,7 @@ function draw(pickColor)
   }
   tolerance = parseFloat(tolerance);
   scalar = getComplex($('scalar').value);
-  offset = getComplex($('offset').value);
+  // offset = getComplex($('offset').value);
 
   // parse function expression
   expression = $('function').value;
@@ -588,6 +621,12 @@ function draw(pickColor)
   derivative = math.format(derivative, {'notation': 'fixed'}).replace(/[\s\*]/g,'');
   derivativeTerms = derivative.match(/(\+|\-)?[a-z0-9.^]+/gi);
   derivativeTermOps = getOperations(derivativeTerms);
+  console.log(expression)
+  console.log(expressionTerms)
+  console.log(expressionTermOps)
+  console.log(derivative)
+  console.log(derivativeTerms)
+  console.log(derivativeTermOps)
 
   var dx = (xRange[1] - xRange[0]) / (0.5 + (canvas.width-1));
   var Ci_step = (yRange[1] - yRange[0]) / (0.5 + (canvas.height-1));
@@ -744,10 +783,28 @@ function main()
   if ( dragToZoom == true ) {
     var box = null;
 
+    // $('canvasControls').onmouseover = function(e)
+    // {
+    //   cur_x = e.pageX - $('canvasControls').;
+    //   cur_y
+    // }
+    // TODO: figure out 
     $('canvasControls').onmousedown = function(e)
     {
-      if ( box == null )
-        box = [e.clientX, e.clientY, 0, 0];
+      if ( box == null ) {
+        // adjust for square-ness
+        if ($('isSquare').checked) {
+          var diff = screen.width - screen.height;
+          if (diff > 0) {
+            box = [e.clientX + diff, e.clientY, 0, 0];
+          } else {
+            box = [e.clientX, e.clientY - diff, 0, 0];
+          }
+        } else {
+          box = [e.clientX, e.clientY, 0, 0];
+        }
+      }
+
     }
 
     $('canvasControls').onmousemove = function(e)
@@ -835,6 +892,7 @@ function main()
         // update client-facing values, 
         $('center').value = math.complex(x, y).toString();
         $('width').value = zoom[0].toString();
+        windowResized = true;
         draw(getColorPicker());
       }
     }
