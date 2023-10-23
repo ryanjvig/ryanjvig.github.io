@@ -122,6 +122,101 @@ ComplexNumber.prototype = {
   },
 }
 
+// Custom class for quaternion arithmetic
+
+function QuaternionNumber(a, b, c, d) {
+  this.a = a;
+  this.b = b;
+  this.c = c;
+  this.d = d;
+}
+QuaternionNumber.prototype = {
+  a: 0,
+  b: 0,
+  c: 0,
+  d: 0,
+  /**
+   * Addition operation - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   */
+  add: function() {
+    if(arguments.length == 1) {
+      return new QuaternionNumber(this.a + arguments[0].a, this.b + arguments[0].b, this.c + arguments[0].c, this.d + arguments[0].d);
+    }
+    else {
+      return new QuaternionNumber(this.a + arguments[0], this.b + arguments[1], this.c + arguments[2], this.d + arguments[3]);
+    }
+  },
+  /**
+   * Subtraction operation - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   */
+  sub: function() {
+    if(arguments.length == 1) {
+      return new QuaternionNumber(this.a - arguments[0].a, this.b - arguments[0].b, this.c - arguments[0].c, this.d - arguments[0].d);
+    }
+    else {
+      return new QuaternionNumber(this.a - arguments[0], this.b - arguments[1], this.c - arguments[2], this.d - arguments[3]);
+    }
+  },
+  /**
+   * Hamilton product - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   */
+  mult: function() {
+    var multiplier = arguments[0];
+    if(arguments.length != 1) {
+        multiplier = new QuaternionNumber(arguments[0], arguments[1], arguments[2], arguments[3]);
+    }
+    return new QuaternionNumber((this.a * multiplier.a) - (this.b * multiplier.b) - (this.c * multiplier.c) - (this.d * multiplier.d),
+                                (this.a * multiplier.b) + (this.b * multiplier.a) + (this.c * multiplier.d) - (this.d * multiplier.c),
+                                (this.a * multiplier.c) - (this.b * multiplier.d) + (this.c * multiplier.a) + (this.d * multiplier.b),
+                                (this.a * multiplier.d) + (this.b * multiplier.c) - (this.c * multiplier.b) + (this.d * multiplier.a));
+  },
+  /**
+   * Division operation (Hamilton product of 'this' and reciprocal of given quaternion number) - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   */
+  div: function() {
+    var divisor = arguments[0];
+    if(arguments.length != 1) {
+        divisor = new QuaternionNumber(arguments[0], arguments[1], arguments[2], arguments[3]);
+    }
+    var commonDivisor = (divisor.a * divisor.a) + (divisor.b * divisor.b) + (divisor.c * divisor.c) + (divisor.d * divisor.d);
+    var res_a = ((divisor.a * this.a) + (divisor.b * this.b) + (divisor.c * this.c) + (divisor.d * this.d)) / commonDivisor;
+    var res_b = ((divisor.a * this.b) - (divisor.b * this.a) - (divisor.c * this.d) + (divisor.d * this.c)) / commonDivisor;
+    var res_c = ((divisor.a * this.c) + (divisor.b * this.d) - (divisor.c * this.a) - (divisor.d * this.b)) / commonDivisor;
+    var res_d = ((divisor.a * this.d) - (divisor.b * this.c) + (divisor.c * this.b) - (divisor.d * this.a)) / commonDivisor;
+    return new QuaternionNumber(res_a, res_b, res_c, res_d);
+  },
+  /**
+   * returns "this" exponentiated
+   */
+  exp: function() {
+    return new QuaternionNumber(0,0,0,0);
+  },
+  /**
+   * returns sin of "this"
+   */
+  sin: function() {
+    return new QuaternionNumber(0,0,0,0);
+  },
+  /**
+   * returns cos of "this"
+   */
+  cos: function() {
+    return new QuaternionNumber(0,0,0,0);
+  },
+  /**
+   * returns sinh of "this"
+   */
+  sinh: function() {
+    return new QuaternionNumber(0,0,0,0);
+  },
+  /**
+   * returns cosh of "this"
+   */
+  cosh: function() {
+    return new QuaternionNumber(0,0,0,0);
+  },
+}
+
 // enum for operation types
 const OperationType = {
   Add: 'a',
@@ -186,13 +281,121 @@ function performOperation(num, op, baseVal) {
   }
 }
 
+function getComplex(term) {
+  var realPart = '';
+  var imagPart = '';
+  var partOne = '';
+  var partTwo = '';
+  var curInd = 0;
+  while(curInd < term.length && ('0' <= term[curInd] && term[curInd] <= '9') || term[curInd] == '.') {
+    partOne += term[curInd];
+    curInd++;
+  }
+  if(curInd < term.length) {
+    // currently at '+' or 'i' if has two parts
+    if(term[curInd] != 'i') {
+      // lets 'i' alone be '1i'
+      if(partOne.length == 0) {
+        partOne = '1';
+      }
+      curInd++;
+    }
+    curInd++;
+    while(('0' <= term[curInd] && term[curInd] <= '9') || term[curInd] == '.') {
+      partTwo += term[curInd];
+      curInd++;
+    }
+    // if not at end, must be at 'i'
+    if(curInd < term.length) {
+      if(partTwo.length == 0) {
+        partTwo = '1';
+      }
+      realPart = partOne;
+      imagPart = partTwo;
+    }
+    else {
+      realPart = partTwo;
+      imagPart = partOne;
+    }
+  }
+  else {
+    realPart = partOne;
+  }
+  if(realPart.length == 0) {
+    realPart = '0';
+  }
+  if(imagPart.length == 0) {
+    imagPart = '0';
+  }
+  return new ComplexNumber(parseFloat(realPart), parseFloat(imagPart));
+}
+
+/*
+ * Global variables:
+ */
+var mod = 1e9+7;
+var divergenceLimit = 2147483648;
+var zoomStart = 15.0;
+var zoom = [zoomStart, zoomStart];
+var lookAtDefault = [0, 0];
+var lookAt = lookAtDefault;
+var xRange = [-10, 10];
+var yRange = [-10, 10];
+var tolerance = 0.00001;
+var precision = 5;
+var max_iterations = 50;
+var scalar = new ComplexNumber(1, 0);
+var offset = new ComplexNumber(0, 0);
+var quaternionC = 0;
+var quaternionD = 0;
+var interiorColor = [0, 0, 0, 255];
+var reInitCanvas = true; // whether to reload canvas size, etc
+var dragToZoom = true;
+var colors = [[0,0,0,0]];
+var renderId = 0; // to zoom before current render is finished
+var debugIters = 0; // specifies number of times we want to print log statements when debugging
+var rootMap = new Map();
+var expression = "z^3-1";
+var derivative = "3z^2";
+var expressionTerms = ['z^3','-1'];
+var expressionTermOps = [[new Operation(OperationType.Multiply, 'b'), new Operation(OperationType.Multiply, 'b')],[new Operation(OperationType.Multiply, new ComplexNumber(-1, 0))]];
+var derivativeTerms = ['3z^2'];
+var derivativeTermOps = [[new Operation(OperationType.Multiply, 3), new Operation(OperationType.Multiply, 'b')]];
+var windowResized = false;
+var comp_tolerance = Number.EPSILON;
+var novaMode = false;
+var quaternionMode = false;
+math.config({
+  number: 'BigNumber' // switches notation to decimal rather than fraction (for string parsing)
+})
+
+
+/*
+ * Initialize canvas
+ */
+var canvas = $('canvasFractal');
+canvas.width  = window.innerWidth;
+canvas.height = window.innerHeight;
+//
+var ccanvas = $('canvasControls');
+ccanvas.width  = window.innerWidth;
+ccanvas.height = window.innerHeight;
+//
+var ctx = canvas.getContext('2d');
+var img = ctx.createImageData(canvas.width, 1);
+
+// parses operation chain from terms
 function getOperations(terms) {
   termOperations = [];
   terms.forEach(function(term, index) {
     operations = [];
     cur_ind = 0;
     if (term[0] == '-') {
-      operations.push(new Operation(OperationType.Multiply, new ComplexNumber(-1, 0)));
+      if (quaternionMode) {
+        operations.push(new Operation(OperationType.Multiply, new QuaternionNumber(-1, 0, 0, 0)));
+      } else {
+        operations.push(new Operation(OperationType.Multiply, new ComplexNumber(-1, 0)));
+      }
       cur_ind++;
     } else if(term[0] == '+') {
       cur_ind++;
@@ -239,7 +442,11 @@ function getOperations(terms) {
       else if(coeff_imag.length == 0) {
         coeff_imag = '0';
       }
-      operations.push(new Operation(OperationType.Multiply, new ComplexNumber(parseFloat(coeff_real), parseFloat(coeff_imag))));
+      if (quaternionMode) {
+        operations.push(new Operation(OperationType.Multiply, new QuaternionNumber(parseFloat(coeff_real), parseFloat(coeff_imag), quaternionC, quaternionD)));
+      } else {
+        operations.push(new Operation(OperationType.Multiply, new ComplexNumber(parseFloat(coeff_real), parseFloat(coeff_imag))));
+      }
     }
     // TODO: add support for symbolic constants and powers of symbols (e.g. e, sin, cos, etc.)
     // has variable
@@ -294,106 +501,6 @@ function getOperations(terms) {
   return termOperations;
 }
 
-function getComplex(term) {
-  var realPart = '';
-  var imagPart = '';
-  var partOne = '';
-  var partTwo = '';
-  var curInd = 0;
-  while(curInd < term.length && ('0' <= term[curInd] && term[curInd] <= '9') || term[curInd] == '.') {
-    partOne += term[curInd];
-    curInd++;
-  }
-  if(curInd < term.length) {
-    // currently at '+' or 'i' if has two parts
-    if(term[curInd] == 'i') {
-      // lets 'i' alone be '1i'
-      if(partOne.length == 0) {
-        partOne = '1';
-      }
-      curInd++;
-    }
-    curInd++;
-    while(('0' <= term[curInd] && term[curInd] <= '9') || term[curInd] == '.') {
-      partTwo += term[curInd];
-      curInd++;
-    }
-    // if not at end, must be at 'i'
-    if(curInd < term.length) {
-      if(partTwo.length == 0) {
-        partTwo = '1';
-      }
-      realPart = partOne;
-      imagPart = partTwo;
-    }
-    else {
-      realPart = partTwo;
-      imagPart = partOne;
-    }
-  }
-  else {
-    realPart = partOne;
-  }
-  if(realPart.length == 0) {
-    realPart = '0';
-  }
-  if(imagPart.length == 0) {
-    imagPart = '0';
-  }
-  return new ComplexNumber(parseFloat(realPart), parseFloat(imagPart));
-}
-
-/*
- * Global variables:
- */
-var mod = 1e9+7;
-var divergenceLimit = 2147483648;
-var zoomStart = 15.0;
-var zoom = [zoomStart, zoomStart];
-var lookAtDefault = [0, 0];
-var lookAt = lookAtDefault;
-var xRange = [-10, 10];
-var yRange = [-10, 10];
-var tolerance = 0.00001;
-var precision = 5;
-var max_iterations = 50;
-var scalar = new ComplexNumber(1, 0);
-var offset = new ComplexNumber(0, 0);
-var interiorColor = [0, 0, 0, 255];
-var reInitCanvas = true; // whether to reload canvas size, etc
-var dragToZoom = true;
-var colors = [[0,0,0,0]];
-var renderId = 0; // to zoom before current render is finished
-var debugIters = 0;
-var rootMap = new Map();
-var expression = "z^3-1";
-var derivative = "3z^2";
-var expressionTerms = ['z^3','-1'];
-var expressionTermOps = [[new Operation(OperationType.Multiply, 'b'), new Operation(OperationType.Multiply, 'b')],[new Operation(OperationType.Multiply, new ComplexNumber(-1, 0))]];
-var derivativeTerms = ['3z^2'];
-var derivativeTermOps = [[new Operation(OperationType.Multiply, 3), new Operation(OperationType.Multiply, 'b')]];
-var windowResized = false;
-var comp_tolerance = Number.EPSILON;
-var novaMode = false;
-math.config({
-  number: 'BigNumber' // switches notation to decimal rather than fraction
-})
-
-
-/*
- * Initialize canvas
- */
-var canvas = $('canvasFractal');
-canvas.width  = window.innerWidth;
-canvas.height = window.innerHeight;
-//
-var ccanvas = $('canvasControls');
-ccanvas.width  = window.innerWidth;
-ccanvas.height = window.innerHeight;
-//
-var ctx = canvas.getContext('2d');
-var img = ctx.createImageData(canvas.width, 1);
-
 /*
  * Just a shorthand function: Fetch given element, jQuery-style
  */
@@ -418,16 +525,31 @@ function getColorPicker()
 
 function functionAt(num)
 {
-    var base = new ComplexNumber(num.real, num.imag);
+    var base;
+    if(quaternionMode) {
+      base = new QuaternionNumber(num.a, num.b, num.c, num.d);
+    } else {
+      base = new ComplexNumber(num.real, num.imag);
+    }
     var terms = [];
     expressionTermOps.forEach(function(operationSet, index) {
-      var tempNum = new ComplexNumber(1, 0);
+      var tempNum;
+      if(quaternionMode) {
+        tempNum = new QuaternionNumber(1, 0, 0, 0);
+      } else {
+        tempNum = new ComplexNumber(1, 0);
+      }
       operationSet.forEach(function(operation, index) {
         tempNum = performOperation(tempNum, operation, base);
       });
       terms.push(tempNum);
     });
-    var res = new ComplexNumber(0, 0);
+    var res;
+    if(quaternionMode) {
+      res = new QuaternionNumber(0, 0, 0, 0);
+    } else {
+      res = new ComplexNumber(0, 0);
+    }
     terms.forEach(function(term, index) {
       res = res.add(term);
     });
@@ -435,16 +557,31 @@ function functionAt(num)
 }
 function derivAt(num) 
 {
-    var base = new ComplexNumber(num.real, num.imag);
+    var base;
+    if(quaternionMode) {
+      base = new QuaternionNumber(num.a, num.b, num.c, num.d);
+    } else {
+      base = new ComplexNumber(num.real, num.imag);
+    }
     var terms = [];
     derivativeTermOps.forEach(function(operationSet, index) {
-      var tempNum = new ComplexNumber(1, 0);
+      var tempNum;
+      if(quaternionMode) {
+        tempNum = new QuaternionNumber(1, 0, 0, 0);
+      } else {
+        tempNum = new ComplexNumber(1, 0);
+      }
       operationSet.forEach(function(operation, index) {
         tempNum = performOperation(tempNum, operation, base);
       });
       terms.push(tempNum);
     });
-    var res = new ComplexNumber(0, 0);
+    var res;
+    if(quaternionMode) {
+      res = new QuaternionNumber(0, 0, 0, 0);
+    } else {
+      res = new ComplexNumber(0, 0);
+    }
     terms.forEach(function(term, index) {
       res = res.add(term);
     });
@@ -461,37 +598,81 @@ function derivAt(num)
 
 function iterateEquation(realStart, imagStart)
 {
-  var curNum = new ComplexNumber(realStart, imagStart);
-  var curTop = new ComplexNumber(tolerance, tolerance);
-  var curBot = new ComplexNumber(1.0, 1.0);
+  var curNum;
+  var curTop;
+  var curBot;
+  var quatScalar;
+  var quatOffset;
+  if(quaternionMode) {
+    curNum = new QuaternionNumber(realStart, imagStart, quaternionC, quaternionD);
+    curTop = new QuaternionNumber(tolerance, tolerance, tolerance, tolerance);
+    curBot = new QuaternionNumber(1.0, 1.0, 1.0, 1.0);
+    quatScalar = new QuaternionNumber(scalar.real, scalar.imag, 0, 0);
+    quatOffset = new QuaternionNumber(offset.real, offset.imag, 0, 0);
+  } else {
+    curNum = new ComplexNumber(realStart, imagStart);
+    curTop = new ComplexNumber(tolerance, tolerance);
+    curBot = new ComplexNumber(1.0, 1.0);
+  }
   var cur_iteration = 0;
   if(novaMode) {
-    for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) <= tolerance || Math.abs(curTop.imag) <= tolerance); ++cur_iteration ) {
-      curTop = functionAt(curNum);
-      curBot = derivAt(curNum);
-      var diff = curTop.div(curBot);
-      diff = diff.mult(scalar);
-      curNum = curNum.sub(diff);
-      curNum = curNum.add(offset);
+    if(quaternionMode) {
+      for ( ; cur_iteration < max_iterations && (Math.abs(curTop.a) <= tolerance || Math.abs(curTop.b) <= tolerance || Math.abs(curTop.c) <= tolerance || Math.abs(curTop.d) <= tolerance); ++cur_iteration ) {
+        curTop = functionAt(curNum);
+        curBot = derivAt(curNum);
+        var diff = curTop.div(curBot);
+        diff = diff.mult(quatScalar);
+        curNum = curNum.sub(diff);
+        curNum = curNum.add(quatOffset);
+      }
+    } else {
+      for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) <= tolerance || Math.abs(curTop.imag) <= tolerance); ++cur_iteration ) {
+        curTop = functionAt(curNum);
+        curBot = derivAt(curNum);
+        var diff = curTop.div(curBot);
+        diff = diff.mult(scalar);
+        curNum = curNum.sub(diff);
+        curNum = curNum.add(offset);
+      }
     }
   } else {
-    for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) >= tolerance || Math.abs(curTop.imag) >= tolerance); ++cur_iteration ) {
-      curTop = functionAt(curNum);
-      curBot = derivAt(curNum);
-      var diff = curTop.div(curBot);
-      diff = diff.mult(scalar);
-      curNum = curNum.sub(diff);
+    if(quaternionMode) {
+      for ( ; cur_iteration < max_iterations && (Math.abs(curTop.a) >= tolerance || Math.abs(curTop.b) >= tolerance || Math.abs(curTop.c) >= tolerance || Math.abs(curTop.d) >= tolerance); ++cur_iteration ) {
+        curTop = functionAt(curNum);
+        curBot = derivAt(curNum);
+        var diff = curTop.div(curBot);
+        diff = diff.mult(quatScalar);
+        curNum = curNum.sub(diff);
+      }
+    } else {
+      for ( ; cur_iteration < max_iterations && (Math.abs(curTop.real) >= tolerance || Math.abs(curTop.imag) >= tolerance); ++cur_iteration ) {
+        curTop = functionAt(curNum);
+        curBot = derivAt(curNum);
+        var diff = curTop.div(curBot);
+        diff = diff.mult(scalar);
+        curNum = curNum.sub(diff);
+      }
     }
   }
   // ensures divergence is marked as not converging (using the inverse comparison appears necessary to avoid false positives with large numbers)
   if(novaMode) {
-    if(!(Math.abs(curTop.real) >= tolerance && Math.abs(curTop.imag) >= tolerance)) {
+    if (quaternionMode) {
+      if(!(Math.abs(curTop.a) >= tolerance && Math.abs(curTop.b) >= tolerance && Math.abs(curTop.c) >= tolerance && Math.abs(curTop.d) >= tolerance)) {
+        cur_iteration = max_iterations;
+      }
+    } else if(!(Math.abs(curTop.real) >= tolerance && Math.abs(curTop.imag) >= tolerance)) {
       cur_iteration = max_iterations;
     }
-  } else if(!(Math.abs(curTop.real) < tolerance && Math.abs(curTop.imag) < tolerance)) {
-    cur_iteration = max_iterations;
+  } else {
+    if (quaternionMode) {
+      if(!(Math.abs(curTop.a) < tolerance && Math.abs(curTop.b) < tolerance && Math.abs(curTop.c) < tolerance && Math.abs(curTop.d) < tolerance)) {
+        cur_iteration = max_iterations;
+      }
+    } else if(!(Math.abs(curTop.real) < tolerance && Math.abs(curTop.imag) < tolerance)) {
+      cur_iteration = max_iterations;
+    }
   }
-  return [cur_iteration, curNum.real, curNum.imag];
+  return [cur_iteration, curNum];
 }
 
 /*
@@ -536,7 +717,6 @@ function adjustAspectRatio(yRange, canvas)
  */
 function draw(pickColor)
 {
-
   if ( lookAt === null ) lookAt = lookAtDefault;
   if ( zoom === null ) zoom = [zoomStart, zoomStart];
 
@@ -551,6 +731,17 @@ function draw(pickColor)
     }
     offset = getComplex($('offset').value);
   }
+  if(parseFloat($('quaternionC').value) != quaternionC || parseFloat($('quaternionD').value) != quaternionD) {
+    if(quaternionC == 0 && quaternionD == 0) {
+      quaternionMode = true;
+      reInitCanvas = true;
+    } else if(parseFloat($('quaternionC').value) == 0 && parseFloat($('quaternionD').value) == 0) {
+      quaternionMode = false;
+      reInitCanvas = true;
+    }
+    quaternionC = parseFloat($('quaternionC').value);
+    quaternionD = parseFloat($('quaternionD').value);
+  }
   if(($('isSquare').checked && canvas.width != canvas.height) || windowResized || 
       Math.abs(zoom[0] - parseFloat($('width').value)) >= comp_tolerance ||
       Math.abs(lookAt[0] - centerVal.re) >= comp_tolerance ||
@@ -561,7 +752,6 @@ function draw(pickColor)
   }
 
   if ( reInitCanvas ) {
-    console.log(novaMode);
     reInitCanvas = false;
     lookAt = [centerVal.re, centerVal.im];
     zoom = [parseFloat($('width').value), parseFloat($('width').value)];
@@ -621,12 +811,12 @@ function draw(pickColor)
   derivative = math.format(derivative, {'notation': 'fixed'}).replace(/[\s\*]/g,'');
   derivativeTerms = derivative.match(/(\+|\-)?[a-z0-9.^]+/gi);
   derivativeTermOps = getOperations(derivativeTerms);
-  console.log(expression)
-  console.log(expressionTerms)
-  console.log(expressionTermOps)
-  console.log(derivative)
-  console.log(derivativeTerms)
-  console.log(derivativeTermOps)
+  // console.log(expression)
+  // console.log(expressionTerms)
+  // console.log(expressionTermOps)
+  // console.log(derivative)
+  // console.log(derivativeTerms)
+  // console.log(derivativeTermOps)
 
   var dx = (xRange[1] - xRange[0]) / (0.5 + (canvas.width-1));
   var Ci_step = (yRange[1] - yRange[0]) / (0.5 + (canvas.height-1));
@@ -642,7 +832,7 @@ function draw(pickColor)
 
     for ( var x=0; x<canvas.width; ++x, Cr += Cr_step ) {
       var p = iterateEquation(Cr, Ci);
-      var color = pickColor(p[0], p[1], p[2]);
+      var color = pickColor(p[0], p[1]);
       img.data[off++] = color[0];
       img.data[off++] = color[1];
       img.data[off++] = color[2];
@@ -737,15 +927,20 @@ function draw(pickColor)
   render();
 }
 
-function pickColorColor(n, realPart, imagPart)
+function pickColorColor(n, num)
 {
   if ( n == max_iterations ) // did not converge
     return interiorColor;
 
-  var key = realPart.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1') + ',' + imagPart.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1');
+  var key;
+  if (quaternionMode) {
+    key = num.a.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1') + ',' + num.b.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1') + num.c.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1') + ',' + num.d.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1');
+  } else {
+    key = num.real.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1') + ',' + num.imag.toFixed(Math.max(precision-1, 0)).replace(/^-([.0]*)$/, '$1');
+  }
   if (rootMap.has(key) == false) {
     rootMap.set(key, Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255));
-    console.log(`root val not found, setting new key val. realPart=${realPart}, imagPart=${imagPart}, key=${key}. color=${rootMap.get(key)}, iterations=${n}`);
+    // console.log(`root val not found, setting new key val. realPart=${realPart}, imagPart=${imagPart}, key=${key}. color=${rootMap.get(key)}, iterations=${n}`);
   }
   var c = rootMap.get(key).split(',');
   c[0] = Math.floor((0.5 + (0.5 - (n / max_iterations))) * c[0]);
@@ -754,7 +949,7 @@ function pickColorColor(n, realPart, imagPart)
   return c;
 }
 
-function pickColorGrayscale(n, realPart, imagPart)
+function pickColorGrayscale(n, _)
 {
   if ( n == max_iterations ) // did not converge
     return interiorColor;
