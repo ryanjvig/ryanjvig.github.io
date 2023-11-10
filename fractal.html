@@ -9,9 +9,11 @@
     ></script>
     <title>Newton Fractals in HTML5 Canvas &amp; JavaScript</title>
     <!--
-     The Mandelbrot Set, in HTML5 canvas and javascript.
-     https://github.com/cslarsen/mandelbrot-js
+     Newton fractal generator, in HTML5 canvas and javascript.
+     Link to repository: https://gitlab.eecs.umich.edu/logm/fa23/newton-method-23/newton-method
+     Link to original work this is based on (Mandelbrot set visualizer): https://github.com/cslarsen/mandelbrot-js
 
+     Copyright (C) 2023 Ryan Vig
      Copyright (C) 2012 Christian Stigen Larsen
 
      Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -324,6 +326,8 @@
               &nbsp;
               <input type="reset" id="resetButton" value="Reset" />
               &nbsp;
+              <input type="button" id="rerollColors" value="Reroll Colors" />
+              &nbsp;
               <input type="button" id="savePNG" value="Save as PNG" />
               &nbsp;
               <input type="button" id="calcDimension" value="Compute Fractal Dimension" />
@@ -331,7 +335,7 @@
           </tr>
           <tr>
             <td>
-              Fractal Dimension (WIP)
+              Fractal dimension
             </td>
             <td>
               <input
@@ -339,8 +343,21 @@
                 size="4"
                 type="text"
                 id="fractalDimension"
-                title="Fractal dimension of generated fractal (read-only, estimated using box counting)"
+                title="Fractal dimension of current image (estimated using box counting, restrict to boundary region for best estimate)"
                 readonly
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Box counting precision (integer)</td>
+            <td>
+              <input
+                class="textInput"
+                size="6"
+                type="text"
+                id="gridScale"
+                title="Number of boxes-wide to go when box counting (increase for more precise fractal dimension estimte)"
+                value="100"
               />
             </td>
           </tr>
@@ -349,7 +366,7 @@
 
       <div id="bottom">
         <small>
-          Made using code from Christian Stigen Larsen
+          Inspired by Christian Stigen Larsen's Mandelbrot Set visualizer
           <br />
           &nbsp; <br />
           Click + drag to zoom in, shift +click to zoom out. You can change the
