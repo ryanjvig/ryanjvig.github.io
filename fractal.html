@@ -97,28 +97,6 @@
         user-select: none;
       }
 
-      #infoBox:hover {
-        background-color: rgba(30, 30, 30, 0.3);
-        color: #444;
-        border: #222 1px solid;
-      }
-
-      #infoBox {
-        text-align: right;
-        z-index: 10;
-        position: absolute;
-        right: 5px;
-        bottom: 5px;
-        padding: 5px;
-
-        background: transparent;
-        color: rgba(51, 51, 51, 0.1);
-        text-shadow: none;
-
-        font-family: sans-serif;
-        font-size: 8pt;
-      }
-
       #description table {
         color: #ccc;
         width: 90%;
@@ -220,7 +198,7 @@
                 type="text"
                 id="offset"
                 value="0"
-                title="(non-zero value will switch to coloring by divergence, rather than convergence)"
+                title="non-zero value will switch to 'nova mode' and create nova fractals (colored by divergence, rather than convergence)"
               />
             </td>
           </tr>
@@ -304,7 +282,7 @@
                 type="text"
                 id="precision"
                 value="5"
-                title="convergence tolerance"
+                title="convergence tolerance (flips sign when drawing nova fractals)"
               />
             </td>
           </tr>
@@ -378,10 +356,6 @@
     <div id="canvasContainer">
       <canvas id="canvasFractal" width="0" height="0"> </canvas>
       <canvas id="canvasControls" width="0" height="0"> </canvas>
-    </div>
-
-    <div id="infoBox">
-      <span id="infoText"></span>
     </div>
 
     <script type="text/javascript" src="fractal.js"></script>

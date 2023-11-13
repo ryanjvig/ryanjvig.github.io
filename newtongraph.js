@@ -1,18 +1,22 @@
+// Class to perform modular arithmetic
 class Mod {
-  constructor (value, modulus) {
+  constructor (value, modulus) { 
     this.value = ((value % modulus) + modulus) % modulus
     this.modulus = modulus
   }
 
-  add (other) {
+  // Performs modular arithmetic
+  add (other) { 
     return new Mod(this.value + other.value, this.modulus)
   }
 
-  subtract (other) {
+  // Performs modular subtraction
+  subtract (other) { 
     return new Mod(this.value - other.value, this.modulus)
   }
 
-  times (other) {
+  // Performs modular multiplication
+  times (other) { 
     return new Mod(this.value * other.value, this.modulus)
   }
 
@@ -32,24 +36,27 @@ class Mod {
     return new Mod(oldS, m)
   }
 
+  // Determines when two numbers are equivalent for a given modulus
   equals (other) {
     return this.value === other.value && this.modulus === other.modulus
   }
 }
 
+// Generates directed graph for given polynomial over a finite field of given order
 // NOTE: performance appears to be primarily bottlenecked by time to render graph after computations are made.
 //       consider looking into setting changes that may increase render performance
 function main () {
   document.getElementById('generateGraph').onclick = function (_) {
-    const startTime = new Date()
     const p = parseInt(document.getElementById('inputP').value)
     const polynomial = document.getElementById('inputPoly').value
-
+    // computes function derivative
+    const deriv = math.derivative(polynomial, 'x').toString()
     if (isNaN(p) || p <= 0) {
       alert('Please enter a positive integer for P.')
       return
     }
 
+    // vertices setup
     const rawNodes = Array.from({ length: p }, (_, i) => ({
       id: i,
       label: i.toString()
@@ -57,16 +64,19 @@ function main () {
     rawNodes.push({ id: '∞', label: '∞' })
     const nodes = new vis.DataSet(rawNodes)
     const edges = []
+    // trivial infinity to infinity edge
     edges.push({ from: '∞', to: '∞', edges: { arrows: 'to' } })
+    
     for (let i = 0; i < p; i++) {
-      const x = new Mod(i, p)
-      const xNew = new Mod(math.evaluate(polynomial, { x: x.value }), p)
-      const deriv = math.derivative(polynomial, 'x').toString()
-      const fprimeX = new Mod(math.evaluate(deriv, { x: x.value }), p)
+      const x = new Mod(i, p) // i mod p
+      const xNew = new Mod(math.evaluate(polynomial, { x: x.value }), p) // f(x) mod p
+      const fprimeX = new Mod(math.evaluate(deriv, { x: x.value }), p) // f'(x) mod p
       let target
       if (fprimeX.value === 0) {
-        target = '∞'
+        // diverges since derivative is in denominator
+        target = '∞' 
       } else {
+        // Newton method iteration performed mod p
         target = new Mod(i - xNew.times(fprimeX.inverse()).value, p).value
       }
       edges.push({ from: i, to: target, edges: { arrows: 'to' } })
@@ -74,6 +84,7 @@ function main () {
     const data = { nodes, edges }
 
     const container = document.getElementById('graphContainer')
+    // graph configuration options
     const options = {
       edges: {
         arrows: {
@@ -85,6 +96,7 @@ function main () {
         improvedLayout: p < 150
       }
     }
+    // create graph
     const network = new vis.Network(container, data, options)
   }
 }

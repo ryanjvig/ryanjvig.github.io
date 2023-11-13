@@ -20,8 +20,9 @@
  *
  */
 
-// Complex number class inspired by https://web.archive.org/web/20131012072444/http://janhartigan.com/articles/creating-a-javascript-complex-number-class
-// Performs better than mathjs library, which has easy-to-use support for complex numbers and operations but appears to be relatively slow
+
+// custom class for complex arithmetic
+// performs better than mathjs library, which has easy-to-use support for complex numbers and operations but is much slower
 function ComplexNumber (real, imag) {
   this.real = real
   this.imag = imag
@@ -30,11 +31,7 @@ ComplexNumber.prototype = {
   real: 0, // real part
   imag: 0, // imaginary part
   /**
-   * The add operation which sums the real and complex parts separately
-   *
-   * @param ==>   If there is one argument, assume it's a ComplexNumber
-   *              If there are two arguments, assume the first is the real part and the second is the imaginary part
-   *
+   * addition operation - takes either 1 argument (ComplexNumber), or 2 arguments (real part, imaginary part)
    */
   add: function () {
     if (arguments.length === 1) {
@@ -50,11 +47,7 @@ ComplexNumber.prototype = {
     }
   },
   /**
-   * The subtract operation which subtracts the real and complex parts from one another separately
-   *
-   * @param ==>   If there is one argument, assume it's a ComplexNumber
-   *              If there are two arguments, assume the first is the real part and the second is the imaginary part
-   *
+   * subtraction operation - takes either 1 argument (ComplexNumber), or 2 arguments (real part, imaginary part)
    */
   sub: function () {
     if (arguments.length === 1) {
@@ -70,11 +63,7 @@ ComplexNumber.prototype = {
     }
   },
   /**
-   * The multiplication operation which multiplies two complex numbers
-   *
-   * @param ==>   If there is one argument, assume it's a ComplexNumber
-   *              If there are two, assume the first is the real part and the second is the imaginary part
-   *
+   * multiplication operation - takes either 1 argument (ComplexNumber), or 2 arguments (real part, imaginary part)
    */
   mult: function () {
     let multiplier = arguments[0]
@@ -87,12 +76,7 @@ ComplexNumber.prototype = {
     )
   },
   /**
-   * The division operation which divides two complex numbers
-   * (Not mentioned in the linked blog post)
-   *
-   * @param ==>   If there is one argument, assume it's a ComplexNumber
-   *              If there are two, assume the first is the real part and the second is the imaginary part
-   *
+   * division operation - takes either 1 argument (ComplexNumber), or 2 arguments (real part, imaginary part)
    */
   div: function () {
     let divisor = arguments[0]
@@ -154,8 +138,7 @@ ComplexNumber.prototype = {
   }
 }
 
-// Custom class for quaternion arithmetic
-
+// custom class for quaternion arithmetic
 function QuaternionNumber (a, b, c, d) {
   this.a = a
   this.b = b
@@ -168,7 +151,7 @@ QuaternionNumber.prototype = {
   c: 0,
   d: 0,
   /**
-   * Addition operation - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   * addition operation - takes either 1 argument (QuaternionNumber), or 4 arguments (a, b, c, d)
    */
   add: function () {
     if (arguments.length === 1) {
@@ -188,7 +171,7 @@ QuaternionNumber.prototype = {
     }
   },
   /**
-   * Subtraction operation - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   * subtraction operation - takes either 1 argument (QuaternionNumber), or 4 arguments (a, b, c, d)
    */
   sub: function () {
     if (arguments.length === 1) {
@@ -208,7 +191,7 @@ QuaternionNumber.prototype = {
     }
   },
   /**
-   * Hamilton product - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   * Hamilton product - takes either 1 argument (QuaternionNumber), or 4 arguments (a, b, c, d)
    */
   mult: function () {
     let multiplier = arguments[0]
@@ -240,7 +223,7 @@ QuaternionNumber.prototype = {
     )
   },
   /**
-   * Division operation (Hamilton product of 'this' and reciprocal of given quaternion number) - takes either 1 argument (Quaternion number), or 4 arguments (a, b, c, d)
+   * division operation (Hamilton product of 'this' and reciprocal of given quaternion number) - takes either 1 argument (QuaternionNumber), or 4 arguments (a, b, c, d)
    */
   div: function () {
     let divisor = arguments[0]
@@ -288,9 +271,6 @@ QuaternionNumber.prototype = {
    */
   exp: function () {
     const lhs = new QuaternionNumber(Math.exp(this.a), 0, 0, 0)
-    if (debugIters < 10) {
-      debugIters++
-    }
     const mod = Math.sqrt(this.b * this.b + this.c * this.c + this.d * this.d)
     const cosRes = Math.cos(mod)
     const sinRes = Math.sin(mod)
@@ -305,6 +285,7 @@ QuaternionNumber.prototype = {
     const res = lhs.mult(rhs)
     return res
   },
+  // TODO: add functionality for below transcendental functions
   /**
    * returns sin of "this"
    */
@@ -395,6 +376,7 @@ function performOperation (num, op, baseVal) {
   }
 }
 
+// parse string into ComplexNumber object
 function getComplex (term) {
   let realPart = ''
   let imagPart = ''
@@ -450,15 +432,18 @@ function getComplex (term) {
 
 /*
  * Global variables
+ * Variables that are not "const" will be set/modified by HTML element values or while rendering
  */
-const mod = 1e9 + 7
-const divergenceLimit = 2147483648
-const zoomStart = 15.0
+const zoomStart = 15.0 // width of real axis
+const lookAtDefault = [0, 0] // point to center canvas at
+const rootMap = new Map()
+const pointRootMap = new Map()
+const interiorColor = [0, 0, 0, 255]
+const colors = [[0, 0, 0, 0]]
 let zoom = [zoomStart, zoomStart]
-const lookAtDefault = [0, 0]
 let lookAt = lookAtDefault
-let xRange = [-10, 10]
-let yRange = [-10, 10]
+let xRange = [-10, 10] // real axis view range
+let yRange = [-10, 10] // imginary axis view range
 let tolerance = 0.00001
 let precision = 5
 let maxIterations = 50
@@ -467,14 +452,8 @@ let offset = new ComplexNumber(0, 0)
 let gridScale = 100
 let quaternionC = 0
 let quaternionD = 0
-const interiorColor = [0, 0, 0, 255]
 let reInitCanvas = true // whether we fully reinitialize canvas on redraw
-const dragToZoom = true
-const colors = [[0, 0, 0, 0]]
 let renderId = 0 // to zoom before current render is finished
-let debugIters = 0 // specifies number of times we want to print log statements when debugging
-const rootMap = new Map()
-const pointRootMap = new Map()
 let expression = 'z^3-1'
 let derivative = '3z^2'
 let expressionTerms = ['z^3', '-1']
@@ -492,7 +471,6 @@ let derivativeTermOps = [
     new Operation(OperationType.Multiply, 'b')
   ]
 ]
-let windowResized = false
 const compTolerance = Number.EPSILON
 let novaMode = false
 let quaternionMode = false
@@ -527,7 +505,6 @@ function boxCounting (fractalPoints, gridSizeX, gridSizeY) {
         maxX: x + gridSizeX,
         maxY: y + gridSizeY
       }
-
       const boxContainsPoint = fractalPoints.some(
         (point) =>
           point[0] >= box.minX &&
@@ -545,7 +522,8 @@ function boxCounting (fractalPoints, gridSizeX, gridSizeY) {
 }
 
 // finds points on fractal boundary in canvas
-// a point is considered on the boundary if it neighbors a point that converges to a different root under Newton's method
+// we consider a point on the boundary here if it neighbors a point that converges to a different root under Newton's method
+// (or if one point does not converge at all while its neighbor does)
 function findFractalPoints () {
   const boundaryPoints = []
   const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
@@ -566,6 +544,7 @@ function findFractalPoints () {
         mapVal = pointRootMap.get(key)
       }
       let compKey
+      // check each directly adjacent point, adding this point to boundary set if a neighbor converges to a different root
       if (x + 1 < canvas.width) {
         compKey =
           (x + 1).toString() +
@@ -660,6 +639,7 @@ function getOperations (terms) {
   terms.forEach(function (term, index) {
     operations = []
     curIndex = 0
+    // check for negative sign
     if (term[0] === '-') {
       if (quaternionMode) {
         operations.push(
@@ -679,6 +659,8 @@ function getOperations (terms) {
     }
     let coeffReal = ''
     let coeffImag = ''
+
+    // parse complex-valued coefficient (implied by parenthesis)
     if (term[curIndex] === '(') {
       curIndex++
       let coeffOne = ''
@@ -711,6 +693,7 @@ function getOperations (terms) {
         coeffImag = coeffOne
       }
     } else {
+      // parse real-valued coefficient
       while (
         curIndex < term.length &&
         ((term[curIndex] >= '0' && term[curIndex] <= '9') || term[curIndex] === '.')
@@ -719,6 +702,7 @@ function getOperations (terms) {
         curIndex++
       }
     }
+    // add coefficient to operation chain if has nonzero coefficient
     if (coeffReal.length !== 0 || coeffImag.length !== 0) {
       if (coeffReal.length === 0) {
         coeffReal = '0'
@@ -746,11 +730,10 @@ function getOperations (terms) {
         )
       }
     }
-    // TODO: add support for symbolic constants and powers of symbols (e.g. e, sin, cos, etc.)
     // has variable
     if (curIndex < term.length) {
       switch (term[curIndex]) {
-        // some power of function variable
+        // parse power of function variable
         case 'z':
           {
             curIndex += 2
@@ -800,15 +783,10 @@ function getOperations (terms) {
 }
 
 /*
- * fetch given element, jQuery-style (quality of life)
+ * fetch given element, jQuery-style (quality of life/shortcut function)
  */
 function $ (id) {
   return document.getElementById(id)
-}
-
-function focusOnSubmit () {
-  const e = $('submitButton')
-  if (e) e.focus()
 }
 
 function getColorPicker () {
@@ -817,6 +795,7 @@ function getColorPicker () {
   return pickColorGrayscale
 }
 
+// evaluate function at given value
 function functionAt (num) {
   let base
   if (quaternionMode) {
@@ -825,6 +804,7 @@ function functionAt (num) {
     base = new ComplexNumber(num.real, num.imag)
   }
   const terms = []
+  // compute value of each term in expression
   expressionTermOps.forEach(function (operationSet, index) {
     let tempNum
     if (quaternionMode) {
@@ -843,11 +823,13 @@ function functionAt (num) {
   } else {
     res = new ComplexNumber(0, 0)
   }
+  // sum values
   terms.forEach(function (term, index) {
     res = res.add(term)
   })
   return res
 }
+// evaluate derivative at given value
 function derivAt (num) {
   let base
   if (quaternionMode) {
@@ -856,6 +838,7 @@ function derivAt (num) {
     base = new ComplexNumber(num.real, num.imag)
   }
   const terms = []
+  // compute value of each term in expression
   derivativeTermOps.forEach(function (operationSet, index) {
     let tempNum
     if (quaternionMode) {
@@ -874,109 +857,60 @@ function derivAt (num) {
   } else {
     res = new ComplexNumber(0, 0)
   }
+  // sum values
   terms.forEach(function (term, index) {
     res = res.add(term)
   })
   return res
 }
 
-/*
- * returns number of iterations and values of function at the time
- * we either converged (or diverged if finding nova fractal) or reached max iterations
- * we use these to determined the color at the current pixel
- */
-
-function iterateEquation (realStart, imagStart) {
-  let curNum
-  let curTop
-  let curBot
-  let quatScalar
-  let quatOffset
-  if (quaternionMode) {
-    curNum = new QuaternionNumber(
-      realStart,
-      imagStart,
-      quaternionC,
-      quaternionD
-    )
-    curTop = new QuaternionNumber(tolerance, tolerance, tolerance, tolerance)
-    curBot = new QuaternionNumber(1.0, 1.0, 1.0, 1.0)
-    quatScalar = new QuaternionNumber(scalar.real, scalar.imag, 0, 0)
-    quatOffset = new QuaternionNumber(offset.real, offset.imag, 0, 0)
-  } else {
-    curNum = new ComplexNumber(realStart, imagStart)
-    curTop = new ComplexNumber(tolerance, tolerance)
-    curBot = new ComplexNumber(1.0, 1.0)
-  }
-  let curIteration = 0
+// helper function to determine the appropriate convergence condition for the Newton's method loop
+// returns whether condition is met i.e. whether loop should terminate
+function convergenceCondition (curTop, curIteration) {
+  // looking for divergence in nova fractal case
   if (novaMode) {
     if (quaternionMode) {
-      for (
-        ;
-        curIteration < maxIterations &&
-        (Math.abs(curTop.a) <= tolerance ||
-          Math.abs(curTop.b) <= tolerance ||
-          Math.abs(curTop.c) <= tolerance ||
-          Math.abs(curTop.d) <= tolerance);
-        ++curIteration
-      ) {
-        curTop = functionAt(curNum)
-        curBot = derivAt(curNum)
-        let diff = curTop.div(curBot)
-        diff = diff.mult(quatScalar)
-        curNum = curNum.sub(diff)
-        curNum = curNum.add(quatOffset)
-      }
+      return !(curIteration < maxIterations &&
+             (Math.abs(curTop.a) <= tolerance ||
+              Math.abs(curTop.b) <= tolerance ||
+              Math.abs(curTop.c) <= tolerance ||
+              Math.abs(curTop.d) <= tolerance))
     } else {
-      for (
-        ;
-        curIteration < maxIterations &&
-        (Math.abs(curTop.real) <= tolerance ||
-          Math.abs(curTop.imag) <= tolerance);
-        ++curIteration
-      ) {
-        curTop = functionAt(curNum)
-        curBot = derivAt(curNum)
-        let diff = curTop.div(curBot)
-        diff = diff.mult(scalar)
-        curNum = curNum.sub(diff)
-        curNum = curNum.add(offset)
-      }
+      return !(curIteration < maxIterations &&
+             (Math.abs(curTop.real) <= tolerance ||
+              Math.abs(curTop.imag) <= tolerance))
     }
   } else {
     if (quaternionMode) {
-      for (
-        ;
-        curIteration < maxIterations &&
-        (Math.abs(curTop.a) >= tolerance ||
-          Math.abs(curTop.b) >= tolerance ||
-          Math.abs(curTop.c) >= tolerance ||
-          Math.abs(curTop.d) >= tolerance);
-        ++curIteration
-      ) {
-        curTop = functionAt(curNum)
-        curBot = derivAt(curNum)
-        let diff = curTop.div(curBot)
-        diff = diff.mult(quatScalar)
-        curNum = curNum.sub(diff)
-      }
+      return !(curIteration < maxIterations &&
+            (Math.abs(curTop.a) >= tolerance ||
+              Math.abs(curTop.b) >= tolerance ||
+              Math.abs(curTop.c) >= tolerance ||
+              Math.abs(curTop.d) >= tolerance))
     } else {
-      for (
-        ;
-        curIteration < maxIterations &&
-        (Math.abs(curTop.real) >= tolerance ||
-          Math.abs(curTop.imag) >= tolerance);
-        ++curIteration
-      ) {
-        curTop = functionAt(curNum)
-        curBot = derivAt(curNum)
-        let diff = curTop.div(curBot)
-        diff = diff.mult(scalar)
-        curNum = curNum.sub(diff)
-      }
+      return !(curIteration < maxIterations &&
+             (Math.abs(curTop.real) >= tolerance ||
+              Math.abs(curTop.imag) >= tolerance))
     }
   }
-  // ensures divergence is marked as not converging (using the inverse comparison appears necessary to avoid false positives with large numbers)
+}
+
+// advance Newton's method to next iteration
+function performIteration (curNum, curTop, curBot) {
+  curTop = functionAt(curNum)
+  curBot = derivAt(curNum)
+  let diff = curTop.div(curBot)
+  diff = diff.mult(scalar)
+  curNum = curNum.sub(diff)
+  if (novaMode) {
+    curNum = curNum.add(offset)
+  }
+  return [curNum, curTop, curBot]
+}
+
+// helper function for checking divergence condition
+// primarily for when loop terminates early due to numbers becoming too large to reliably evaluate
+function divergenceCondition (curTop) {
   if (novaMode) {
     if (quaternionMode) {
       if (
@@ -987,14 +921,14 @@ function iterateEquation (realStart, imagStart) {
           Math.abs(curTop.d) >= tolerance
         )
       ) {
-        curIteration = maxIterations
+        return true
       }
     } else if (
       !(
         Math.abs(curTop.real) >= tolerance && Math.abs(curTop.imag) >= tolerance
       )
     ) {
-      curIteration = maxIterations
+      return true
     }
   } else {
     if (quaternionMode) {
@@ -1006,16 +940,52 @@ function iterateEquation (realStart, imagStart) {
           Math.abs(curTop.d) < tolerance
         )
       ) {
-        curIteration = maxIterations
+        return true
       }
     } else if (
       !(Math.abs(curTop.real) < tolerance && Math.abs(curTop.imag) < tolerance)
     ) {
-      curIteration = maxIterations
+      return true
     }
+  }
+}
+
+/*
+ * performs Newton's method on given point in complex plane
+ * returns number of iterations required to converge (or diverge if creating nova fractal) and key of resulting root
+ * if number of iterations returned is the max number of iterations, we consider that point to have not converged
+ */
+function iterateEquation (realStart, imagStart) {
+  let curNum
+  let curTop
+  let curBot
+  if (quaternionMode) {
+    curNum = new QuaternionNumber(
+      realStart,
+      imagStart,
+      quaternionC,
+      quaternionD
+    )
+    curTop = new QuaternionNumber(tolerance, tolerance, tolerance, tolerance)
+    curBot = new QuaternionNumber(1.0, 1.0, 1.0, 1.0)
+  } else {
+    curNum = new ComplexNumber(realStart, imagStart)
+    curTop = new ComplexNumber(tolerance, tolerance)
+    curBot = new ComplexNumber(1.0, 1.0)
+  }
+  let curIteration = 0
+  for (; !(convergenceCondition(curTop, curIteration)); ++curIteration) {
+
+    [curNum, curTop, curBot] = performIteration(curNum, curTop, curBot)
+  }
+
+  // ensures divergence is marked as not converging (using the inverse comparison appears necessary to avoid false positives with large numbers)
+  if (divergenceCondition(curTop)) {
+    curIteration = maxIterations
   }
 
   let rootKey
+  // get key value for root for insertion/lookup in map
   if (quaternionMode) {
     norm = Math.sqrt(curNum.b * curNum.b + curNum.c * curNum.c + curNum.d * curNum.d)
     if (curNum.b < 0) {
@@ -1036,31 +1006,7 @@ function iterateEquation (realStart, imagStart) {
 }
 
 /*
- * update small info box in lower right-hand side
- */
-function updateInfoBox () {
-  $('infoBox').innerHTML =
-    'x<sub>0</sub>=' +
-    xRange[0] +
-    ' y<sub>0</sub>=' +
-    yRange[0] +
-    ' ' +
-    'x<sub>1</sub>=' +
-    xRange[1] +
-    ' y<sub>1</sub>=' +
-    yRange[1] +
-    ' ' +
-    'w&#10799;h=' +
-    canvas.width +
-    'x' +
-    canvas.height +
-    ' ' +
-    ((canvas.width * canvas.height) / 1000000.0).toFixed(1) +
-    'MP'
-}
-
-/*
- * aeturn number with metric units
+ * return number with metric units (for calculation speed display)
  */
 function metricUnits (number) {
   const unit = ['', 'k', 'M', 'G', 'T', 'P', 'E']
@@ -1082,57 +1028,48 @@ function adjustAspectRatio (yRange, canvas) {
 }
 
 /*
- * render Newton fractal
+ * primary render function
  */
 function draw (pickColor) {
   if (lookAt === null) lookAt = lookAtDefault
   if (zoom === null) zoom = [zoomStart, zoomStart]
 
   const centerVal = math.complex($('center').value)
-  if (
-    getComplex($('offset').value).real !== offset.real ||
-    getComplex($('offset').value).imag !== offset.imag
-  ) {
-    if (offset.real === 0 && offset.imag === 0) {
-      novaMode = true
-      reInitCanvas = true
-    } else if (
-      getComplex($('offset').value).real === 0 &&
-      getComplex($('offset').value).imag === 0
-    ) {
-      novaMode = false
-      reInitCanvas = true
-    }
-    offset = getComplex($('offset').value)
+
+  // initialize nova fractal offset
+  offset = getComplex($('offset').value)
+  // turn nova fractal mode on/off
+  if (novaMode && offset.real === 0 && offset.imag === 0) {
+    novaMode = false
+    reInitCanvas = true
+  } else if (!novaMode && (offset.real !== 0 || offset.imag !== 0)) {
+    novaMode = true
+    reInitCanvas = true
   }
-  if (
-    parseFloat($('quaternionC').value) !== quaternionC ||
-    parseFloat($('quaternionD').value) !== quaternionD
-  ) {
-    if (quaternionC === 0 && quaternionD === 0) {
-      quaternionMode = true
-      reInitCanvas = true
-    } else if (
-      parseFloat($('quaternionC').value) === 0 &&
-      parseFloat($('quaternionD').value) === 0
-    ) {
-      quaternionMode = false
-      reInitCanvas = true
-    }
-    quaternionC = parseFloat($('quaternionC').value)
-    quaternionD = parseFloat($('quaternionD').value)
+
+  // initialize quaternion projection
+  quaternionC = parseFloat($('quaternionC').value)
+  quaternionD = parseFloat($('quaternionD').value)
+  // turn quaternion mode on/off
+  if (quaternionMode && quaternionC === 0 && quaternionD === 0) {
+    quaternionMode = false
+    reInitCanvas = true
+  } else if (!quaternionMode && (quaternionC !== 0 || quaternionD !== 0)) {
+    quaternionMode = true
+    reInitCanvas = true
   }
+  
+  // reinitialization conditions: box to draw as square checked, width changed, or center point changed
   if (
     ($('isSquare').checked && canvas.width !== canvas.height) ||
-    windowResized ||
     Math.abs(zoom[0] - parseFloat($('width').value)) >= compTolerance ||
     Math.abs(lookAt[0] - centerVal.re) >= compTolerance ||
     Math.abs(lookAt[1] - centerVal.im) >= compTolerance
   ) {
-    windowResized = false
     reInitCanvas = true
   }
 
+  // reset canvas when rendering
   if (reInitCanvas) {
     reInitCanvas = false
     lookAt = [centerVal.re, centerVal.im]
@@ -1167,6 +1104,10 @@ function draw (pickColor) {
 
   maxIterations = parseInt($('steps').value, 10)
   precision = parseInt($('precision').value, 10)
+  // flip sign for nova fractals since we are now using escape radius (rather than convergence tolerance)
+  if (novaMode) {
+    precision *= -1
+  }
   if (precision <= 0) {
     tolerance = '1'
     for (let i = 0; i > precision; i--) {
@@ -1181,6 +1122,11 @@ function draw (pickColor) {
   }
   tolerance = parseFloat(tolerance)
   scalar = getComplex($('scalar').value)
+  if (quaternionMode) {
+    // cast nova offset and iteration scalar to quaternion type when in quaternion mode
+    scalar = new QuaternionNumber(scalar.real, scalar.imag, 0, 0)
+    offset = new QuaternionNumber(offset.real, offset.imag, 0, 0)
+  }
 
   expression = $('function').value
   expression = math.parse(expression)
@@ -1203,11 +1149,10 @@ function draw (pickColor) {
   const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
   const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
 
-  updateInfoBox()
-
   // only enable one render at a time
   renderId += 1
 
+  // renders a line of the Newton fractal
   function drawLine (Ci, y, off, realInit, realStep) {
     let Cr = realInit
 
@@ -1215,7 +1160,7 @@ function draw (pickColor) {
       const p = iterateEquation(Cr, Ci)
       // add mapping of point to root for box counting
       pointRootMap.set((x.toString() + ',' + y.toString()), p[1])
-      const color = pickColor(Cr, Ci, p[0], p[1])
+      const color = pickColor(p[0], p[1])
       img.data[off++] = color[0]
       img.data[off++] = color[1]
       img.data[off++] = color[2]
@@ -1223,6 +1168,7 @@ function draw (pickColor) {
     }
   }
 
+  // renders the render line itself
   function drawSolidLine (y, color) {
     let off = y * canvas.width
 
@@ -1234,6 +1180,7 @@ function draw (pickColor) {
     }
   }
 
+  // renders the Newton fractal, alternating between computing the next line and populating the results
   function render () {
     const start = new Date().getTime()
     const startHeight = canvas.height
@@ -1276,7 +1223,7 @@ function draw (pickColor) {
 
           let speed = Math.floor(pixels / elapsedMS)
 
-          if (metricUnits(speed).substr(0, 3) === 'NaN') {
+          if (metricUnits(speed).substring(0, 3) === 'NaN') {
             speed = Math.floor((60.0 * pixels) / elapsedMS)
             $('renderSpeedUnit').innerHTML = 'minute'
           } else $('renderSpeedUnit').innerHTML = 'second'
@@ -1297,7 +1244,8 @@ function draw (pickColor) {
   render()
 }
 
-function pickColorColor (startReal, startImag, n, rootKey) {
+// assigns colors when using colored scheme
+function pickColorColor (n, rootKey) {
   // did not converge
   if (n === maxIterations) {
     return interiorColor
@@ -1326,8 +1274,8 @@ function pickColorColor (startReal, startImag, n, rootKey) {
   return c
 }
 
-// 'a' and 'b' are just to prevent name clash with '_': all are unused
-function pickColorGrayscale (_, a, n, b) {
+// assigns colors when using grayscale scheme
+function pickColorGrayscale (n, _) {
   // did not converge
   if (n === maxIterations) {
     return interiorColor
@@ -1337,12 +1285,16 @@ function pickColorGrayscale (_, a, n, b) {
 }
 
 function main () {
+  // save canvas as image
+  // NOTE: will save as default filename in browser (probably "download"),
+  //       need to rename manually to [image_name].png
   $('savePNG').onclick = function (_) {
     window.location.href = canvas
       .toDataURL('image/png')
       .replace('image/png', 'image/octet-stream')
   }
 
+  // compute estimate of canvas's fractal dimension
   $('calcDimension').onclick = function (_) {
     gridScale = parseInt($('gridScale').value)
     $('fractalDimension').value = calculateFractalDimension(
@@ -1350,6 +1302,7 @@ function main () {
     ).toFixed(3)
   }
 
+  // reset settings and reinitialize canvas
   $('resetButton').onclick = function (_) {
     $('settingsForm').reset()
     zoom = [zoomStart, zoomStart]
@@ -1358,9 +1311,9 @@ function main () {
     draw(getColorPicker())
   }
 
+  // assign each root color to new random color
   $('rerollColors').onclick = function (_) {
     for (const key of rootMap.keys()) {
-      // assign to new random color
       rootMap.set(key, Math.floor(Math.random() * 255) +
                       ',' +
                       Math.floor(Math.random() * 255) +
@@ -1370,92 +1323,61 @@ function main () {
     draw(getColorPicker())
   }
 
-  if (dragToZoom === true) {
-    let box = null
-
-    // TODO: decide if we want to add scrolling coordinate view here
-    // $('canvasControls').onmouseover = function(e)
-    // {
-    //   cur_x = e.pageX - $('canvasControls').;
-    //   cur_y
-    // }
-    // TODO: figure out issue for square case (seem to be using right approach, but result is slightly off)
-    $('canvasControls').onmousedown = function (e) {
-      if (box === null) {
-        // adjust for square-ness
-        if ($('isSquare').checked) {
-          const diff = screen.width - screen.height
-          if (diff > 0) {
-            box = [e.clientX - (diff / 2), e.clientY, 0, 0]
-          } else {
-            box = [e.clientX, e.clientY - (diff / 2), 0, 0]
-          }
-        } else {
-          box = [e.clientX, e.clientY, 0, 0]
-        }
-      }
+  // helper function to get mouse position relative to canvas
+  const getMousePosition = function(e) {
+    const rect = ccanvas.getBoundingClientRect()
+    const scaleX = ccanvas.width / rect.width
+    const scaleY = ccanvas.height / rect.height
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
     }
+  }
 
-    $('canvasControls').onmousemove = function (e) {
-      if (box !== null) {
-        const c = ccanvas.getContext('2d')
-        c.lineWidth = 1
+  let box = null
 
-        // clear out old box first
-        c.clearRect(0, 0, ccanvas.width, ccanvas.height)
-
-        // draw new box
-        c.strokeStyle = '#FF3B03'
-        if ($('isSquare').checked) {
-          const diff = screen.width - screen.height
-          if (diff > 0) {
-            box = [box[0], box[1], e.clientX - (diff / 2), e.clientY]
-          } else {
-            box = [box[0], box[1], e.clientX, e.clientY - (diff / 2)]
-          }
-        } else {
-          box = [box[0], box[1], e.clientX, e.clientY]
-        }
-        c.strokeRect(box[0], box[1], box[2] - box[0], box[3] - box[1])
-      }
+  $('canvasControls').onmousedown = function (e) {
+    if (box === null) {
+      // adjust for square-ness
+      const position = getMousePosition(e)
+      box = [position.x, position.y, -1, -1]
     }
+  }
 
-    const zoomOut = function (event) {
-      let x = event.clientX
-      let y = event.clientY
+  $('canvasControls').onmousemove = function (e) {
+    if (box !== null) {
+      const c = ccanvas.getContext('2d')
+      c.lineWidth = 1
 
-      const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
-      const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
+      // clear out old box first
+      c.clearRect(0, 0, ccanvas.width, ccanvas.height)
 
-      x = xRange[0] + x * realStep
-      y = yRange[0] + y * imagStep
+      // draw new box
+      c.strokeStyle = '#FF3B03'
+      const position = getMousePosition(e)
+      box = [box[0], box[1], position.x, position.y]
+      c.strokeRect(box[0], box[1], box[2] - box[0], box[3] - box[1])
+    }
+  }
 
-      lookAt = [x, y]
-
-      if (event.shiftKey) {
-        zoom[0] /= 0.5
-        zoom[1] /= 0.5
-      }
-
+  $('canvasControls').onmouseup = function (e) {
+    // zoom out (without changing center point) if shift key is held
+    if (e.shiftKey) {
+      zoom[0] *= 2
+      zoom[1] *= 2
+      $('width').value = zoom[0].toString()
       draw(getColorPicker())
-    }
-
-    $('canvasControls').onmouseup = function (e) {
-      if (box !== null) {
-        // zoom out if shift key is held
-        if (e.shiftKey) {
-          box = null
-          zoomOut(e)
-          return
-        }
-
+    } else {
+      let x, y
+      // cursor has moved after pressing down (i.e. not a click), do drag-based zooming box[3] !== -1
+      if (box[3] !== -1) {
         // clear canvas
         const c = ccanvas.getContext('2d')
         c.clearRect(0, 0, ccanvas.width, ccanvas.height)
 
         // calculate new rectangle to render
-        let x = Math.min(box[0], box[2]) + Math.abs(box[0] - box[2]) / 2.0
-        let y = Math.min(box[1], box[3]) + Math.abs(box[1] - box[3]) / 2.0
+        x = Math.min(box[0], box[2]) + Math.abs(box[0] - box[2]) / 2.0
+        y = Math.min(box[1], box[3]) + Math.abs(box[1] - box[3]) / 2.0
 
         const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
         const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
@@ -1471,50 +1393,35 @@ function main () {
         // retain aspect ratio (this is why initial zoom is not zoomStart on first render)
         zoom[0] *= Math.max(xf, yf)
         zoom[1] *= Math.max(xf, yf)
-
-        box = null
-
-        // update user-facing values
-        $('center').value = math.complex(x, y).toString()
-        $('width').value = zoom[0].toString()
-        windowResized = true
-        draw(getColorPicker())
-      }
-    }
-  }
-
-  /*
-   * click-based zooming
-   * TODO: debug reinitialize/accuracy issues
-   */
-  if (dragToZoom === false) {
-    $('canvasFractal').onclick = function (event) {
-      let x = event.clientX
-      let y = event.clientY
-
-      const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
-      const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
-
-      x = xRange[0] + x * realStep
-      y = yRange[0] + y * imagStep
-
-      lookAt = [x, y]
-
-      if (event.shiftKey) {
-        zoom[0] *= 2.0
-        zoom[1] *= 2.0
       } else {
+        // click-based zooming (zoom in 2x, centering at point clicked on)
+        const position = getMousePosition(e)
+        x = position.x
+        y = position.y
+
+        const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
+        const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
+
+        x = xRange[0] + x * realStep
+        y = yRange[0] + y * imagStep
+
+        lookAt = [x, y]
         zoom[0] *= 0.5
         zoom[1] *= 0.5
       }
-
-      draw(getColorPicker())
+      $('center').value = math.complex(x, y).toString()
     }
+    $('width').value = zoom[0].toString()
+    // reinitialize and render
+    box = null
+    reInitCanvas = true
+    draw(getColorPicker())
+    return
   }
 
-  // set flag when window resized to reinitialize canvas on next draw
-  window.onresize = function (event) {
-    windowResized = true
+  // set flag when window resized to reinitialize canvas on next render
+  window.onresize = function (_) {
+    reInitCanvas = true
   }
 
   // render on page load
