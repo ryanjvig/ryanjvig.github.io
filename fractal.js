@@ -20,7 +20,6 @@
  *
  */
 
-
 // custom class for complex arithmetic
 // performs better than mathjs library, which has easy-to-use support for complex numbers and operations but is much slower
 function ComplexNumber (real, imag) {
@@ -491,7 +490,6 @@ let img = ctx.createImageData(canvas.width, 1)
 
 // box counting method to compute fractal dimension
 function boxCounting (fractalPoints, gridSizeX, gridSizeY) {
-  console.log(`pointRootMap size: ${pointRootMap.size}`)
   let count = 0
   let curBoxes = 0
   const totalBoxes = gridScale * gridScale
@@ -521,93 +519,67 @@ function boxCounting (fractalPoints, gridSizeX, gridSizeY) {
   return count
 }
 
-// finds points on fractal boundary in canvas
+// helper function to determine if point is on the fractal boundary
 // we consider a point on the boundary here if it neighbors a point that converges to a different root under Newton's method
 // (or if one point does not converge at all while its neighbor does)
+function onBoundary (x, y) {
+  const key = x.toString() +
+              ',' +
+              y.toString()
+  let mapVal
+  if (pointRootMap.has(key) === false) {
+    return false
+  } else {
+    mapVal = pointRootMap.get(key)
+  }
+  let compKey
+  // check each directly adjacent point, adding this point to boundary set if a neighbor converges to a different root
+  if (x + 1 < canvas.width) {
+    compKey =
+      (x + 1).toString() +
+      ',' +
+      y.toString()
+    if (pointRootMap.has(compKey) && mapVal !== pointRootMap.get(compKey)) {
+      return true
+    }
+  }
+  if (x > 0) {
+    compKey =
+      (x - 1).toString() +
+      ',' +
+    y.toString()
+    if (pointRootMap.has(compKey) && mapVal !== pointRootMap.get(compKey)) {
+      return true
+    }
+  }
+  if (y + 1 < canvas.height) {
+    compKey =
+      x.toString() +
+      ',' +
+      (y + 1).toString()
+    if (pointRootMap.has(compKey) && mapVal !== pointRootMap.get(compKey)) {
+      return true
+    }
+  }
+  if (y > 0) {
+    compKey =
+      x.toString() +
+      ',' +
+      (y - 1).toString()
+    if (pointRootMap.has(compKey) && mapVal !== pointRootMap.get(compKey)) {
+      return true
+    }
+  }
+  return false
+}
+
+// finds points on fractal boundary in canvas
 function findFractalPoints () {
   const boundaryPoints = []
-  const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
-  const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
-  let Ci = 0
-  let Cr = 0
-  for (let y = 0; y < canvas.height; y++, Ci += imagStep) {
-    Cr = 0
-    for (let x = 0; x < canvas.width; x++, Cr += realStep) {
-      const key =
-        x.toString() +
-        ',' +
-        y.toString()
-      let mapVal
-      if (pointRootMap.has(key) === false) {
-        mapVal = '0'
-      } else {
-        mapVal = pointRootMap.get(key)
-      }
-      let compKey
-      // check each directly adjacent point, adding this point to boundary set if a neighbor converges to a different root
-      if (x + 1 < canvas.width) {
-        compKey =
-          (x + 1).toString() +
-          ',' +
-          y.toString()
-        let compVal
-        if (pointRootMap.has(compKey) === false) {
-          compVal = '0'
-        } else {
-          compVal = pointRootMap.get(compKey)
-        }
-        if (mapVal !== compVal) {
-          boundaryPoints.push([x, y])
-          continue
-        }
-      }
-      if (x > 0) {
-        compKey =
-          (x - 1).toString() +
-          ',' +
-          y.toString()
-        let compVal
-        if (pointRootMap.has(compKey) === false) {
-          compVal = '0'
-        } else {
-          compVal = pointRootMap.get(compKey)
-        }
-        if (mapVal !== compVal) {
-          boundaryPoints.push([x, y])
-          continue
-        }
-      }
-      if (y + 1 < canvas.height) {
-        compKey =
-          x.toString() +
-          ',' +
-          (y + 1).toString()
-        let compVal
-        if (pointRootMap.has(compKey) === false) {
-          compVal = '0'
-        } else {
-          compVal = pointRootMap.get(compKey)
-        }
-        if (mapVal !== compVal) {
-          boundaryPoints.push([x, y])
-          continue
-        }
-      }
-      if (y > 0) {
-        compKey =
-          x.toString() +
-          ',' +
-          (y - 1).toString()
-        let compVal
-        if (pointRootMap.has(compKey) === false) {
-          compVal = '0'
-        } else {
-          compVal = pointRootMap.get(compKey)
-        }
-        if (mapVal !== compVal) {
-          boundaryPoints.push([x, y])
-          continue
-        }
+  for (let y = 0; y < canvas.height; y++) {
+    for (let x = 0; x < canvas.width; x++) {
+      if (onBoundary(x, y)) {
+        boundaryPoints.push([x, y])
       }
     }
   }
@@ -789,9 +761,17 @@ function $ (id) {
   return document.getElementById(id)
 }
 
+// used in the HTML - has browser focus on submit button
+function focusOnSubmit () {
+  const e = $ < HTMLInputElement > ('submitButton')
+  if (e) e.focus()
+}
+
+// gets the function for the selected color scheme
 function getColorPicker () {
   const p = $('colorScheme').value
   if (p === 'pickColorColor') return pickColorColor
+  if (p === 'pickColorBoundary') return pickColorBoundary
   return pickColorGrayscale
 }
 
@@ -975,7 +955,6 @@ function iterateEquation (realStart, imagStart) {
   }
   let curIteration = 0
   for (; !(convergenceCondition(curTop, curIteration)); ++curIteration) {
-
     [curNum, curTop, curBot] = performIteration(curNum, curTop, curBot)
   }
 
@@ -986,6 +965,9 @@ function iterateEquation (realStart, imagStart) {
 
   let rootKey
   // get key value for root for insertion/lookup in map
+  if (curIteration === maxIterations) {
+    rootKey = 'n'
+  }
   if (quaternionMode) {
     norm = Math.sqrt(curNum.b * curNum.b + curNum.c * curNum.c + curNum.d * curNum.d)
     if (curNum.b < 0) {
@@ -1058,7 +1040,6 @@ function draw (pickColor) {
     quaternionMode = true
     reInitCanvas = true
   }
-  
   // reinitialization conditions: box to draw as square checked, width changed, or center point changed
   if (
     ($('isSquare').checked && canvas.width !== canvas.height) ||
@@ -1068,6 +1049,9 @@ function draw (pickColor) {
   ) {
     reInitCanvas = true
   }
+
+  // reset point to root mappings (doesn't reset root to color mappings besides reroll button)
+  pointRootMap.clear()
 
   // reset canvas when rendering
   if (reInitCanvas) {
@@ -1079,10 +1063,6 @@ function draw (pickColor) {
     yRange = [lookAt[1] - zoom[1] / 2, lookAt[1] + zoom[1] / 2]
 
     canvas = $('canvasFractal')
-
-    // reset root mappings
-    rootMap.clear()
-    pointRootMap.clear()
 
     if ($('isSquare').checked) {
       canvas.width = Math.min(window.innerWidth, window.innerHeight)
@@ -1137,6 +1117,7 @@ function draw (pickColor) {
   expression = math
     .format(expression, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
+  console.log(expression)
   expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi)
   expressionTermOps = getOperations(expressionTerms)
   // parse function derivative
@@ -1160,7 +1141,7 @@ function draw (pickColor) {
       const p = iterateEquation(Cr, Ci)
       // add mapping of point to root for box counting
       pointRootMap.set((x.toString() + ',' + y.toString()), p[1])
-      const color = pickColor(p[0], p[1])
+      const color = pickColor(p[0], p[1], x, y)
       img.data[off++] = color[0]
       img.data[off++] = color[1]
       img.data[off++] = color[2]
@@ -1245,7 +1226,7 @@ function draw (pickColor) {
 }
 
 // assigns colors when using colored scheme
-function pickColorColor (n, rootKey) {
+function pickColorColor (n, rootKey, x, y) {
   // did not converge
   if (n === maxIterations) {
     return interiorColor
@@ -1274,8 +1255,20 @@ function pickColorColor (n, rootKey) {
   return c
 }
 
+// checks if point is in boundary i.e. if it neighbors a point with different convergence
+function pickColorBoundary (n, rootKey, x, y) {
+  // did not converge (deciding to still color black if not converged here, do not necessarily have to)
+  if (n === maxIterations) {
+    return interiorColor
+  }
+  if (onBoundary(x, y)) {
+    return interiorColor
+  }
+  return [255, 255, 255, 255]
+}
+
 // assigns colors when using grayscale scheme
-function pickColorGrayscale (n, _) {
+function pickColorGrayscale (n, rootKey, x, y) {
   // did not converge
   if (n === maxIterations) {
     return interiorColor
@@ -1324,7 +1317,7 @@ function main () {
   }
 
   // helper function to get mouse position relative to canvas
-  const getMousePosition = function(e) {
+  const getMousePosition = function (e) {
     const rect = ccanvas.getBoundingClientRect()
     const scaleX = ccanvas.width / rect.width
     const scaleY = ccanvas.height / rect.height
@@ -1416,7 +1409,6 @@ function main () {
     box = null
     reInitCanvas = true
     draw(getColorPicker())
-    return
   }
 
   // set flag when window resized to reinitialize canvas on next render
