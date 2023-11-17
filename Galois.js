@@ -42,7 +42,6 @@ class GaloisFieldWithTable {
         return new GaloisFieldElement(result, this);
     }
     Negative(x) {
-        console.log(`in Negative (Galois) with x: ${x}`)
         const result = new Array(this.Degree);
         for (let i = 0; i < this.Degree; i++) {
             result[i] = this.Modulo(-x.get(i));
@@ -51,16 +50,14 @@ class GaloisFieldWithTable {
     }
     Multiply(x, y) {
         // return zero element early if either is 0 to avoid log table undefined issues?
-        if (x.toString() == '0' || y.toString() == '0') {
+        const xStr = x.toString()
+        const yStr = y.toString()
+        const charStr = this.Characteristic.toString()
+        if (xStr == '0' || yStr == '0' || xStr == charStr || yStr == charStr) {
           return this.Zero
         }
-        console.log(`in Galois Multiply`)
-        console.log(`x to string is ${x.toString()}, y to string is ${y.toString()}`)
-        console.log(`log table x is ${this.mLogarithmicTable.get(x.toString())}, log table y is ${this.mLogarithmicTable.get(y.toString())}`)
         let exponent = this.mLogarithmicTable.get(x.toString()) + this.mLogarithmicTable.get(y.toString());
-        console.log(`exponent: ${exponent}`)
         exponent = GaloisFieldWithTable.Modulo(exponent, this.NumberOfElements - 1);
-        console.log(`processed exponent: ${exponent}`)
         return this.mExponentialTable[exponent];
     }
     Inverse(x) {
