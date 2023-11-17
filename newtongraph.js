@@ -1,22 +1,22 @@
 // Class to perform modular arithmetic
 class Mod {
-  constructor (value, modulus) { 
+  constructor (value, modulus) {
     this.value = ((value % modulus) + modulus) % modulus
     this.modulus = modulus
   }
 
   // Performs modular arithmetic
-  add (other) { 
+  add (other) {
     return new Mod(this.value + other.value, this.modulus)
   }
 
   // Performs modular subtraction
-  subtract (other) { 
+  subtract (other) {
     return new Mod(this.value - other.value, this.modulus)
   }
 
   // Performs modular multiplication
-  times (other) { 
+  times (other) {
     return new Mod(this.value * other.value, this.modulus)
   }
 
@@ -66,7 +66,7 @@ function main () {
     const edges = []
     // trivial infinity to infinity edge
     edges.push({ from: '∞', to: '∞', edges: { arrows: 'to' } })
-    
+
     for (let i = 0; i < p; i++) {
       const x = new Mod(i, p) // i mod p
       const xNew = new Mod(math.evaluate(polynomial, { x: x.value }), p) // f(x) mod p
@@ -74,7 +74,7 @@ function main () {
       let target
       if (fprimeX.value === 0) {
         // diverges since derivative is in denominator
-        target = '∞' 
+        target = '∞'
       } else {
         // Newton method iteration performed mod p
         target = new Mod(i - xNew.times(fprimeX.inverse()).value, p).value

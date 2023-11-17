@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <script
-      src="math.js"
-      type="text/javascript"
-    ></script>
+    <script type="text/javascript" src="math.js"></script>
+    <script type="text/javascript" src="complex.js"></script>
+    <script type="text/javascript" src="quaternion.js"></script>
+    <script type="text/javascript" src="operation.js"></script>
+    <script type="text/javascript" src="fractal_dimension.js"></script>
     <title>Newton Fractals in HTML5 Canvas &amp; JavaScript</title>
     <!--
      Newton fractal generator, in HTML5 canvas and javascript.
@@ -190,7 +191,7 @@
             </td>
           </tr>
           <tr>
-            <td>Nova fractal iteration offset (c+di)</td>
+            <td title="non-zero value will switch to 'nova mode' and create nova fractals (colored by divergence, rather than convergence)">Nova fractal iteration offset (c+di)</td>
             <td>
               <input
                 class="textInput"
@@ -198,12 +199,11 @@
                 type="text"
                 id="offset"
                 value="0"
-                title="non-zero value will switch to 'nova mode' and create nova fractals (colored by divergence, rather than convergence)"
               />
             </td>
           </tr>
           <tr>
-            <td>Fixed quaternion projection (cj+dk)</td>
+            <td title="will alter plane to be a 2D slice of 4D space with these 2 dimensions fixed (function itself is unchanged)">Fixed quaternion projection values (cj+dk)</td>
             <td>
               <input
                 class="textInput"
@@ -245,6 +245,7 @@
                 <option value="pickColorGrayscale">Grayscale</option>
                 <option value="pickColorColor">Color</option>
                 <option value="pickColorBoundary">Boundary</option>
+                <option value="pickColorBoundary" title="mostly same as 'Boundary', but shade">Pure Boundary</option>
               </select>
             </td>
           </tr>
@@ -348,7 +349,7 @@
           Inspired by Christian Stigen Larsen's Mandelbrot Set visualizer
           <br />
           &nbsp; <br />
-          Click + drag to zoom in, shift +click to zoom out. You can change the
+          Shift+Space to toggle options menu view. Click + drag to zoom in, shift +click to zoom out. You can change the
           settings above and hit <i>Draw</i> to render anew.
         </small>
       </div>
