@@ -296,9 +296,10 @@ function draw (pickColor) {
     quaternionMode = true
     reInitCanvas = true
   }
-  // reinitialization conditions: box to draw as square checked, width changed, or center point changed
+  // reinitialization conditions: draw as square checkbox changed, width changed, or center point changed
   if (
     ($('isSquare').checked && canvas.width !== canvas.height) ||
+    (!($('isSquare').checked) && canvas.width === canvas.height) ||
     Math.abs(zoom[0] - parseFloat($('width').value)) >= compTolerance ||
     Math.abs(lookAt[0] - centerVal.re) >= compTolerance ||
     Math.abs(lookAt[1] - centerVal.im) >= compTolerance
