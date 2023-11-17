@@ -49,11 +49,8 @@ class GaloisFieldWithTable {
         return new GaloisFieldElement(result, this);
     }
     Multiply(x, y) {
-        // return zero element early if either is 0 to avoid log table undefined issues?
-        const xStr = x.toString()
-        const yStr = y.toString()
-        const charStr = this.Characteristic.toString()
-        if (xStr == '0' || yStr == '0' || xStr == charStr || yStr == charStr) {
+        // return zero element early if either is 0 to avoid log table undefined issues
+        if (x.Equals(this.Zero) || y.Equals(this.Zero)) {
           return this.Zero
         }
         let exponent = this.mLogarithmicTable.get(x.toString()) + this.mLogarithmicTable.get(y.toString());

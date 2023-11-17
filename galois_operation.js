@@ -161,9 +161,14 @@ function numToCoefficients (galoisField, num) {
   let div = galoisField.NumberOfElements / galoisField.Characteristic
   for (let i = galoisField.Degree - 1; i >= 0; i--) {
     const quotient = Math.floor(num / div)
-    coefficients[i] = quotient
+    if (quotient === galoisField.Characteristic) {
+      coefficients[i] = 0
+    } else {
+      coefficients[i] = quotient
+    }
     num -= div * quotient
     div /= galoisField.Characteristic
   }
+  console.log(`numToCoefficients res: ${coefficients}`)
   return coefficients
 }
