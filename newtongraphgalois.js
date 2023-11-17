@@ -28,9 +28,6 @@ function main () {
       .replace(/[\s*]/g, '')
     derivTerms = deriv.match(/(\+|-)?[a-z0-9.^]+/gi)
     derivTermOps = getOperations(derivTerms, galois)
-    console.log(polynomial)
-    console.log(polyTerms)
-    console.log(polyTermOps)
     if (isNaN(p) || p <= 0) {
       alert('Please enter a positive integer for P.')
       return
@@ -52,7 +49,7 @@ function main () {
       rawNodes.push({ id: strX, label: strX })
       const fx = functionAt(coefficients, galois, polyTermOps)
       const fpx = functionAt(coefficients, galois, derivTermOps)
-      console.log(`processing element with x ${x}, fx ${fx}, fpx ${fpx}`)
+      // console.log(`processing element with x ${x}, fx ${fx}, fpx ${fpx}`)
       let target
       if (fpx.Equals(galois.Zero)) {
         // diverges since derivative is in denominator
@@ -60,9 +57,7 @@ function main () {
       } else {
         // Newton method iteration
         fpxInv = galois.Inverse(fpx)
-        console.log(`fpx inverse is ${fpxInv}`)
         diff = galois.Multiply(fpxInv, fx)
-        console.log(`diff term is ${diff}`)
         diff = galois.Negative(diff)
         target = (galois.Add(x, diff)).toString()
       }

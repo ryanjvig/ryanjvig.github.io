@@ -20,7 +20,6 @@ function Operation (type, val) {
 function performOperation (galoisField, num, op, baseVal) {
   switch (op.type) {
     case OperationType.Negative: {
-      console.log(`processing negative op with num ${num}, op ${op}, baseVal ${baseVal}`)
       return galoisField.Negative(num)
     }
     case OperationType.Exp: {
@@ -169,6 +168,5 @@ function numToCoefficients (galoisField, num) {
     num -= div * quotient
     div /= galoisField.Characteristic
   }
-  console.log(`numToCoefficients res: ${coefficients}`)
   return coefficients
 }
