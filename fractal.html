@@ -49,9 +49,6 @@
       #bottom {
         color: #ccc;
       }
-      #bottom a {
-        color: #666;
-      }
       #bottom a:hover {
         color: #ff3b03;
       }
@@ -262,7 +259,7 @@
                 type="text"
                 id="precision"
                 value="5"
-                title="convergence tolerance (integer, higher number is more precise)"
+                title="Convergence tolerance (integer n for 10^(-n), higher number is more precise)"
               />
             </td>
           </tr>
@@ -280,12 +277,12 @@
                 type="text"
                 id="scalar"
                 value="1"
-                title="may be any complex number (1 for 'true' Newton fractals)"
+                title="May be any complex number (1 for 'true' Newton fractals)"
               />
             </td>
           </tr>
           <tr id="optionOffset" style="visibility: collapse">
-            <td title="non-zero value will switch to 'nova mode' and create nova fractals (colored by divergence, rather than convergence)">Nova fractal iteration offset (c+di)</td>
+            <td title="Non-zero value will switch to 'nova mode' and create nova fractals (colored by divergence, rather than convergence)">Nova fractal iteration offset (c+di)</td>
             <td>
               <input
                 class="textInput"
@@ -297,7 +294,7 @@
             </td>
           </tr>
           <tr id="optionQuaternion" style="visibility: collapse">
-            <td title="will alter plane to be a 2D slice of 4D space with these 2 dimensions fixed (function itself is unchanged)">Fixed quaternion values (cj+dk)</td>
+            <td title="Alters plane to be a 2D slice of 4D space with these 2 dimensions fixed (function itself is unchanged)">Fixed quaternion values (cj+dk)</td>
             <td>
               <input
                 class="textInput"
@@ -355,7 +352,15 @@
           <tr>
             <td colspan="2">
               <input type="submit" id="submitButton" value="Draw" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
               <input type="reset" id="resetButton" value="Reset" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
               <input type="button" id="savePNG" value="Save as PNG" />
             </td>
           </tr>
@@ -364,7 +369,7 @@
 
       <div id="bottom">
         <small>
-          Inspired by Christian Stigen Larsen's Mandelbrot Set visualizer
+          Inspired by <a href="https://github.com/cslarsen">Christian Stigen Larsen's Mandelbrot Set visualizer</a>
           <br />
           &nbsp;<br />
           Shift+Space to toggle options menu view.<br />
