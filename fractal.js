@@ -97,6 +97,7 @@ function getColorPicker () {
   const p = $('colorScheme').value
   if (p === 'pickColorColor') return pickColorColor
   if (p === 'pickColorBoundary') return pickColorBoundary
+  if (p === 'pickColorPureBoundary') return pickColorPureBoundary
   return pickColorGrayscale
 }
 
@@ -517,6 +518,15 @@ function pickColorBoundary (n, rootKey, x, y) {
   if (n === maxIterations) {
     return interiorColor
   }
+  if (onBoundary(x, y)) {
+    return interiorColor
+  }
+  return [255, 255, 255, 255]
+}
+
+// checks if point is in boundary i.e. if it neighbors a point with different convergence
+// does not color all nonconverging points black, only points on boundary
+function pickColorPureBoundary (n, rootKey, x, y) {
   if (onBoundary(x, y)) {
     return interiorColor
   }
