@@ -556,13 +556,58 @@ function main () {
     }
     return false
   })
-  // save canvas as image
-  // NOTE: will save as default filename in browser (probably "download"),
-  //       need to rename manually to [image_name].png
+  // toggle appearance settings
+  $('toggleAppearance').onclick = function (_) {
+    if ($('optionColor').style.visibility === 'collapse') {
+      $('optionColor').style.visibility = 'visible'
+      $('optionCenter').style.visibility = 'visible'
+      $('optionWidth').style.visibility = 'visible'
+      $('optionSquare').style.visibility = 'visible'
+      $('optionReroll').style.visibility = 'visible'
+    } else {
+      $('optionColor').style.visibility = 'collapse'
+      $('optionCenter').style.visibility = 'collapse'
+      $('optionWidth').style.visibility = 'collapse'
+      $('optionSquare').style.visibility = 'collapse'
+      $('optionReroll').style.visibility = 'collapse'
+    }
+  }
+  // toggle precision settings
+  $('togglePrecision').onclick = function (_) {
+    if ($('optionIterations').style.visibility === 'collapse') {
+      $('optionIterations').style.visibility = 'visible'
+      $('optionTolerance').style.visibility = 'visible'
+    } else {
+      $('optionIterations').style.visibility = 'collapse'
+      $('optionTolerance').style.visibility = 'collapse'
+    }
+  }
+
+  // toggle advanced settings
+  $('toggleAdvanced').onclick = function (_) {
+    if ($('optionScalar').style.visibility === 'collapse') {
+      $('optionScalar').style.visibility = 'visible'
+      $('optionOffset').style.visibility = 'visible'
+      $('optionQuaternion').style.visibility = 'visible'
+      $('optionDimension').style.visibility = 'visible'
+      $('dimensionOutput').style.visibility = 'visible'
+      $('optionDimensionPrecision').style.visibility = 'visible'
+    } else {
+      $('optionScalar').style.visibility = 'collapse'
+      $('optionOffset').style.visibility = 'collapse'
+      $('optionQuaternion').style.visibility = 'collapse'
+      $('optionDimension').style.visibility = 'collapse'
+      $('dimensionOutput').style.visibility = 'collapse'
+      $('optionDimensionPrecision').style.visibility = 'collapse'
+    }
+  }
+
+  // save canvas as image with filename 'fractal.png'
   $('savePNG').onclick = function (_) {
-    window.location.href = canvas
-      .toDataURL('image/png')
-      .replace('image/png', 'image/octet-stream')
+    const link = document.createElement('a')
+    link.download = 'fractal.png'
+    link.href = canvas.toDataURL()
+    link.click()
   }
 
   // compute estimate of canvas's fractal dimension
