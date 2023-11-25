@@ -135,6 +135,38 @@
       hr {
         border-color: #222;
       }
+
+      @media screen and (max-width: 600px) {
+      #description {
+        position: absolute;
+        width: 100%;
+      }
+
+      #canvasFractal {
+        background-color: black;
+        position: absolute;
+        left: 0px;
+        top: 50%;
+        margin-right: auto;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+      #canvasControls {
+        background-color: transparent;
+        position: absolute;
+        left: 0px;
+        top: 50%;
+        z-index: 5;
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+      }
+    }
     </style>
   </head>
   <body onload="focusOnSubmit();">
@@ -180,7 +212,7 @@
           </tr>
           <tr id="optionColor" style="visibility: collapse">
             <td>Color scheme</td>
-            <td colspan="2">
+            <td colspan="5">
               <select id="colorScheme" title="scheme">
                 <option value="pickColorColor">Color</option>
                 <option value="pickColorGrayscale">Grayscale</option>
@@ -295,6 +327,8 @@
           </tr>
           <tr id="optionQuaternion" style="visibility: collapse">
             <td title="Alters plane to be a 2D slice of 4D space with these 2 dimensions fixed (function itself is unchanged)">Fixed quaternion values (cj+dk)</td>
+            <td>&nbsp;</td>
+            <td>c:</td>
             <td>
               <input
                 class="textInput"
@@ -305,7 +339,8 @@
                 title="(fixed 'c' in a+bi+cj+dk)"
               />
             </td>
-            <td colspan="2">
+            <td>d:</td>
+            <td>
               <input
                 class="textInput"
                 size="6"
@@ -317,7 +352,7 @@
             </td>
           </tr>
           <tr id="optionDimension" style="visibility: collapse">
-            <td colspan="3">
+            <td colspan="6">
               <input type="button" id="calcDimension" value="Compute Fractal Dimension" />
             </td>
           </tr>
