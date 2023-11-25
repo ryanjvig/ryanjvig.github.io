@@ -136,10 +136,23 @@
         border-color: #222;
       }
 
+      #bottom {
+        display: block;
+      }
+
+      #bottomMobile {
+        display: none;
+      }
+
       @media screen and (max-width: 600px) {
       #description {
         position: absolute;
         width: 100%;
+        height: 50%;
+        left: 0px;
+        top: 0px;
+        padding: 0px;
+        margin: 0px;
       }
 
       #canvasFractal {
@@ -165,6 +178,14 @@
         margin: 0px;
         width: 100%;
         height: 100%;
+      }
+
+      #bottom {
+        display: none;
+      }
+
+      #bottomMobile {
+        display: block;
       }
     }
     </style>
@@ -409,6 +430,12 @@
           &nbsp;<br />
           Shift+Space to toggle options menu view.<br />
           Click or Click+Drag to zoom in, Shift+Click to zoom out.<br />
+          You can change the settings above and hit <i>Draw</i> to render anew.
+        </small>
+      </div>
+      <div id="bottomMobile">
+        <small>
+          Click to zoom in, Shift+Click to zoom out.<br />
           You can change the settings above and hit <i>Draw</i> to render anew.
         </small>
       </div>
