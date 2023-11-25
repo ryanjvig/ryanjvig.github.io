@@ -70,11 +70,17 @@ math.config({
 
 // initialize canvas
 let canvas = $('canvasFractal')
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
 let ccanvas = $('canvasControls')
-ccanvas.width = window.innerWidth
-ccanvas.height = window.innerHeight
+if (window.innerWidth > 600) {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+} else {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight / 2
+}
+
+ccanvas.width = canvas.width
+ccanvas.height = canvas.height
 
 let ctx = canvas.getContext('2d')
 let img = ctx.createImageData(canvas.width, 1)
@@ -321,16 +327,26 @@ function draw (pickColor) {
     yRange = [lookAt[1] - zoom[1] / 2, lookAt[1] + zoom[1] / 2]
 
     canvas = $('canvasFractal')
+    ccanvas = $('canvasControls')
 
     if ($('isSquare').checked) {
-      canvas.width = Math.min(window.innerWidth, window.innerHeight)
-      canvas.height = Math.min(window.innerWidth, window.innerHeight)
+      if (window.innerWidth > 600) {
+        canvas.width = Math.min(window.innerWidth, window.innerHeight)
+        canvas.height = Math.min(window.innerWidth, window.innerHeight)
+      } else {
+        canvas.width = Math.min(window.innerWidth, window.innerHeight / 2)
+        canvas.height = Math.min(window.innerWidth, window.innerHeight / 2)
+      }
     } else {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      if (window.innerWidth > 600) {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+      } else {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight / 2
+      }
     }
 
-    ccanvas = $('canvasControls')
     ccanvas.width = canvas.width
     ccanvas.height = canvas.height
 
@@ -375,13 +391,18 @@ function draw (pickColor) {
   expression = math
     .format(expression, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi)
+  console.log(expression)
+  // regex here is pretty complicated... semi-justified by allowing capture of parenthesized terms in desired way
+  // with that being said, still could probably be cleaned up a bit
+  expressionTerms = expression.match(/(\+|-)?((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi)
+  console.log(expressionTerms)
   expressionTermOps = getOperations(expressionTerms)
   // parse function derivative
   derivative = math
     .format(derivative, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  derivativeTerms = derivative.match(/(\+|-)?[a-z0-9.^]+/gi)
+  console.log(derivative)
+  derivativeTerms = derivative.match(/(\+|-)?(((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi) // (/(\+|-)?(([a-z0-9.^]*\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))?([a-z0-9.^]+))/gi)
   derivativeTermOps = getOperations(derivativeTerms)
 
   const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
