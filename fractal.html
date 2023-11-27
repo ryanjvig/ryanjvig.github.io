@@ -3,8 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="math.js"></script>
     <script type="text/javascript" src="complex.js"></script>
     <script type="text/javascript" src="quaternion.js"></script>
@@ -138,11 +136,19 @@
         border-color: #222;
       }
 
+      #settingsForm {
+        display: block;
+      }
+
       #bottom {
         display: block;
       }
 
       #bottomMobile {
+        display: none;
+      }
+
+      #settingsFormMobile {
         display: none;
       }
 
@@ -182,6 +188,10 @@
         height: 100%;
       }
 
+      #settingsForm {
+        display: none;
+      }
+
       #bottom {
         display: none;
       }
@@ -190,29 +200,10 @@
         display: block;
       }
 
-      #optionColor {
-        visibility: hidden;
+      #settingsFormMobile {
+        display: block;
       }
 
-      #optionWidth {
-        visibility: hidden;
-      }
-
-      #optionSquarr {
-        visibility: hidden;
-      }
-
-      #optionReroll {
-        visibility: hidden;
-      }
-
-      #optionIterations {
-        visibility: hidden;
-      }
-
-      #optionIterations {
-        visibility: hidden;
-      }
     }
     </style>
   </head>
@@ -254,69 +245,67 @@
           </tr>
           <tr>
             <td colspan="5">
-              <input type="button" id="toggleAppearance" value="Appearance Settings" cursor="pointer" data-toggle="collapse" data-target="#appearanceOptions"/>
+              <input type="button" id="toggleAppearance" value="Appearance Settings"></input>
             </td>
           </tr>
-          <div id="appearanceOptions" class="collapse">
-            <tr id="optionColor" style="visibility: collapse">
-              <td>Color scheme</td>
-              <td colspan="5">
-                <select id="colorScheme" title="scheme">
-                  <option value="pickColorColor">Color</option>
-                  <option value="pickColorGrayscale">Grayscale</option>
-                  <option value="pickColorBoundary">Boundary</option>
-                  <option value="pickColorPureBoundary" title="mostly same as 'Boundary', but does not color all nonconverging points black">Pure Boundary</option>
-                </select>
-              </td>
-            </tr>
-            <tr id="optionCenter" style="visibility: collapse">
-              <td>Center Point (a+bi)</td>
-              <td>
-                <input
-                  class="textInput"
-                  size="6"
-                  type="text"
-                  id="center"
-                  value="0"
-                  title="point image is centered at"
-                />
-              </td>
-            </tr>
-            <tr id="optionWidth" style="visibility: collapse">
-              <td>Width</td>
-              <td>
-                <input
-                  class="textInput"
-                  size="6"
-                  type="text"
-                  id="width"
-                  value="15"
-                  title="length of real axis to show (height will be scaled to appropriate aspect raatio)"
-                />
-              </td>
-            </tr>
-            <tr id="optionSquare" style="visibility: collapse">
-              <td>Draw as square?</td>
-              <td>
-                <input
-                  class="textInput"
-                  size="4"
-                  type="checkbox"
-                  id="isSquare"
-                  title="Check this to set a 1:1 aspect ratio"
-                />
-              </td>
-            </tr>
-            <tr id="optionReroll" style="visibility: collapse">
-              <td colspan="2">
-                <input type="button" id="rerollColors" value="Reroll Colors" />
-              </td>
-            </tr>
-            <tr>
-          </div>
+          <tr id="optionColor" style="visibility: collapse">
+            <td>Color scheme</td>
             <td colspan="5">
-              <input type="button" id="togglePrecision" value="Precision Settings" cursor="pointer"/>
+              <select id="colorScheme" title="scheme">
+                <option value="pickColorColor">Color</option>
+                <option value="pickColorGrayscale">Grayscale</option>
+                <option value="pickColorBoundary">Boundary</option>
+                <option value="pickColorPureBoundary" title="mostly same as 'Boundary', but does not color all nonconverging points black">Pure Boundary</option>
+              </select>
             </td>
+          </tr>
+          <tr id="optionCenter" style="visibility: collapse">
+            <td>Center Point (a+bi)</td>
+            <td>
+              <input
+                class="textInput"
+                size="6"
+                type="text"
+                id="center"
+                value="0"
+                title="point image is centered at"
+              />
+            </td>
+          </tr>
+          <tr id="optionWidth" style="visibility: collapse">
+            <td>Width</td>
+            <td>
+              <input
+                class="textInput"
+                size="6"
+                type="text"
+                id="width"
+                value="15"
+                title="length of real axis to show (height will be scaled to appropriate aspect raatio)"
+              />
+            </td>
+          </tr>
+          <tr id="optionSquare" style="visibility: collapse">
+            <td>Draw as square?</td>
+            <td>
+              <input
+                class="textInput"
+                size="4"
+                type="checkbox"
+                id="isSquare"
+                title="Check this to set a 1:1 aspect ratio"
+              />
+            </td>
+          </tr>
+          <tr id="optionReroll" style="visibility: collapse">
+            <td colspan="2">
+              <input type="button" id="rerollColors" value="Reroll Colors" />
+            </td>
+          </tr>
+          <tr>
+          <td colspan="5">
+            <input type="button" id="togglePrecision" value="Precision Settings" cursor="pointer"/>
+          </td>
           </tr>
           <tr id="optionIterations" style="visibility: collapse">
             <td>Max iterations</td>
@@ -461,10 +450,53 @@
           You can change the settings above and hit <i>Draw</i> to render anew.
         </small>
       </div>
+
+      <form id="settingsFormMobile" action="javascript:draw(getColorPicker());">
+        <table>
+          <tr>
+            <td>Rendering time</td>
+            <td><span id="renderTime">0.0</span> seconds</td>
+          </tr>
+          <tr>
+            <td>Speed</td>
+            <td>
+              <span id="renderSpeed">0.00</span> pixels /
+              <span id="renderSpeedUnit">second</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Function</td>
+            <td>
+              <input
+                class="textInput"
+                size="6"
+                type="text"
+                id="function"
+                value="z^3-1"
+                title="input function"
+              />
+            </td>
+          </tr>
+            <td colspan="2">
+              <input type="submit" id="submitButton" value="Draw" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <input type="reset" id="resetButton" value="Reset" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <input type="button" id="savePNG" value="Save as PNG" />
+            </td>
+          </tr>
+        </table>
+      </form>
       <div id="bottomMobile">
         <small>
           Click to zoom in, Shift+Click to zoom out.<br />
-          You can change the settings above and hit <i>Draw</i> to render anew.
+          You can change the function above and hit <i>Draw</i> to render anew.
         </small>
       </div>
     </div>

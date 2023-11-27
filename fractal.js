@@ -706,7 +706,7 @@ function main () {
       draw(getColorPicker())
     } else {
       let x, y
-      // cursor has moved after pressing down (i.e. not a click), do drag-based zooming box[3] !== -1
+      // cursor has moved after pressing down (i.e. not a click), do drag-based zooming
       if (box[3] !== -1) {
         // clear canvas
         const c = ccanvas.getContext('2d')
