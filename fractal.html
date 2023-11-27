@@ -136,27 +136,20 @@
         border-color: #222;
       }
 
-      #settingsForm {
-        display: block;
-      }
-
       #bottom {
         display: block;
       }
 
-      #bottomMobile {
-        display: none;
+      #optionReroll {
+        visibility: collapse;
       }
 
-      #settingsFormMobile {
-        display: none;
-      }
 
       @media screen and (max-width: 600px) {
       #description {
         position: absolute;
         width: 100%;
-        height: 50%;
+        height: 39%;
         left: 0px;
         top: 0px;
         padding: 0px;
@@ -167,7 +160,7 @@
         background-color: black;
         position: absolute;
         left: 0px;
-        top: 50%;
+        top: 40%;
         margin-right: auto;
         padding-left: 0;
         padding-right: 0;
@@ -180,7 +173,7 @@
         background-color: transparent;
         position: absolute;
         left: 0px;
-        top: 50%;
+        top: 40%;
         z-index: 5;
         padding: 0px;
         margin: 0px;
@@ -188,22 +181,77 @@
         height: 100%;
       }
 
-      #settingsForm {
-        display: none;
-      }
-
       #bottom {
         display: none;
-      }
-
-      #bottomMobile {
-        display: block;
       }
 
       #settingsFormMobile {
         display: block;
       }
 
+      #toggleAppearance {
+        display: none;
+      }
+
+      #optionColor {
+        display: none;
+      }
+
+      #optionCenter {
+        display: none;
+      }
+
+      #optionWidth {
+        display: none;
+      }
+
+      #optionSquare {
+        display: none;
+      }
+
+      #optionReroll {
+        visibility: visible;
+      }
+
+      #togglePrecision {
+        display: none;
+      }
+
+      #optionIterations {
+        display: none;
+      }
+
+      #optionTolerance {
+        display: none;
+      }
+
+      #toggleAdvanced {
+        display: none;
+      }
+
+      #optionScalar {
+        display: none;
+      }
+
+      #optionOffset {
+        display: none;
+      }
+
+      #optionQuaternion {
+        display: none;
+      }
+
+      #optionDimension {
+        display: none;
+      }
+
+      #dimensionOutput {
+        display: none;
+      }
+
+      #optionDimensionPrecision {
+        display: none;
+      }
     }
     </style>
   </head>
@@ -297,7 +345,7 @@
               />
             </td>
           </tr>
-          <tr id="optionReroll" style="visibility: collapse">
+          <tr id="optionReroll">
             <td colspan="2">
               <input type="button" id="rerollColors" value="Reroll Colors" />
             </td>
@@ -448,55 +496,6 @@
           Shift+Space to toggle options menu view.<br />
           Click or Click+Drag to zoom in, Shift+Click to zoom out.<br />
           You can change the settings above and hit <i>Draw</i> to render anew.
-        </small>
-      </div>
-
-      <form id="settingsFormMobile" action="javascript:draw(getColorPicker());">
-        <table>
-          <tr>
-            <td>Rendering time</td>
-            <td><span id="renderTime">0.0</span> seconds</td>
-          </tr>
-          <tr>
-            <td>Speed</td>
-            <td>
-              <span id="renderSpeed">0.00</span> pixels /
-              <span id="renderSpeedUnit">second</span>
-            </td>
-          </tr>
-          <tr>
-            <td>Function</td>
-            <td>
-              <input
-                class="textInput"
-                size="6"
-                type="text"
-                id="function"
-                value="z^3-1"
-                title="input function"
-              />
-            </td>
-          </tr>
-            <td colspan="2">
-              <input type="submit" id="submitButton" value="Draw" />
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <input type="reset" id="resetButton" value="Reset" />
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <input type="button" id="savePNG" value="Save as PNG" />
-            </td>
-          </tr>
-        </table>
-      </form>
-      <div id="bottomMobile">
-        <small>
-          Click to zoom in, Shift+Click to zoom out.<br />
-          You can change the function above and hit <i>Draw</i> to render anew.
         </small>
       </div>
     </div>
