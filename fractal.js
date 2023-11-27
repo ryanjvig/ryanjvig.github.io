@@ -391,18 +391,18 @@ function draw (pickColor) {
   expression = math
     .format(expression, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  console.log(expression)
   // regex here is pretty complicated... semi-justified by allowing capture of parenthesized terms in desired way
   // with that being said, still could probably be cleaned up a bit
-  expressionTerms = expression.match(/(\+|-)?((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi)
-  console.log(expressionTerms)
+  // expressionTerms = expression.match(/(\+|-)?((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi)
+  // console.log(expressionTerms)
+  expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi)
   expressionTermOps = getOperations(expressionTerms)
   // parse function derivative
   derivative = math
     .format(derivative, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  console.log(derivative)
-  derivativeTerms = derivative.match(/(\+|-)?(((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi) // (/(\+|-)?(([a-z0-9.^]*\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))?([a-z0-9.^]+))/gi)
+  // derivativeTerms = derivative.match(/(\+|-)?(((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi) // (/(\+|-)?(([a-z0-9.^]*\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))?([a-z0-9.^]+))/gi)
+  derivativeTerms = derivative.match(/(\+|-)?[a-z0-9.^]+/gi)
   derivativeTermOps = getOperations(derivativeTerms)
 
   const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
