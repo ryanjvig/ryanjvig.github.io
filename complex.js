@@ -120,7 +120,7 @@ ComplexNumber.prototype = {
   // Implementation based on this discussion: https://math.stackexchange.com/questions/476968/complex-power-of-a-complex-number
   compExp: function () {
     const param = arguments[0]
-    const arg = Math.atan2(arguments[0].real, arguments[0].imag) // argument of our complex number
+    const arg = Math.atan2(this.imag, this.real) // argument of our complex number
     const norm = Math.sqrt((this.real * this.real) + (this.imag * this.imag))
     const i = new ComplexNumber(0, 1)
     const imagArg = i.mult(arg, 0)
