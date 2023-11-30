@@ -30,6 +30,8 @@ const rootMap = new Map()
 const pointRootMap = new Map()
 const interiorColor = [0, 0, 0, 255]
 const colors = [[0, 0, 0, 0]]
+let fixedColors = false
+let fixedColorsUsed = 0
 let zoom = [zoomStart, zoomStart]
 let lookAt = lookAtDefault
 let xRange = [-10, 10] // real axis view range
@@ -68,6 +70,17 @@ math.config({
   number: 'BigNumber' // switches expression notation to decimal rather than fraction (for string parsing)
 })
 
+// Kelly's 22 colours of maximum contrast (excluding white, black, and grey)
+// read more here: https://eleanormaclure.files.wordpress.com/2011/03/colour-coding.pdf
+// written as comma separated RGB values since that is the format of key values in our map
+// first 6 colors are supposedly well-optimized for those with color vision deficiency: https://stackoverflow.com/questions/470690/how-to-automatically-generate-n-distinct-colors
+const fixedColorArray = [
+  '193,0,32', '166,189,215', '255,179,0', '128,62,117', '255,104,0', '206,162,98',
+  '0,125,52', '246,118,142', '0,83,138', '255,122,92', '83,55,122', '255,142,0',
+  '179,40,81', '244,200,0', '127,24,13', '147,170,0', '89,51,21', '241,58,19', '35,44,22'
+]
+const numFixedColors = fixedColorArray.length
+
 // initialize canvas
 let canvas = $('canvasFractal')
 let ccanvas = $('canvasControls')
@@ -76,7 +89,7 @@ if (window.innerWidth > 600) {
   canvas.height = window.innerHeight
 } else {
   canvas.width = window.innerWidth
-  canvas.height = window.innerHeight / 2
+  canvas.height = Math.floor(window.innerHeight * 0.6)
 }
 
 ccanvas.width = canvas.width
@@ -314,7 +327,17 @@ function draw (pickColor) {
     reInitCanvas = true
   }
 
-  // reset point to root mappings (doesn't reset root to color mappings besides reroll button)
+  // color contrast checkbox changed, update flag and reinit
+  if (
+    ($('fixedColors').checked && !fixedColors) ||
+    (!($('fixedColors').checked) && fixedColors)
+  ) {
+    fixedColors = $('fixedColors').checked
+    fixedColorsUsed = 0
+    reInitCanvas = true
+  }
+
+  // always reset point to root map since function could have changed
   pointRootMap.clear()
 
   // reset canvas when rendering
@@ -328,6 +351,9 @@ function draw (pickColor) {
 
     canvas = $('canvasFractal')
     ccanvas = $('canvasControls')
+
+    // reset root colors
+    rootMap.clear()
 
     if ($('isSquare').checked) {
       if (window.innerWidth > 600) {
@@ -343,7 +369,7 @@ function draw (pickColor) {
         canvas.height = window.innerHeight
       } else {
         canvas.width = window.innerWidth
-        canvas.height = window.innerHeight / 2
+        canvas.height = Math.floor(window.innerHeight * 0.6)
       }
     }
 
@@ -385,25 +411,33 @@ function draw (pickColor) {
   expression = $('function').value
   expression = math.parse(expression)
   expression = math.simplify(expression, {}, { exactFractions: false })
+  // console.log(expression)
   derivative = math.derivative(expression, 'z') // set derivative here to best ensure proper evaluation
   derivative = math.simplify(derivative, {}, { exactFractions: false })
+  console.log(derivative)
   // parse function expression
   expression = math
     .format(expression, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
+  // console.log(expression)
   // regex here is pretty complicated... semi-justified by allowing capture of parenthesized terms in desired way
-  // with that being said, still could probably be cleaned up a bit
-  // expressionTerms = expression.match(/(\+|-)?((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi)
+  // only real alternative is to have a parsing function - worth looking into if hard limitations of regex are found
+  expressionTerms = expression.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*((\(z\))|(z\^(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))+))?/gi)
+  // expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi) // original basic regex (doesn't work well with parenthesis)
   // console.log(expressionTerms)
-  expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi)
   expressionTermOps = getOperations(expressionTerms)
+  console.log(expressionTermOps)
   // parse function derivative
   derivative = math
     .format(derivative, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  // derivativeTerms = derivative.match(/(\+|-)?(((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))(z?\^((\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))|([a-z0-9.^]+)))?/gi) // (/(\+|-)?(([a-z0-9.^]*\([a-z0-9.^]*(\+|-)?[a-z0-9.^]*\))?([a-z0-9.^]+))/gi)
-  derivativeTerms = derivative.match(/(\+|-)?[a-z0-9.^]+/gi)
+  console.log(derivative)
+  // need to add an option for an additional coefficient part since mathjs does not combine complex coefficients
+  derivativeTerms = derivative.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*((\(z\))|(z\^(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))+))?/gi)
+  console.log(derivativeTerms)
+  // derivativeTerms = derivative.match(/(\+|-)?[a-z0-9.^]+/gi)
   derivativeTermOps = getOperations(derivativeTerms)
+  console.log(derivativeTermOps)
 
   const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
   const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
@@ -511,14 +545,23 @@ function pickColorColor (n, rootKey, x, y) {
   }
 
   if (rootMap.has(rootKey) === false) {
-    rootMap.set(
-      rootKey,
-      Math.floor(Math.random() * 255) +
-        ',' +
+    // use high contrast fixed color for new root
+    if (fixedColors && fixedColorsUsed < numFixedColors) {
+      rootMap.set(
+        rootKey,
+        fixedColorArray[fixedColorsUsed]
+      )
+      fixedColorsUsed++
+    } else {
+      rootMap.set(
+        rootKey,
         Math.floor(Math.random() * 255) +
-        ',' +
-        Math.floor(Math.random() * 255)
-    )
+          ',' +
+          Math.floor(Math.random() * 255) +
+          ',' +
+          Math.floor(Math.random() * 255)
+      )
+    }
     // for debugging
     // console.log(
     //   `root val not found, setting new key val. num=${num}, key=${key}. color=${rootMap.get(
@@ -585,12 +628,14 @@ function main () {
       $('optionWidth').style.visibility = 'visible'
       $('optionSquare').style.visibility = 'visible'
       $('optionReroll').style.visibility = 'visible'
+      $('optionContrast').style.visibility = 'visible'
     } else {
       $('optionColor').style.visibility = 'collapse'
       $('optionCenter').style.visibility = 'collapse'
       $('optionWidth').style.visibility = 'collapse'
       $('optionSquare').style.visibility = 'collapse'
       $('optionReroll').style.visibility = 'collapse'
+      $('optionContrast').style.visibility = 'collapse'
     }
   }
   // toggle precision settings
@@ -706,7 +751,7 @@ function main () {
       draw(getColorPicker())
     } else {
       let x, y
-      // cursor has moved after pressing down (i.e. not a click), do drag-based zooming
+      // cursor has moved after pressing down (i.e. not a click), do drag-based zooming box[3] !== -1
       if (box[3] !== -1) {
         // clear canvas
         const c = ccanvas.getContext('2d')
