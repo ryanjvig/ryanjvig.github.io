@@ -10,7 +10,8 @@ const OperationType = {
   Sin: 'si',
   Cos: 'c',
   Sinh: 'sh',
-  Cosh: 'ch'
+  Cosh: 'ch',
+  ComplexExponent: 'ce'
 }
 
 // stores operation data
@@ -61,16 +62,51 @@ function performOperation (num, op, baseVal) {
     case OperationType.Cosh: {
       return baseVal.cosh()
     }
+    case OperationType.ComplexExponent: {
+      return baseVal.compExp(num)
+    }
   }
 }
 
 // parses operation chain from terms
 function getOperations (terms) {
   termOperations = []
+  let isNegative = false
   terms.forEach(function (term, index) {
+    // console.log(term)
+    // skip empty terms
+    if (term === '') {
+      return
+    }
+    // special case where entire term is enclosed in parenthesis with leading '-'
+    // currently parsed as '-' as one term, then rest of term
+    // (slightly messy, but easiest to handle this way for the time being)
+    if (term === '-') {
+      isNegative = true
+      return
+    }
+
     operations = []
     curIndex = 0
-    // check for negative sign
+
+    // check for previous term being '-'
+    if (isNegative) {
+      isNegative = false
+      if (quaternionMode) {
+        operations.push(
+          new Operation(
+            OperationType.Multiply,
+            new QuaternionNumber(-1, 0, 0, 0)
+          )
+        )
+      } else {
+        operations.push(
+          new Operation(OperationType.Multiply, new ComplexNumber(-1, 0))
+        )
+      }
+    }
+
+    // check for leading negative sign
     if (term[0] === '-') {
       if (quaternionMode) {
         operations.push(
@@ -88,77 +124,95 @@ function getOperations (terms) {
     } else if (term[0] === '+') {
       curIndex++
     }
-    let coeffReal = ''
-    let coeffImag = ''
 
-    // parse complex-valued coefficient (implied by parenthesis)
-    if (term[curIndex] === '(') {
-      curIndex++
-      let coeffOne = ''
-      let coeffTwo = ''
-      while (
-        (term[curIndex] >= '0' && term[curIndex] <= '9') ||
-        term[curIndex] === '.'
-      ) {
-        coeffOne += term[curIndex]
+    // loop twice to allow partially simplified coefficients
+    for (let i = 0; i < 2; i++) {
+      let coeffReal = ''
+      let coeffImag = ''
+      // parse complex-valued coefficient (implied by parenthesis)
+      if (term[curIndex] === '(') {
         curIndex++
-      }
-      if (term[curIndex] === 'i') {
+        let coeffOne = ''
+        let coeffTwo = ''
+        while (
+          (term[curIndex] >= '0' && term[curIndex] <= '9') ||
+          term[curIndex] === '.'
+        ) {
+          coeffOne += term[curIndex]
+          curIndex++
+        }
+        if (term[curIndex] === 'i') {
+          if (coeffOne === '') {
+            coeffOne = '1'
+          }
+          curIndex++
+        }
+        // add sign ('+' or '-') to second coefficient part if negative
+        if (term[curIndex] === '-') {
+          coeffTwo = '-'
+        }
         curIndex++
-      }
-      curIndex++
-      while (
-        (term[curIndex] >= '0' && term[curIndex] <= '9') ||
-        term[curIndex] === '.'
-      ) {
-        coeffTwo += term[curIndex]
-        curIndex++
-      }
-      if (term[curIndex] === 'i') {
-        curIndex += 2
-        coeffReal = coeffOne
-        coeffImag = coeffTwo
+        while (
+          (term[curIndex] >= '0' && term[curIndex] <= '9') ||
+          term[curIndex] === '.'
+        ) {
+          coeffTwo += term[curIndex]
+          curIndex++
+        }
+        if (term[curIndex] === 'i') {
+          if (coeffTwo === '') {
+            coeffTwo = '1'
+          }
+          curIndex += 2
+          coeffReal = coeffOne
+          coeffImag = coeffTwo
+        } else {
+          curIndex++
+          coeffReal = coeffTwo
+          coeffImag = coeffOne
+        }
       } else {
-        curIndex++
-        coeffReal = coeffTwo
-        coeffImag = coeffOne
+        // parse real-valued coefficient
+        while (
+          curIndex < term.length &&
+          ((term[curIndex] >= '0' && term[curIndex] <= '9') ||
+          term[curIndex] === '.')
+        ) {
+          coeffReal += term[curIndex]
+          curIndex++
+        }
       }
-    } else {
-      // parse real-valued coefficient
-      while (
-        curIndex < term.length &&
-        ((term[curIndex] >= '0' && term[curIndex] <= '9') || term[curIndex] === '.')
-      ) {
-        coeffReal += term[curIndex]
-        curIndex++
-      }
-    }
-    // add coefficient to operation chain if has nonzero coefficient
-    if (coeffReal.length !== 0 || coeffImag.length !== 0) {
-      if (coeffReal.length === 0) {
-        coeffReal = '0'
-      } else if (coeffImag.length === 0) {
-        coeffImag = '0'
-      }
-      if (quaternionMode) {
-        operations.push(
-          new Operation(
-            OperationType.Multiply,
-            new QuaternionNumber(
-              parseFloat(coeffReal),
-              parseFloat(coeffImag),
-              0,
-              0
+      // add coefficient to operation chain if has nonzero coefficient
+      if (coeffReal.length !== 0 || coeffImag.length !== 0) {
+        if (coeffReal.length === 0) {
+          coeffReal = '0'
+        } else if (coeffImag.length === 0) {
+          coeffImag = '0'
+        }
+        if (quaternionMode) {
+          operations.push(
+            new Operation(
+              OperationType.Multiply,
+              new QuaternionNumber(
+                parseFloat(coeffReal),
+                parseFloat(coeffImag),
+                0,
+                0
+              )
             )
           )
-        )
-      } else {
-        operations.push(
-          new Operation(
-            OperationType.Multiply,
-            new ComplexNumber(parseFloat(coeffReal), parseFloat(coeffImag))
+        } else {
+          operations.push(
+            new Operation(
+              OperationType.Multiply,
+              new ComplexNumber(parseFloat(coeffReal), parseFloat(coeffImag))
+            )
           )
-        )
+        }
+      }
+      // end before second loop if at end of string
+      if (curIndex === term.length) {
+        break
       }
     }
     // has variable
@@ -168,21 +222,90 @@ function getOperations (terms) {
         case 'z':
           {
             curIndex += 2
-            let power = 1
+            let power
+            // if contains two sets of parentheses, will be a 'double' term
+            let tempIndex = curIndex
+            let numOpenParen = 0
+            while (tempIndex < term.length) {
+              if (term[tempIndex] === '(') {
+                numOpenParen++
+              }
+              tempIndex++
+            }
+            // ignore first parenthesis (don't want to treat as complex number)
+            if (numOpenParen > 1) {
+              curIndex++
+            }
             if (curIndex < term.length) {
               let powStr = ''
-              while (
-                curIndex < term.length &&
-                term[curIndex] !== '-' &&
-                term[curIndex] !== '+'
-              ) {
-                powStr += term[curIndex]
+              // for our current parsing method, parentheses imply the power has an imaginary part
+              if (term[curIndex] === '(') {
+                // read in complex number to string and parse
                 curIndex++
+                let endParenTol = 0
+                console.log(term)
+                while (curIndex < term.length && (term[curIndex] !== ')' || endParenTol !== 0)) {
+                  if (term[curIndex] === '(') {
+                    endParenTol++
+                  } else if (term[curIndex] === ')') {
+                    endParenTol--
+                  } else {
+                    powStr += term[curIndex]
+                  }
+                  curIndex++
+                }
+                console.log(powStr)
+                power = getComplex(powStr)
+                console.log(power)
+              } else {
+                while (
+                  curIndex < term.length &&
+                  term[curIndex] !== '('
+                ) {
+                  powStr += term[curIndex]
+                  curIndex++
+                }
+                power = new ComplexNumber(parseFloat(powStr), 0)
               }
-              power = parseInt(powStr)
             }
-            for (let i = 0; i < power; i++) {
-              operations.push(new Operation(OperationType.Multiply, 'b'))
+            // check for second part - multiply with first part if exists
+            if (curIndex < term.length && term[curIndex] !== ')') {
+              let powStr = ''
+              if (term[curIndex] === '(') {
+                // read in complex number to string and parse
+                curIndex++
+                let endParenTol = 0
+                while (curIndex < term.length && (term[curIndex] !== ')' || endParenTol !== 0)) {
+                  if (term[curIndex] === '(') {
+                    endParenTol++
+                  } else if (term[curIndex] === ')') {
+                    endParenTol--
+                  } else {
+                    powStr += term[curIndex]
+                  }
+                  curIndex++
+                }
+                power = power.mult(getComplex(powStr))
+              } else {
+                while (
+                  curIndex < term.length &&
+                  term[curIndex] !== '('
+                ) {
+                  powStr += term[curIndex]
+                  curIndex++
+                }
+                power = power.mult(parseFloat(powStr), 0)
+              }
+            }
+            // console.log(power)
+            // add operation
+            if (power.imag === 0 && Number.isInteger(power.real)) {
+              // for positive integer powers
+              for (let i = 0; i < power.real; i++) {
+                operations.push(new Operation(OperationType.Multiply, 'b'))
+              }
+            } else {
+              operations.push(new Operation(OperationType.ComplexExponent, power))
             }
           }
           break

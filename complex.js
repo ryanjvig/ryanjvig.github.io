@@ -112,6 +112,22 @@ ComplexNumber.prototype = {
       Math.cosh(this.real) * Math.cos(this.imag),
       Math.sinh(this.real) * Math.sin(this.imag)
     )
+  },
+  /**
+   * returns "this" to the given complex exponent - takes one ComplexNumber argument
+   */
+  // NOTE: this can be multivalued for fractional powers, so we assume 0 for the coefficient of the periodic term here
+  // Implementation based on this discussion: https://math.stackexchange.com/questions/476968/complex-power-of-a-complex-number
+  compExp: function () {
+    const param = arguments[0]
+    const arg = Math.atan2(arguments[0].real, arguments[0].imag) // argument of our complex number
+    const norm = Math.sqrt((this.real * this.real) + (this.imag * this.imag))
+    const i = new ComplexNumber(0, 1)
+    const imagArg = i.mult(arg, 0)
+    const lnNorm = new ComplexNumber(Math.log(norm), 0)
+    let expPow = lnNorm.mult(param)
+    expPow = expPow.add(imagArg.mult(param))
+    return expPow.exp()
   }
 }
 
@@ -119,46 +135,55 @@ ComplexNumber.prototype = {
 function getComplex (term) {
   let realPart = ''
   let imagPart = ''
-  let partOne = ''
-  let partTwo = ''
-  let curInd = 0
+  let coeffOne = ''
+  let coeffTwo = ''
+  let curIndex = 0
+  // parse first part of term
   while (
-    (curInd < term.length && term[curInd] >= '0' && term[curInd] <= '9') ||
-    term[curInd] === '.'
+    (curIndex < term.length && ((term[curIndex] >= '0' && term[curIndex] <= '9') ||
+    term[curIndex] === '.'))
   ) {
-    partOne += term[curInd]
-    curInd++
+    coeffOne += term[curIndex]
+    curIndex++
   }
-  if (curInd < term.length) {
+  if (curIndex < term.length) {
     // currently at '+' or 'i' if has two parts
-    if (term[curInd] !== 'i') {
+    if (term[curIndex] === 'i') {
       // lets 'i' alone be '1i'
-      if (partOne.length === 0) {
-        partOne = '1'
+      if (coeffOne.length === 0) {
+        coeffOne = '1'
       }
-      curInd++
+      curIndex++
     }
-    curInd++
-    while (
-      (term[curInd] >= '0' && term[curInd] <= '9') ||
-      term[curInd] === '.'
-    ) {
-      partTwo += term[curInd]
-      curInd++
-    }
-    // if not at end, must be at 'i'
-    if (curInd < term.length) {
-      if (partTwo.length === 0) {
-        partTwo = '1'
-      }
-      realPart = partOne
-      imagPart = partTwo
+    if (curIndex === term.length) {
+      imagPart = coeffOne
     } else {
-      realPart = partTwo
-      imagPart = partOne
+      // add sign ('+' or '-') to second coefficient part if negative
+      if (term[curIndex] === '-') {
+        coeffTwo = '-'
+      }
+      curIndex++
+      while (
+        (term[curIndex] >= '0' && term[curIndex] <= '9') ||
+        term[curIndex] === '.'
+      ) {
+        coeffTwo += term[curIndex]
+        curIndex++
+      }
+      // if not at end, must be at 'i'
+      if (curIndex < term.length) {
+        if (coeffTwo.length === 0) {
+          coeffTwo = '1'
+        }
+        realPart = coeffOne
+        imagPart = coeffTwo
+      } else {
+        realPart = coeffTwo
+        imagPart = coeffOne
+      }
     }
   } else {
-    realPart = partOne
+    realPart = coeffOne
   }
   if (realPart.length === 0) {
     realPart = '0'
