@@ -83,7 +83,7 @@ QuaternionNumber.prototype = {
     )
   },
   /**
-   * division operation (Hamilton product of 'this' and reciprocal of given quaternion number) - takes either 1 argument (QuaternionNumber), or 4 arguments (a, b, c, d)
+   * division operation (Hamilton product of 'this' and inverse of given quaternion number) - takes either 1 argument (QuaternionNumber), or 4 arguments (a, b, c, d)
    */
   div: function () {
     let divisor = arguments[0]

@@ -113,6 +113,5 @@ function calculateFractalDimension (gridSizeX, gridSizeY) {
   if (boxCount === 0) {
     fractalDimension = 0
   }
-  console.log(`boundary points length: ${fractalPoints.length}, boxCount: ${boxCount}, epsilon val: ${1 / gridScale}, fractalDimension: ${fractalDimension}`)
   return fractalDimension
 }

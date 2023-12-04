@@ -73,7 +73,6 @@ function getOperations (terms) {
   termOperations = []
   let isNegative = false
   terms.forEach(function (term, index) {
-    // console.log(term)
     // skip empty terms
     if (term === '') {
       return
@@ -243,7 +242,6 @@ function getOperations (terms) {
                 // read in complex number to string and parse
                 curIndex++
                 let endParenTol = 0
-                console.log(term)
                 while (curIndex < term.length && (term[curIndex] !== ')' || endParenTol !== 0)) {
                   if (term[curIndex] === '(') {
                     endParenTol++
@@ -254,9 +252,7 @@ function getOperations (terms) {
                   }
                   curIndex++
                 }
-                console.log(powStr)
                 power = getComplex(powStr)
-                console.log(power)
               } else {
                 while (
                   curIndex < term.length &&
@@ -297,7 +293,6 @@ function getOperations (terms) {
                 power = power.mult(parseFloat(powStr), 0)
               }
             }
-            // console.log(power)
             // add operation
             if (power.imag === 0 && Number.isInteger(power.real)) {
               // for positive integer powers

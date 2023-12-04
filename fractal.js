@@ -333,7 +333,6 @@ function draw (pickColor) {
     (!($('fixedColors').checked) && fixedColors)
   ) {
     fixedColors = $('fixedColors').checked
-    fixedColorsUsed = 0
     reInitCanvas = true
   }
 
@@ -343,6 +342,7 @@ function draw (pickColor) {
   // reset canvas when rendering
   if (reInitCanvas) {
     reInitCanvas = false
+    fixedColorsUsed = 0
     lookAt = [centerVal.re, centerVal.im]
     zoom = [parseFloat($('width').value), parseFloat($('width').value)]
 
@@ -411,33 +411,24 @@ function draw (pickColor) {
   expression = $('function').value
   expression = math.parse(expression)
   expression = math.simplify(expression, {}, { exactFractions: false })
-  // console.log(expression)
   derivative = math.derivative(expression, 'z') // set derivative here to best ensure proper evaluation
   derivative = math.simplify(derivative, {}, { exactFractions: false })
-  console.log(derivative)
   // parse function expression
   expression = math
     .format(expression, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  // console.log(expression)
   // regex here is pretty complicated... semi-justified by allowing capture of parenthesized terms in desired way
   // only real alternative is to have a parsing function - worth looking into if hard limitations of regex are found
   expressionTerms = expression.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*((\(z\))|(z\^(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))+))?/gi)
   // expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi) // original basic regex (doesn't work well with parenthesis)
-  // console.log(expressionTerms)
   expressionTermOps = getOperations(expressionTerms)
-  console.log(expressionTermOps)
   // parse function derivative
   derivative = math
     .format(derivative, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
-  console.log(derivative)
   // need to add an option for an additional coefficient part since mathjs does not combine complex coefficients
   derivativeTerms = derivative.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*((\(z\))|(z\^(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))+))?/gi)
-  console.log(derivativeTerms)
-  // derivativeTerms = derivative.match(/(\+|-)?[a-z0-9.^]+/gi)
   derivativeTermOps = getOperations(derivativeTerms)
-  console.log(derivativeTermOps)
 
   const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
   const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))
