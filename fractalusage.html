@@ -1,0 +1,54 @@
+<p><strong>Web-based Newton fractals</strong></p>
+<p>The <a href="fractal.html">Newton fractal visualizer</a> uses Newton’s Method in the complex plane to generate Newton fractals. Many options are available to the user to explore different functions and formatting styles.</p>
+<p><strong>Example</strong></p>
+<p><img src="newtonfractalexample.png" alt="alt link"></p>
+<p>Function: z^8-sin(z)+e^z-1, Center point: 0, Max iterations: 50, Width: 15</p>
+<p><strong>Usage Guide</strong></p>
+<p>Visit <a href="https://ryanjvig.github.io/fractal.html">https://ryanjvig.github.io/fractal.html</a> to view the visualizer. Below are descriptions of each setting and feature the user may specify when working with this program. Currently, the mobile version of the page limits the features available for ease of use, so many features are currently only accessible from the desktop version or a sufficiently large mobile device. All features are available on the desktop version, and features available in the mobile version are noted below.</p>
+<p><strong>Function (Available on Mobile)</strong></p>
+<p>Specifies the function to use for the fractal. &quot;z&quot; must be used as the function variable. Must be parsable by mathjs&#39;s expression parser. May only contain polynomials and limited transcendentals (e^z, sin(z), cos(z), sinh(z), cosh(z)), all of which must be isolated as terms (besides their coefficient). Coefficients of terms can be any complex number. Exponent values that are not positive integers currently have limited support and may not function as intended.</p>
+<p><strong>Appearance Settings</strong></p>
+<p>Click this button to show/hide the appearance settings menu. Settings involve the way the canvas is colored, what part of the plane the canvas includes, and what aspect ratio the canvas uses.</p>
+<p><strong><em>Color scheme</em></strong></p>
+<p>Specifies the coloring method to use for the generated fractal. &quot;Grayscale&quot; will generate a fractal shaded by the iterations required to converge. &quot;Color&quot; will also shade by the iterations required to converge, but will also color each point that converges by the root it converges to. All root colors are (pseudo)randomly generated. Default value is &quot;Color&quot;.</p>
+<p><strong><em>Fixed high contrast colors (Available on Mobile)</em></strong></p>
+<p>Check this box to ensure the first 19 roots found use high contrast colors when using the &quot;Color&quot; color scheme. High contrast colors used are Kelly&#39;s 22 colors of maximum contrast, excluding black, white, and gray (More can be found on this topic here: <a href="https://eleanormaclure.files.wordpress.com/2011/03/colour-coding.pdf">https://eleanormaclure.files.wordpress.com/2011/03/colour-coding.pdf</a>). Uncheck this box to use all randomly generated colors instead. Checked by default.</p>
+<p><strong><em>Center point</em></strong></p>
+<p>Specifies the point in the complex plane that the generated image is centered around.</p>
+<p><strong><em>Width</em></strong></p>
+<p>Specifies the interval to use for the real axis ([-width/2, +width/2]). For example, the default width of 15 will generate an image with the real range [-7.5, 7.5]. The length of the imaginary axis will be scaled appropriately based on the current aspect ratio of the image.</p>
+<p><strong><em>Draw as square</em></strong></p>
+<p>Check this box to fix a 1:1 aspect ratio (equal height and width) for the generated image.</p>
+<p><strong><em>Reroll Colors button (Available on Mobile)</em></strong></p>
+<p>Click this button to redraw a colored fractal image with a new set of randomly generated root colors.</p>
+<p><strong>Precision Settings</strong></p>
+<p>Click this button to show/hide the precision settings menu. Allows specification of maximum iterations for the program to allow and the convergence tolerance value to use.</p>
+<p><strong><em>Max iterations</em></strong></p>
+<p>Specifies the maximum number of iterations the program may use at each point. If a point does not converge by the maximum number of iterations, it will be colored black. If a point does converge before the maximum number of iterations, it will be shaded by the ration between the number of iterations required to converge and the maximum number of iterations.</p>
+<p><strong><em>Tolerance</em></strong></p>
+<p>Specifies the convergence tolerance of Newton&#39;s method. Must be an integer n, and Newton&#39;s method will have a resulting convergence tolerance of 10^(-n). When generating Nova fractals, the sign of this integer will be flipped behind-the-scenes and used as the escape radius parameter for divergence.</p>
+<p><strong>Advanced Options</strong></p>
+<p>Click this button to show/hide the advanced options menu. Options include certain generalizations of Newton&#39;s method (which may fundamentally change how the picture is drawn/computed) and computing an estimated fractal dimension of the generated image using box countting.</p>
+<p><strong><em>Generalized iteration scalar</em></strong></p>
+<p>Specifies a complex-valued constant to scale the difference term of each iteration by. Specifically, specifies the constant &quot;a&quot; for our iteration equation</p>
+<p>  z_{n+1} = z_n - a(f(z_n) / f&#39;(z_n)).</p>
+<p><strong><em>Nova fractal iteration offset</em></strong></p>
+<p>Specifies the offset to use when generating &quot;Nova&quot; fractals. If set to a nonzero value, the program will generate a Nova fractal, which follows the above iteration with the addition of a constant &quot;c&quot; at each step, giving us the iteration</p>
+<p>z_{n+1} = z_n - a(f(z_n) / f&#39;(z_n)) + c.</p>
+<p>When generating Nova fractals, the program will look to color points that diverge rather than points that converge. The sign on the &quot;precision&quot; parameter (detailed below) will be flipped, with the resulting precision value being used as our escape radius that determines our divergence criteria.</p>
+<p><strong><em>Fixed quaternion projection</em></strong></p>
+<p>Specifies fixed quaternion coefficients that transforms the complex plane into a 2-dimensional cross section of the 4-dimension space the quaternions inhabit. Specifically, this specifies the coefficients &quot;c&quot; and &quot;d&quot; to hold fixed for quaternions in our plane, where quaternions are of the form</p>
+<p>a + bi + cj + dk.</p>
+<p>This will result in the use of quaternion arithmetic to calculate the resulting fractal, and is thus likely to be somewhat slower to generate.</p>
+<p><strong><em>Compute Fractal Dimension button</em></strong></p>
+<p>Click this button to compute an estimate of the current image&#39;s fractal dimension. The fractal dimension is estimated using box-counting. It&#39;s recommended to position the image entirely in the boundary region for the best estimate, as the Newton&#39;s fractal itself lies in the boundary set of Newton&#39;s method on the complex plane. Read more about box-counting dimension here: <a href="https://en.wikipedia.org/wiki/Minkowski%E2%80%93Bouligand_dimension">https://en.wikipedia.org/wiki/Minkowski%E2%80%93Bouligand_dimension</a></p>
+<p><strong><em>Box counting precision</em></strong></p>
+<p>Speficies how many boxes should be used to cover the width of the images (inversely related to the side length of each box). Must be a positive integer. The higher this number is, the more precise the estimate will be. Be careful to not increase this value too much (should be kept &lt;1000), as the computation required for the box-counting estimate increases quadratically with this option.</p>
+<p><strong><em>Draw button (Available on Mobile)</em></strong></p>
+<p>Click this button to render the Newton fractal.</p>
+<p><strong><em>Reset button (Available on Mobile)</em></strong></p>
+<p>Click this button to reset settings and the current image to default values.</p>
+<p><strong><em>Save as PNG button (Available on Mobile)</em></strong></p>
+<p>Click this button to download the current image as a local file. The file will be saved as &quot;fractal.png&quot;.</p>
+<p><strong>Disclaimer</strong></p>
+<p>There is seemingly very little literature available on Nova fractals and 2D projections of Newton fractals using fixed quaternion values. Implementations of these features were made with our best available understanding of this material, but may not be entirely accurate. Improved expression parsing and computation of transcendentals and non-positive integer powers is a future goal of this project, and a recognized limitation of this program in its current state. Thanks for taking a look!</p>
