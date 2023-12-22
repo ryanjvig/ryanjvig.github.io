@@ -419,16 +419,21 @@ function draw (pickColor) {
     .replace(/[\s*]/g, '')
   // regex here is pretty complicated... semi-justified by allowing capture of parenthesized terms in desired way
   // only real alternative is to have a parsing function - worth looking into if hard limitations of regex are found
-  expressionTerms = expression.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*((\(z\))|(z\^(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))+))?/gi)
+  expressionTerms = expression.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*(z(\^((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))*)?/gi)
   // expressionTerms = expression.match(/(\+|-)?[a-z0-9.^]+/gi) // original basic regex (doesn't work well with parenthesis)
+  console.log(expression)
+  console.log(expressionTerms)
   expressionTermOps = getOperations(expressionTerms)
   // parse function derivative
   derivative = math
     .format(derivative, { notation: 'fixed' })
     .replace(/[\s*]/g, '')
   // need to add an option for an additional coefficient part since mathjs does not combine complex coefficients
-  derivativeTerms = derivative.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*((\(z\))|(z\^(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))+))?/gi)
+  derivativeTerms = derivative.match(/(\+|-)?(([coshsin0-9.]+)|(\([i0-9.]+((\+|-)[i0-9.]+)?\)))*(z(\^((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)|(\(((([i0-9.]+)|(\([i0-9.]+(\+|-)?[i0-9.]*\)))*)\)))*)?/gi)
   derivativeTermOps = getOperations(derivativeTerms)
+
+  console.log(derivative)
+  console.log(derivativeTerms)
 
   const realStep = (xRange[1] - xRange[0]) / (0.5 + (canvas.width - 1))
   const imagStep = (yRange[1] - yRange[0]) / (0.5 + (canvas.height - 1))

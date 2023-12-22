@@ -221,7 +221,7 @@ function getOperations (terms) {
         case 'z':
           {
             curIndex += 2
-            let power
+            let power = new ComplexNumber(1, 0)
             // if contains two sets of parentheses, will be a 'double' term
             let tempIndex = curIndex
             let numOpenParen = 0
