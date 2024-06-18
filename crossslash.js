@@ -31,6 +31,8 @@ const game = () => {
 
 	// Function to 
 	const playGame = () => {
+        document.getElementById('gacha').style.display = 'none';
+
 		const lightAttackBtn = document.querySelector('.lightAttack');
 		const defendBtn = document.querySelector('.defend');
 		const healBtn = document.querySelector('.heal');
@@ -184,7 +186,6 @@ const game = () => {
 		// const result = document.querySelector('.result');
 		// const playerScoreBoard = document.querySelector('.p-count');
 		// const computerScoreBoard = document.querySelector('.c-count');
-        console.log('Updating state...')
         if(player == 'heal') {
             if (playerHealth < 10) {
                 playerHealth += 1;
@@ -466,6 +467,8 @@ const game = () => {
 			result.style.fontSize = '2rem';
 			result.innerText = 'You Won The Game'
 			result.style.color = '#308D46';
+            document.getElementById('gacha').style.display = 'block';
+            document.getElementById('gachaRoll').style.display = 'block';
 		}
 		else if (playerHealth < computerHealth) {
 			result.style.fontSize = '2rem';
@@ -488,6 +491,25 @@ const game = () => {
 	// Calling playGame function inside game
 	playGame();
 
+}
+
+function rollGacha() {
+    roll = Math.floor(Math.random() * 100)
+    let prize = ''
+    if (roll < 50) {
+        prize = 'Nothing :('
+    }
+    else if (roll < 75) {
+        prize = '10 schmeckles!'
+    }
+    else if (roll < 90) {
+        prize = '25 schmeckles!'
+    }
+    else {
+        prize = 'The Mystical Golden Lemon Duck!!!!'
+    }
+    document.getElementById('gachaResult').innerText = `You got: ${prize}`;
+    document.getElementById('gachaRoll').style.display = 'none'
 }
 
 // Calling the game function
