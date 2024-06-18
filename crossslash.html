@@ -1,0 +1,64 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, 
+				initial-scale=1.0">
+	<link rel="stylesheet" href="styles.css">
+	<title>Cross Slash!</title>
+</head>
+<body>
+	<section class="game">
+		<!--Title -->
+		<div class="title">Cross Slash!</div>
+		
+		<!--Display Score of player and computer -->
+        <div class="playerhealth">Player Health: 10 </div>
+        <div class="playerarmor">Player Armor: 0 </div>
+        <div class="playerstrength">Player Strength: 0 </div>
+        <div class="computerhealth">Computer Health: 10 </div>
+        <div class="computerarmor">Computer Armor: 0 </div>
+        <div class="computerstrength">Computer Strength: 0 </div>
+	
+		<div class="move">Choose your move</div>
+		
+		<!--Options available to player to play game -->
+		<div class="options">
+            <div>
+                <p>1 Turn</p>
+                <button class="lightAttack">Light Attack</button>
+                <button class="defend">Defend</button>
+                <button class="heal">Heal</button> 
+                <button class="sharpen">Sharpen</button> 
+            </div>
+            <div>
+                <p>2 Turn</p>
+                <button class="heavyAttack">Heavy Attack</button>
+                <button class="stab">Stab</button>
+                <button class="counter">Counter</button> 
+                <button class="bulkUp">Bulk Up</button> 
+                <button class="armorUp">Armor Up</button> 
+                <button class="clearEnhancements">Clear Enhancements</button>
+            </div>
+		</div>
+
+        <div class="computermove1"></div>
+        <div class="computermove2"></div>
+        <div class="computermove3"></div>
+        <div class="computermove4"></div>
+        <div class="computermove5"></div>
+		
+		<!--Final result of game -->
+		<div class="result"></div>
+		
+		<!--Reload the game -->
+		<button class="reload"></button>
+
+	</section>
+
+	<script src="crossslash.js"></script>
+</body>
+</html>
