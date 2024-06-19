@@ -4,9 +4,16 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	background: #082c6c;
+	/* background: #fff; */
 	color: #fff;
 }
+
+body{
+    background-image: url('backgroundlandscape.webp');
+    background-size: cover;
+    background-position: center;
+}
+
 /* To center everything in game */
 .game{
 	display: flex;

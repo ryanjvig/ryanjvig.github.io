@@ -8,62 +8,62 @@
 		content="width=device-width, 
 				initial-scale=1.0">
 	<link rel="stylesheet" href="styles.css">
-	<title>Cross Slash!</title>
+    <!-- <title>Cross Slash!</title> -->
 </head>
 <body>
 	<section class="game">
 		<!--Title -->
-		<div class="title">Cross Slash!</div>
-		
+        <img src="crossslashlogo.webp" width="300" height="300">
+		<!-- <div class="title">Cross Slash!</div> -->
+        <!-- <p id="schmeckles">Schmeckles: 0</p> -->
 		<!--Display Score of player and computer -->
-        <div class="playerhealth">Player Health: 10 </div>
-        <div class="playerarmor">Player Armor: 0 </div>
-        <div class="playerstrength">Player Strength: 0 </div>
-        <div class="computerhealth">Computer Health: 10 </div>
-        <div class="computerarmor">Computer Armor: 0 </div>
-        <div class="computerstrength">Computer Strength: 0 </div>
-	
-		<div class="move">Choose your move</div>
-		
+        <div style="background: #000; text-align: center">
+            <div class="playerhealth">Player Health: 10 </div>
+            <div class="playerarmor">Player Armor: 0 </div>
+            <div class="playerstrength">Player Strength: 0 </div>
+            <div class="computerhealth">Computer Health: 10 </div>
+            <div class="computerarmor">Computer Armor: 0 </div>
+            <div class="computerstrength">Computer Strength: 0 </div>
+            <div class="move">Choose your move</div>
 		<!--Options available to player to play game -->
-		<div class="options">
-            <div>
-                <p>1 Turn</p>
-                <button class="lightAttack">Light Attack</button>
-                <button class="defend">Defend</button>
-                <button class="heal">Heal</button> 
-                <button class="sharpen">Sharpen</button> 
+            <div class="options">
+                <div>
+                    <p>1 Turn</p>
+                    <button class="lightAttack">Light Attack</button>
+                    <button class="defend">Defend</button>
+                    <button class="heal">Heal</button> 
+                    <button class="sharpen">Sharpen</button> 
+                </div>
+                <div>
+                    <p>2 Turn</p>
+                    <button class="heavyAttack">Heavy Attack</button>
+                    <button class="stab">Stab</button>
+                    <button class="counter">Counter</button> 
+                    <button class="bulkUp">Bulk Up</button> 
+                    <button class="armorUp">Armor Up</button> 
+                    <button class="clearEnhancements">Clear Enhancements</button>
+                </div>
             </div>
-            <div>
-                <p>2 Turn</p>
-                <button class="heavyAttack">Heavy Attack</button>
-                <button class="stab">Stab</button>
-                <button class="counter">Counter</button> 
-                <button class="bulkUp">Bulk Up</button> 
-                <button class="armorUp">Armor Up</button> 
-                <button class="clearEnhancements">Clear Enhancements</button>
-            </div>
-		</div>
 
-        <div class="computermove1"></div>
-        <div class="computermove2"></div>
-        <div class="computermove3"></div>
-        <div class="computermove4"></div>
-        <div class="computermove5"></div>
-		
-		<!--Final result of game -->
-		<div class="result"></div>
-		
-		<!--Reload the game -->
-		<button class="reload"></button>
+            <div class="computermove1"></div>
+            <div class="computermove2"></div>
+            <div class="computermove3"></div>
+            <div class="computermove4"></div>
+            <div class="computermove5"></div>
+            <!--Final result of game -->
+            <div class="result"></div>
+            
+            <!--Reload the game -->
+            <button class="reload"></button>
 
-        <!--Gacha-->
-        <div id="gacha">
-            <img src="gachabox.jpeg" alt="Treasure Box!">
-            <button id="gachaRoll">Claim Your Prize!</button>
-            <p id="gachaResult">You got: </p>
-        </div style="display:none;">
+            <!--Gacha-->
+            <div id="gacha">
+                <img src="treasurechest.webp" alt="Treasure Box!" height="300" width="300">
+                <button id="gachaRoll">Claim Your Prize!</button>
+                <p id="gachaResult">You got: </p>
+            </div style="display:none;">
         
+        </div>
 	</section>
 	<script src="crossslash.js"></script>
 </body>
