@@ -54,16 +54,16 @@ const game = () => {
         })
         document.getElementById('gacha').style.display = 'none';
 
-		const lightAttackBtn = document.querySelector('.lightAttack');
-		const defendBtn = document.querySelector('.defend');
-		const healBtn = document.querySelector('.heal');
-        const sharpenBtn = document.querySelector('.sharpen');
-		const heavyAttackBtn = document.querySelector('.heavyAttack');
-		const stabBtn = document.querySelector('.stab');
-        const counterBtn = document.querySelector('.counter');
-		const bulkUpBtn = document.querySelector('.bulkUp');
-		const armorUpBtn = document.querySelector('.armorUp');
-        const clearEnhancementsBtn = document.querySelector('.clearEnhancements');
+		const lightAttackBtn = document.getElementById('lightAttack');
+		const defendBtn = document.getElementById('defend');
+		const healBtn = document.getElementById('heal');
+        const sharpenBtn = document.getElementById('sharpen');
+		const heavyAttackBtn = document.getElementById('heavyAttack');
+		const stabBtn = document.getElementById('stab');
+        const counterBtn = document.getElementById('counter');
+		const bulkUpBtn = document.getElementById('bulkUp');
+		const armorUpBtn = document.getElementById('armorUp');
+        const clearEnhancementsBtn = document.getElementById('clearEnhancements');
 		const playerOptions = [lightAttackBtn, defendBtn, healBtn, sharpenBtn, heavyAttackBtn,
             stabBtn, counterBtn, bulkUpBtn, armorUpBtn, clearEnhancementsBtn];
 		const computerOptions = ['lightAttack', 'defend', 'heal', 'sharpen', 'heavyAttack', 'stab', 'counter', 'bulkUp', 'armorUp', 'clearEnhancements'];
@@ -135,18 +135,18 @@ const game = () => {
                     updateState(playerChoice, computerChoice);
                 }
                 
-				const playerHealthDisplay = document.querySelector('.playerhealth');
+				const playerHealthDisplay = document.getElementById('playerhealth');
 				playerHealthDisplay.innerText = `Player Health: ${playerHealth}`;
-				const playerArmorDisplay = document.querySelector('.playerarmor');
+				const playerArmorDisplay = document.getElementById('playerarmor');
 				playerArmorDisplay.innerText = `Player Armor: ${playerArmor}`;
-				const playerStrengthDisplay = document.querySelector('.playerstrength');
+				const playerStrengthDisplay = document.getElementById('playerstrength');
 				playerStrengthDisplay.innerText = `Player Strength: ${playerStrength}`;
 
-				const computerHealthDisplay = document.querySelector('.computerhealth');
+				const computerHealthDisplay = document.getElementById('computerhealth');
 				computerHealthDisplay.innerText = `Computer Health: ${computerHealth}`;
-				const computerArmorDisplay = document.querySelector('.computerarmor');
+				const computerArmorDisplay = document.getElementById('computerarmor');
 				computerArmorDisplay.innerText = `Computer Armor: ${computerArmor}`;
-				const computerStrengthDisplay = document.querySelector('.computerstrength');
+				const computerStrengthDisplay = document.getElementById('computerstrength');
 				computerStrengthDisplay.innerText = `Computer Strength: ${computerStrength}`;
 
                 if(computerCharged) {
@@ -160,11 +160,11 @@ const game = () => {
                 }
                 turnCount++;
 
-                const computerMove1 = document.querySelector('.computermove1')
-                const computerMove2 = document.querySelector('.computermove2')
-                const computerMove3 = document.querySelector('.computermove3')
-                const computerMove4 = document.querySelector('.computermove4')
-                const computerMove5 = document.querySelector('.computermove5')
+                const computerMove1 = document.getElementById('computermove1')
+                const computerMove2 = document.getElementById('computermove2')
+                const computerMove3 = document.getElementById('computermove3')
+                const computerMove4 = document.getElementById('computermove4')
+                const computerMove5 = document.getElementById('computermove5')
 
                 if(computerLog.length > 0) {
                     computerMove1.innerText = computerLog[computerLog.length - 1]
@@ -473,7 +473,7 @@ const game = () => {
 	// Function to run when game is over
 	const gameOver = (playerOptions, playerHealth, computerHealth) => {
 
-		const chooseMove = document.querySelector('.move');
+		const chooseMove = document.getElementById('move');
 		const result = document.querySelector('.result');
 		const reloadBtn = document.querySelector('.reload');
 

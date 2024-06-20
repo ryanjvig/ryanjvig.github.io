@@ -8,6 +8,30 @@
 	color: #fff;
 }
 
+.icon-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    background-color: #6a7179;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 10vw;
+}
+
+.icon-button .icon {
+    width: 4vw;
+    height: 4vw;
+    margin-right: 10px;
+}
+
+.titlelogo {
+    width: 15vw;
+    height: 15vw;
+    margin-top: 20vh;
+}
+
 body{
     background-image: url('backgroundlandscape.webp');
     background-size: cover;
@@ -52,6 +76,7 @@ body{
 /* displaying three buttons in one line */
 .options{
 	display: flex;
+    align-items: end;
 	width: 50vw;
 	justify-content: space-evenly;
 	margin-top: 2rem;

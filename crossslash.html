@@ -13,43 +13,43 @@
 <body>
 	<section class="game">
 		<!--Title -->
-        <img src="crossslashlogo.webp" width="300" height="300">
+        <img src="crossslashlogo.webp" class="titlelogo">
 		<!-- <div class="title">Cross Slash!</div> -->
         <!-- <p id="schmeckles">Schmeckles: 0</p> -->
 		<!--Display Score of player and computer -->
-        <div style="background: #000; text-align: center">
-            <div class="playerhealth">Player Health: 10 </div>
-            <div class="playerarmor">Player Armor: 0 </div>
-            <div class="playerstrength">Player Strength: 0 </div>
-            <div class="computerhealth">Computer Health: 10 </div>
-            <div class="computerarmor">Computer Armor: 0 </div>
-            <div class="computerstrength">Computer Strength: 0 </div>
-            <div class="move">Choose your move</div>
+        <div style="background: #3b3c36; text-align: center">
+            <div id="playerhealth">Player Health: 10 </div>
+            <div id="playerarmor">Player Armor: 0 </div>
+            <div id="playerstrength">Player Strength: 0 </div>
+            <div id="computerhealth">Computer Health: 10 </div>
+            <div id="computerarmor">Computer Armor: 0 </div>
+            <div id="computerstrength">Computer Strength: 0 </div>
+            <div id="move">Choose your move</div>
 		<!--Options available to player to play game -->
             <div class="options">
                 <div>
                     <p>1 Turn</p>
-                    <button class="lightAttack">Light Attack</button>
-                    <button class="defend">Defend</button>
-                    <button class="heal">Heal</button> 
-                    <button class="sharpen">Sharpen</button> 
+                    <button id="lightAttack" class="icon-button"><img src="lalogo2.webp" class="icon"><span>Light Attack</span></button>
+                    <button id="defend" class="icon-button"><img src="defendicon.webp" class="icon"><span>Defend</span></button>
+                    <button id="heal" class="icon-button"><img src="healicon.webp" class="icon"><span>Heal</span></button>
+                    <button id="sharpen" class="icon-button"><img src="sharpenicon.webp" class="icon"><span>Sharpen</span></button>
                 </div>
                 <div>
                     <p>2 Turn</p>
-                    <button class="heavyAttack">Heavy Attack</button>
-                    <button class="stab">Stab</button>
-                    <button class="counter">Counter</button> 
-                    <button class="bulkUp">Bulk Up</button> 
-                    <button class="armorUp">Armor Up</button> 
-                    <button class="clearEnhancements">Clear Enhancements</button>
+                    <button id="heavyAttack" class="icon-button"><img src="heavyattackicon.webp" class="icon"><span>Heavy Attack</span></button>
+                    <button id="stab" class="icon-button"><img src="stabicon.webp" class="icon"><span>Stab</span></button>
+                    <button id="counter" class="icon-button"><img src="countericon.webp" class="icon"><span>Counter</span></button>
+                    <button id="bulkUp" class="icon-button"><img src="bulkupicon.webp" class="icon"><span>Bulk Up</span></button>
+                    <button id="armorUp" class="icon-button"><img src="armorupicon.webp" class="icon"><span>Armor Up</span></button>
+                    <button id="clearEnhancements" class="icon-button"><img src="clearenhancementsicon.webp" class="icon"><span>Clear Enhancements</span></button>
                 </div>
             </div>
 
-            <div class="computermove1"></div>
-            <div class="computermove2"></div>
-            <div class="computermove3"></div>
-            <div class="computermove4"></div>
-            <div class="computermove5"></div>
+            <div id="computermove1"></div>
+            <div id="computermove2"></div>
+            <div id="computermove3"></div>
+            <div id="computermove4"></div>
+            <div id="computermove5"></div>
             <!--Final result of game -->
             <div class="result"></div>
             
