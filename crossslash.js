@@ -85,7 +85,7 @@ const game = () => {
 				let computerChoice = computerOptions[computerChoiceNumber];
 
                 let playerChoice = '';
-                playerChoice = textToOption[this.innerText];
+                playerChoice = this.id;
                 let twoTurn = twoTurnOptions.includes(playerChoice);
                 
                 while(playerStunTurns > 0 && playerHealth >= 0 && computerHealth >= 0) {

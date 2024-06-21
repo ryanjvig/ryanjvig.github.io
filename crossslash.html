@@ -26,24 +26,132 @@
             <div id="computerstrength">Computer Strength: 0 </div>
             <div id="move">Choose your move</div>
 		<!--Options available to player to play game -->
-            <div class="options">
-                <div>
-                    <p>1 Turn</p>
-                    <button id="lightAttack" class="icon-button"><img src="lalogo2.webp" class="icon"><span>Light Attack</span></button>
-                    <button id="defend" class="icon-button"><img src="defendicon.webp" class="icon"><span>Defend</span></button>
-                    <button id="heal" class="icon-button"><img src="healicon.webp" class="icon"><span>Heal</span></button>
-                    <button id="sharpen" class="icon-button"><img src="sharpenicon.webp" class="icon"><span>Sharpen</span></button>
+            <table class="options">
+                <tr>
+                    <th>
+                        1 Turn
+                    </th>
+                    <th> Moves</th>
+                    <th>
+                        2 Turn
+                    </th>
+                    <th> Moves</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="lightAttack" class="icon" src="lalogo2.webp"/>
+                        </div>
+                        <span>Light Attack</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="defend" class="icon" src="defendicon.webp"/>
+                        </div>
+                        <span>Defend</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="heavyAttack" class="icon" src="heavyattackicon.webp"/>
+                        </div>
+                        <span>Heavy Attack</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="defend" class="icon" src="stabicon.webp"/>
+                        </div>
+                        <span>Stab</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="heal" class="icon" src="healicon.webp"/>
+                        </div>
+                        <span>Heal</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="sharpen" class="icon" src="sharpenicon.webp"/>
+                        </div>
+                        <span>Sharpen</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="counter" class="icon" src="countericon.webp"/>
+                        </div>
+                        <span>Counter</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="bulkUp" class="icon" src="bulkupicon.webp"/>
+                        </div>
+                        <span>Bulk Up</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="armorUp" class="icon" src="armorupicon.webp"/>
+                        </div>
+                        <span>Armor Up</span>
+                    </td>
+                    <td>
+                        <div class="icon-button">
+                            <input type="image" id="clearEnhancements" class="icon" src="clearenhancementsicon.webp"/>
+                        </div>
+                        <span>Clear Enhancements</span>
+                    </td>
+                </tr>
+            </table>
+                <!-- <div>
+                    
+                    <div class="icon-button">
+                        <input type="image" id="lightAttack" class="icon" src="lalogo2.webp"/>
+                    </div>
+                    <span>Light Attack</span>
+                    <div class="icon-button">
+                        <input type="image" id="defend" class="icon" src="defendicon.webp"/>
+                    </div>
+                    <span>Defend</span>
+                    <div class="icon-button">
+                        <input type="image" id="heal" class="icon" src="healicon.webp"/>
+                    </div>
+                    <span>Heal</span>
+                    <div class="icon-button">
+                        <input type="image" id="sharpen" class="icon" src="sharpenicon.webp"/>
+                    </div>
+                    <span>Sharpen</span>
                 </div>
                 <div>
                     <p>2 Turn</p>
-                    <button id="heavyAttack" class="icon-button"><img src="heavyattackicon.webp" class="icon"><span>Heavy Attack</span></button>
-                    <button id="stab" class="icon-button"><img src="stabicon.webp" class="icon"><span>Stab</span></button>
-                    <button id="counter" class="icon-button"><img src="countericon.webp" class="icon"><span>Counter</span></button>
-                    <button id="bulkUp" class="icon-button"><img src="bulkupicon.webp" class="icon"><span>Bulk Up</span></button>
-                    <button id="armorUp" class="icon-button"><img src="armorupicon.webp" class="icon"><span>Armor Up</span></button>
-                    <button id="clearEnhancements" class="icon-button"><img src="clearenhancementsicon.webp" class="icon"><span>Clear Enhancements</span></button>
-                </div>
-            </div>
+                    <div class="icon-button">
+                        <input type="image" id="heavyAttack" class="icon" src="heavyattackicon.webp"/>
+                    </div>
+                    <span>Heavy Attack</span>
+                    <div class="icon-button">
+                        <input type="image" id="defend" class="icon" src="stabicon.webp"/>
+                    </div>
+                    <span>Stab</span>
+                    <div class="icon-button">
+                        <input type="image" id="counter" class="icon" src="countericon.webp"/>
+                    </div>
+                    <span>Counter</span>
+                    <div class="icon-button">
+                        <input type="image" id="bulkUp" class="icon" src="bulkupicon.webp"/>
+                    </div>
+                    <span>Bulk Up</span>
+                    <div class="icon-button">
+                        <input type="image" id="armorUp" class="icon" src="armorupicon.webp"/>
+                    </div>
+                    <span>Armor Up</span>
+                    <div class="icon-button">
+                        <input type="image" id="clearEnhancements" class="icon" src="clearenhancementsicon.webp"/>
+                    </div>
+                    <span>Clear Enhancements</span>
+                </div> -->
 
             <div id="computermove1"></div>
             <div id="computermove2"></div>

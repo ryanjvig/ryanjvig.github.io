@@ -6,6 +6,7 @@
 	box-sizing: border-box;
 	/* background: #fff; */
 	color: #fff;
+    font-family: 'Courier New', monospace;
 }
 
 .icon-button {
@@ -13,16 +14,21 @@
     align-items: center;
     padding: 10px 20px;
     border: none;
-    background-color: #6a7179;
     color: white;
-    cursor: pointer;
     border-radius: 5px;
-    width: 10vw;
+    width: 8vw;
+    height: 8vw;
 }
 
 .icon-button .icon {
-    width: 4vw;
-    height: 4vw;
+    width: 6vw;
+    height: 6vw;
+    margin-right: 10px;
+}
+
+.icon {
+    width: 6vw;
+    height: 6vw;
     margin-right: 10px;
 }
 
@@ -76,7 +82,6 @@ body{
 /* displaying three buttons in one line */
 .options{
 	display: flex;
-    align-items: end;
 	width: 50vw;
 	justify-content: space-evenly;
 	margin-top: 2rem;
