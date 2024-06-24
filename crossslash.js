@@ -26,7 +26,7 @@ const game = () => {
     let computerStrength = 0;
     let computerStrengthTemp = 0;
     let computerStrengthPerm = 0;
-    if(Number(localStorage.getItem('schmeckles')) != 0) {
+    if(Number(localStorage.getItem('schmeckles')) !== 0) {
         document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
     }
     document.getElementById('displayCollection').addEventListener('click', function () {
