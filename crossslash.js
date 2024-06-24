@@ -117,8 +117,10 @@ const game = () => {
                 localStorage.setItem('diamondDucks', String(curDiamondDucks + 1))
             }
             document.getElementById('gachaResult').innerText = `You got: ${prize}`;
-            document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
             document.getElementById('gachaRoll').style.display = 'none';
+            if(Number(localStorage.getItem('schmeckles')) !== 0) {
+                document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
+            }
         })
         document.getElementById('gacha').style.display = 'none';
 
