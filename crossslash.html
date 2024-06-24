@@ -14,10 +14,66 @@
 	<section class="game">
 		<!--Title -->
         <img src="crossslashlogo.webp" class="titlelogo">
-		<!-- <div class="title">Cross Slash!</div> -->
-        <!-- <p id="schmeckles">Schmeckles: 0</p> -->
+
+        <p id="displaySchmeckles" style="background: #3b3c36;">Schmeckles: 0</p>
+        <input type="button" id="displayCollection" value="Show/Hide Mystical Lemon Duck Collection" class="standardButton"></button>
+
+        <!-- Display Collection -->
+        <table class="collection" id="collection" cellspacing="10">
+            <tr>
+                <td>
+                    <div class="icon-button">
+                        <img id="displayBronzeDuck" class="icon" src="mysticalbronzelemonduck.webp"/>
+                        <span class="tooltiptext">This is a custom tooltip</span>
+                    </div>
+                    <br>
+                    <span id="noBronzeDuck">Undiscovered</span>
+                    <br>
+                    <span>Bronze</span>
+                    <br>
+                    <span id="numBronzeDucks">Quantity: 0</span>
+                </td>
+                <td>
+                    <div class="icon-button">
+                        <img id="displaySilverDuck" class="icon" src="mysticalsilverlemonduck.webp"/>
+                        <span class="tooltiptext">This is a custom tooltip</span>
+                    </div>
+                    <br>
+                    <span id="noSilverDuck">Undiscovered</span>
+                    <br>
+                    <span>Silver</span>
+                    <br>
+                    <span id="numSilverDucks">Quantity: 0</span>
+                </td>
+                <td>
+                    <div class="icon-button">
+                        <img id="displayGoldDuck" class="icon" src="mysticalgoldenlemonduck.webp"/>
+                        <span class="tooltiptext">This is a custom tooltip</span>
+                    </div>
+                    <br>
+                    <span id="noGoldDuck">Undiscovered</span>
+                    <br>
+                    <span>Golden</span>
+                    <br>
+                    <span id="numGoldDucks">Quantity: 0</span>
+                </td>
+                <td>
+                    <div class="icon-button">
+                        <img id="displayDiamondDuck" class="icon" src="mysticalgalaxydiamondlemonduck.webp"/>
+                        <span class="tooltiptext">This is a custom tooltip</span>
+                    </div>
+                    <br>
+                    <span id="noDiamondDuck">Undiscovered</span>
+                    <br>
+                    <span>Galaxy Diamond</span>
+                    <br>
+                    <span id="numDiamondDucks">Quantity: 0</span>
+                </td>
+            </tr>
+        </table>
+        
 		<!--Display Score of player and computer -->
-        <div style="background: #3b3c36; text-align: center">
+        <div class="gameInterface" id="gameInterface">
             <div id="playerhealth">Player Health: 10 </div>
             <div id="playerarmor">Player Armor: 0 </div>
             <div id="playerstrength">Player Strength: 0 </div>
@@ -40,13 +96,14 @@
                 <tr>
                     <td>
                         <div class="icon-button">
-                            <input type="image" id="lightAttack" class="icon" src="lalogo2.webp"/>
+                            <input type="image" id="lightAttack"  class="icon" src="lalogo2.webp"/>
+                            <span class="tooltiptext">This is a custom tooltip</span>
                         </div>
                         <span>Light Attack</span>
                     </td>
                     <td>
                         <div class="icon-button">
-                            <input type="image" id="defend" class="icon" src="defendicon.webp"/>
+                            <input type="image" id="defend" class="icon" src="defendicon.webp" title="Gain 2 armor (Armor lasts 3 turns)"/>
                         </div>
                         <span>Defend</span>
                     </td>
@@ -106,71 +163,25 @@
                     </td>
                 </tr>
             </table>
-                <!-- <div>
-                    
-                    <div class="icon-button">
-                        <input type="image" id="lightAttack" class="icon" src="lalogo2.webp"/>
-                    </div>
-                    <span>Light Attack</span>
-                    <div class="icon-button">
-                        <input type="image" id="defend" class="icon" src="defendicon.webp"/>
-                    </div>
-                    <span>Defend</span>
-                    <div class="icon-button">
-                        <input type="image" id="heal" class="icon" src="healicon.webp"/>
-                    </div>
-                    <span>Heal</span>
-                    <div class="icon-button">
-                        <input type="image" id="sharpen" class="icon" src="sharpenicon.webp"/>
-                    </div>
-                    <span>Sharpen</span>
-                </div>
-                <div>
-                    <p>2 Turn</p>
-                    <div class="icon-button">
-                        <input type="image" id="heavyAttack" class="icon" src="heavyattackicon.webp"/>
-                    </div>
-                    <span>Heavy Attack</span>
-                    <div class="icon-button">
-                        <input type="image" id="defend" class="icon" src="stabicon.webp"/>
-                    </div>
-                    <span>Stab</span>
-                    <div class="icon-button">
-                        <input type="image" id="counter" class="icon" src="countericon.webp"/>
-                    </div>
-                    <span>Counter</span>
-                    <div class="icon-button">
-                        <input type="image" id="bulkUp" class="icon" src="bulkupicon.webp"/>
-                    </div>
-                    <span>Bulk Up</span>
-                    <div class="icon-button">
-                        <input type="image" id="armorUp" class="icon" src="armorupicon.webp"/>
-                    </div>
-                    <span>Armor Up</span>
-                    <div class="icon-button">
-                        <input type="image" id="clearEnhancements" class="icon" src="clearenhancementsicon.webp"/>
-                    </div>
-                    <span>Clear Enhancements</span>
-                </div> -->
 
             <div id="computermove1"></div>
             <div id="computermove2"></div>
             <div id="computermove3"></div>
             <div id="computermove4"></div>
             <div id="computermove5"></div>
+        </div>
+        <div class="endScreen">
             <!--Final result of game -->
             <div class="result"></div>
-            
+    
             <!--Reload the game -->
             <button class="reload"></button>
-
             <!--Gacha-->
-            <div id="gacha">
+            <div class="gacha" id="gacha">
                 <img src="treasurechest.webp" alt="Treasure Box!" height="300" width="300">
-                <button id="gachaRoll">Claim Your Prize!</button>
+                <input type="button" id="gachaRoll" class="standardButton" value="Claim Your Prize!"/>
                 <p id="gachaResult">You got: </p>
-            </div style="display:none;">
-        
+            </div>
         </div>
 	</section>
 	<script src="crossslash.js"></script>

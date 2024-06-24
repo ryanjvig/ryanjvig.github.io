@@ -9,6 +9,11 @@
     font-family: 'Courier New', monospace;
 }
 
+td {
+    text-align: center;
+    align-items: center;
+}
+
 .icon-button {
     display: flex;
     align-items: center;
@@ -26,11 +31,28 @@
     margin-right: 10px;
 }
 
-.icon {
-    width: 6vw;
-    height: 6vw;
-    margin-right: 10px;
+.icon-button .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the image */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
+
+.icon-button:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
 
 .titlelogo {
     width: 15vw;
@@ -54,12 +76,38 @@ body{
 	align-items: center;
 }
 
+.gameInterface{
+    background: #3b3c36;
+    text-align: center;
+}
+
 /* Title of the game */
 .title{
 	position: absolute;
 	top: 0;
 	font-size: 4rem;
 	z-index: 2;
+}
+
+.endScreen{
+    background: #3b3c36;
+}
+
+.collection{
+    background: #3b3c36;
+    display: none;
+}
+
+/* Gacha */
+.gacha{
+    background: #3b3c36;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.standardButton{
+    background: #000;
 }
 
 /* Score Board */
@@ -85,18 +133,6 @@ body{
 	width: 50vw;
 	justify-content: space-evenly;
 	margin-top: 2rem;
-}
-
-/* Styling on all three buttons */
-.rock, .paper, .scissor{
-	padding: 0.8rem;
-	width: 100px;
-	border-radius: 10px;
-	background: green;
-	outline: none;
-	border-color: green;
-	border: none;
-	cursor: pointer;
 }
 
 .move{

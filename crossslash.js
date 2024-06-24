@@ -1,5 +1,5 @@
 // crossslash.js
-let schmeckles = 0;
+
 // Complete logic of game inside this function
 const game = () => {
     let playerHealth = 10;
@@ -26,30 +26,96 @@ const game = () => {
     let computerStrength = 0;
     let computerStrengthTemp = 0;
     let computerStrengthPerm = 0;
+    document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
+    document.getElementById('displayCollection').addEventListener('click', function () {
+        if(document.getElementById('collection').style.display == 'block') {
+            document.getElementById('collection').style.display = 'none';
+        }
+        else {
+            if(Number(localStorage.getItem('bronzeDucks')) == 0) {
+                document.getElementById('displayBronzeDuck').style.display = 'none';
+                document.getElementById('noBronzeDuck').style.visibility = 'visible';
+            }
+            else {
+                document.getElementById('displayBronzeDuck').style.display = 'block';
+                document.getElementById('noBronzeDuck').style.visibility = 'hidden';
+                document.getElementById('numBronzeDucks').innerText = `Quantity: ${localStorage.getItem('bronzeDucks')}`;
+            }
 
+            if(Number(localStorage.getItem('silverDucks')) == 0) {
+                document.getElementById('displaySilverDuck').style.display = 'none';
+                document.getElementById('noSilverDuck').style.visibility = 'visible';
+            }
+            else {
+                document.getElementById('displaySilverDuck').style.display = 'block';
+                document.getElementById('noSilverDuck').style.visibility = 'hidden';
+                document.getElementById('numSilverDucks').innerText = `Quantity: ${localStorage.getItem('silverDucks')}`;
+            }
 
+            if(Number(localStorage.getItem('goldDucks')) == 0) {
+                document.getElementById('displayGoldDuck').style.display = 'none';
+                document.getElementById('noGoldDuck').style.visibility = 'visible';
+            }
+            else {
+                document.getElementById('displayGoldDuck').style.display = 'block';
+                document.getElementById('noGoldDuck').style.visibility = 'hidden';
+                document.getElementById('numGoldDucks').innerText = `Quantity: ${localStorage.getItem('goldDucks')}`;
+            }
+
+            if(Number(localStorage.getItem('diamondDucks')) == 0) {
+                document.getElementById('displayDiamondDuck').style.display = 'none';
+                document.getElementById('noDiamondDuck').style.visibility = 'visible';
+            }
+            else {
+                document.getElementById('displayDiamondDuck').style.display = 'block';
+                document.getElementById('noDiamondDuck').style.visibility = 'hidden';
+                document.getElementById('numDiamondDucks').innerText = `Quantity: ${localStorage.getItem('diamondDucks')}`;
+            }
+            
+            document.getElementById('collection').style.display = 'block';
+        }
+    })
 
 	// Function to 
 	const playGame = () => {
         document.getElementById('gachaRoll').addEventListener('click', function () {
-            roll = Math.floor(Math.random() * 100);
+            roll = Math.floor(Math.random() * 1000);
             let prize = '';
-            if (roll < 50) {
+            if (roll < 500) {
                 prize = 'Nothing :(';
             }
-            else if (roll < 75) {
+            else if (roll < 750) {
                 prize = '10 schmeckles!';
-                schmeckles += 10;
+                curSchmeckles = Number(localStorage.getItem('schmeckles'))
+                localStorage.setItem('schmeckles', String(curSchmeckles + 10))
             }
-            else if (roll < 90) {
+            else if (roll < 900) {
                 prize = '25 schmeckles!';
-                schmeckles += 25;
+                curSchmeckles = Number(localStorage.getItem('schmeckles'))
+                localStorage.setItem('schmeckles', String(curSchmeckles + 25))
+            }
+            else if (roll < 960) {
+                prize = 'A Mystical Bronze Lemon Duck!';
+                curBronzeDucks = Number(localStorage.getItem('bronzeDucks'))
+                localStorage.setItem('bronzeDucks', String(curBronzeDucks + 1))
+            }
+            else if (roll < 990) {
+                prize = 'A Mystical Silver Lemon Duck!!';
+                curSilverDucks = Number(localStorage.getItem('silverDucks'))
+                localStorage.setItem('silverDucks', String(curSilverDucks + 1))
+            }
+            else if (roll < 999){
+                prize = 'A Mystical Golden Lemon Duck!!!';
+                curGoldDucks = Number(localStorage.getItem('goldDucks'))
+                localStorage.setItem('goldDucks', String(curGoldDucks + 1))
             }
             else {
-                prize = 'The Mystical Golden Lemon Duck!!!!';
+                prize = 'A Mystical Galaxy Diamond Lemon Duck!!!!';
+                curDiamondDucks = Number(localStorage.getItem('diamondDucks'))
+                localStorage.setItem('diamondDucks', String(curDiamondDucks + 1))
             }
             document.getElementById('gachaResult').innerText = `You got: ${prize}`;
-            document.getElementById('schmeckles').innerText = `Schmeckles: ${schmeckles}`;
+            document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
             document.getElementById('gachaRoll').style.display = 'none';
         })
         document.getElementById('gacha').style.display = 'none';
@@ -501,6 +567,7 @@ const game = () => {
 			result.innerText = 'Tie';
 			result.style.color = 'grey'
 		}
+        document.getElementById('gameInterface').style.display = 'none';
 		reloadBtn.innerText = 'Restart';
 		reloadBtn.style.display = 'flex'
 		reloadBtn.addEventListener('click', () => {
