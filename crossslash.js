@@ -26,7 +26,11 @@ const game = () => {
     let computerStrength = 0;
     let computerStrengthTemp = 0;
     let computerStrengthPerm = 0;
+    let computerLog = [];
+    let playerLog = [];
+    let turnCount = 0;
     let song = new beepbox.Synth('9n43sbk0l00e0zt3ia7g0Hj0nr1i0o4333T8v1u1af10r9q012d02x670W7E0T1v1u52f0qwx10v311d08A1F2B4Q00b0Pf519E3b662876T1v0u92f30o21962pcq0x10w02d16A8F4B3Qd107P5a93E2b9639T5v3u54f0qwx10w411d03H__RyjsIisArsJJh0E1b6T3v0uf8f0q0x10p71d08S-IqiiiiiiiiiiiiE1biT3v0uf7f0qwx10m711d08SZIztrsrzrqiiiiiE1b6T2v3u15f10w4qw02d03w0E0b2w00008p2y6gNM9kJylbo8p2y6hHDM0000000001248gx248gw048xA28ogx248xw00000000000000000000002lboBiS26gExAqVY000000000000000000000000000048gx28o0000000000gx248gx248gx248gx248gx248g00000000000000000000004ggx448h0000000000000000000048gx248gw048gx248gx248g0000000000p2gYKqf825dll4tlkhRlh6VILGG8Td7VOtKX03Feq_06iWCJxPuhUGqJPhUaagzGGydPnWBkhVtkhRlh7jdAt6vm9JS3ndBY-GUEv-PdbukECye2LieRdqRw5w4B2eGG8WGGTdLYqyGN4FyhjlAkBbQBaGEzCgwGJw4w5NaGEzGGyeGGGGHtTN_G3O_B2yjPLll8pfOdPsv_T6mVE-9GRjrtSTtAtlkhSVJCqhVKqq_4kQAByp7DbSpullm9rrCSXIzGGyeLdJTifdTjnVV2EGGyeGG8WGEzWGG8YMteTtw1AHsSTdSVGGG8WGEzGGyfaGyf4xAHtS0Z9PnUOiDaGKHu52H2iTyocEBnCM2qjCnTt5GGxqGEnBlgzGGyeGG8V1haTtw54ITd5EGxsGq8UhhaLtw54w2Cz-4sg4th7lhhkhR4tdYDF4sehT4tl55h7khQOlKMhRAtx7lghQAs4hQQM604tN70AsMQkl4th7jv9w002VILKYerOf6jlKqf1hi4tlkhKq_kGyfbGyeGG8WpIzLDqNdKUrNfGKa7_IPiTBa9EzwHQzJjmJo1o19gzGGyeGGJPp59iyqNgFihjlAkBbQBaGEzCgwGJw4w5NaGEzGGyeGGGGHtTN_G3OZO9FmCEhKrzZwXzbsQv4Rr-SXJKX8WGEzJPrcQzOYQR-19F9bkOffnIOYGGIiSTdJTp7ll4turrKAurKCLMC8R5lkhRlh7ll4vllh7yh2DrKM0WiqfTbGZuWGGyeGG8WGEzSGEzN8paTtwfibYcAFNrMEloimYj1B4GYS0jisO-XEJlkbll2YGG4tlkhRlhUm0kQvMzy0zG8WGaayeEzFLAZ8zxOeUzGEEG8WyeCiJS2eIzI8WG2eAzwyeCC0M0zK8U4zC6yyEzG8WrVc000FHPGpi1q1sz85E5Ocwmwn8O1q1g000kQpMLEbW2ewLEbW2fg8W2ewzE8QOA2Q2Qkkkk2Q2Q2Q2w001jjB2tcV0-gjV0Z0Z0-gjV0-h9Ywuwuwv89Ywv89Ywuwuwvg7O2v87E7EE7O3zWqc04t16Ckyywmwmwn88W2f85E5E5E50000');
+    document.getElementById('enemyDisplay').src = 'goblin.webp';
 
     const resetVars = () => {
         playerHealth = 10;
@@ -53,6 +57,9 @@ const game = () => {
         computerStrength = 0;
         computerStrengthTemp = 0;
         computerStrengthPerm = 0;
+        computerLog = [];
+        playerLog = [];
+        turnCount = 0;
 
         const playerHealthDisplay = document.getElementById('playerhealth');
         playerHealthDisplay.innerText = `Player Health: ${playerHealth}`;
@@ -62,12 +69,18 @@ const game = () => {
         playerStrengthDisplay.innerText = `Player Strength: ${playerStrength}`;
 
         const computerHealthDisplay = document.getElementById('computerhealth');
-        computerHealthDisplay.innerText = `Computer Health: ${computerHealth}`;
+        computerHealthDisplay.innerText = `Enemy Health: ${computerHealth}`;
         const computerArmorDisplay = document.getElementById('computerarmor');
-        computerArmorDisplay.innerText = `Computer Armor: ${computerArmor}`;
+        computerArmorDisplay.innerText = `Enemy Armor: ${computerArmor}`;
         const computerStrengthDisplay = document.getElementById('computerstrength');
-        computerStrengthDisplay.innerText = `Computer Strength: ${computerStrength}`;
-        computerLog = [];
+        computerStrengthDisplay.innerText = `Enemy Strength: ${computerStrength}`;
+
+        document.getElementById('playermove1').innerText = '';
+        document.getElementById('playermove2').innerText = '';
+        document.getElementById('playermove3').innerText = '';
+        document.getElementById('playermove4').innerText = '';
+        document.getElementById('playermove5').innerText = '';
+
         document.getElementById('computermove1').innerText = '';
         document.getElementById('computermove2').innerText = '';
         document.getElementById('computermove3').innerText = '';
@@ -78,6 +91,13 @@ const game = () => {
     if(Number(localStorage.getItem('schmeckles')) !== 0) {
         document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
     }
+    document.getElementById('startGame').addEventListener('click', function () {
+        if (!song.isPlayingSong) {
+            song.play();
+        }
+        document.getElementById('startGame').style.display = 'none';
+        document.getElementById('game').style.display = 'block';
+    })
     document.getElementById('playMusic').addEventListener('click', function () {
         if (song.isPlayingSong) {
             song.pause();
@@ -87,7 +107,7 @@ const game = () => {
         }
     })
     document.getElementById('displayCollection').addEventListener('click', function () {
-        if(document.getElementById('collection').style.display == 'block') {
+        if(document.getElementById('collection').style.display == 'flex') {
             document.getElementById('collection').style.display = 'none';
         }
         else {
@@ -131,7 +151,9 @@ const game = () => {
                 document.getElementById('numDiamondDucks').innerText = `Quantity: ${localStorage.getItem('diamondDucks')}`;
             }
             
-            document.getElementById('collection').style.display = 'block';
+            document.getElementById('collection').style.display = 'flex';
+            document.getElementById('collection').style.justifyContent = 'center';
+            document.getElementById('collection').style.alignItems = 'center';
         }
     })
 
@@ -201,8 +223,6 @@ const game = () => {
             'Stab': 'stab', 'Counter': 'counter', 'Bulk Up': 'bulkUp', 'Armor Up': 'armorUp', 'Clear Enhancements': 'clearEnhancements'
         };
         const twoTurnOptions = ['heavyAttack', 'stab', 'counter', 'bulkUp', 'armorUp', 'clearEnhancements'];
-        let computerLog = [];
-        let turnCount = 0;
 		// Function to start playing game
 		playerOptions.forEach(option => {
 			option.addEventListener('click', function () {
@@ -217,7 +237,11 @@ const game = () => {
                 
                 while(playerStunTurns > 0 && playerHealth >= 0 && computerHealth >= 0) {
                     updateState('stunned', computerChoice);
+                    
                     if(playerHealth >= 0 && computerHealth >= 0) {
+        
+                        playerLog.push(`Turn ${turnCount}: You are stunned!`);
+
                         if(computerCharged) {
                             computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`)
                         }
@@ -240,14 +264,21 @@ const game = () => {
                     updateState(playerChoice, computerChoice);
 
                     if(playerCharged && playerHealth >= 0 && computerHealth >= 0) {
-                        if(computerCharged) {
-                            computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`)
-                        }
-                        else if(computerStunned) {
-                            computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`)
+                        if(playerCharged) {
+                            playerLog.push(`Turn ${turnCount}: You are preparing a strong attack...`);
                         }
                         else {
-                            computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`)
+                            playerLog.push(`Turn ${turnCount}: You used ${optionToText[playerChoice]}!`);
+                        }
+        
+                        if(computerCharged) {
+                            computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`);
+                        }
+                        else if(computerStunned) {
+                            computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`);
+                        }
+                        else {
+                            computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`);
                         }
                         turnCount++;
     
@@ -270,22 +301,52 @@ const game = () => {
 				playerStrengthDisplay.innerText = `Player Strength: ${playerStrength}`;
 
 				const computerHealthDisplay = document.getElementById('computerhealth');
-				computerHealthDisplay.innerText = `Computer Health: ${computerHealth}`;
+				computerHealthDisplay.innerText = `Enemy Health: ${computerHealth}`;
 				const computerArmorDisplay = document.getElementById('computerarmor');
-				computerArmorDisplay.innerText = `Computer Armor: ${computerArmor}`;
+				computerArmorDisplay.innerText = `Enemy Armor: ${computerArmor}`;
 				const computerStrengthDisplay = document.getElementById('computerstrength');
-				computerStrengthDisplay.innerText = `Computer Strength: ${computerStrength}`;
+				computerStrengthDisplay.innerText = `Enemy Strength: ${computerStrength}`;
 
-                if(computerCharged) {
-                    computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`)
-                }
-                else if(computerStunned) {
-                    computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`)
+                if(playerCharged) {
+                    playerLog.push(`Turn ${turnCount}: You are preparing a strong attack...`);
                 }
                 else {
-                    computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`)
+                    playerLog.push(`Turn ${turnCount}: You used ${optionToText[playerChoice]}!`);
                 }
+
+                if(computerCharged) {
+                    computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`);
+                }
+                else if(computerStunned) {
+                    computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`);
+                }
+                else {
+                    computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`);
+                }
+
                 turnCount++;
+
+                const playerMove1 = document.getElementById('playermove1');
+                const playerMove2 = document.getElementById('playermove2');
+                const playerMove3 = document.getElementById('playermove3');
+                const playerMove4 = document.getElementById('playermove4');
+                const playerMove5 = document.getElementById('playermove5');
+
+                if(playerLog.length > 0) {
+                    playerMove1.innerText = playerLog[playerLog.length - 1]
+                }
+                if(playerLog.length > 1) {
+                    playerMove2.innerText = playerLog[playerLog.length - 2]
+                }
+                if(playerLog.length > 2) {
+                    playerMove3.innerText = playerLog[playerLog.length - 3]
+                }
+                if(playerLog.length > 3) {
+                    playerMove4.innerText = playerLog[playerLog.length - 4]
+                }
+                if(playerLog.length > 4) {
+                    playerMove5.innerText = playerLog[playerLog.length - 5]
+                }
 
                 const computerMove1 = document.getElementById('computermove1');
                 const computerMove2 = document.getElementById('computermove2');
@@ -645,7 +706,6 @@ const game = () => {
             document.getElementById('gameInterface').style.display = 'block';
 		})
 	}
-
 
 	// Calling playGame function inside game
 	playGame();

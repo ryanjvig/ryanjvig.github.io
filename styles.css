@@ -9,9 +9,18 @@
     font-family: 'Courier New', monospace;
 }
 
+table {
+	table-layout: fixed;
+}
+
 td {
     text-align: center;
     align-items: center;
+}
+
+.enemy {
+	width: 10vmax;
+	height: 10vmax;
 }
 
 .icon-button {
@@ -21,13 +30,13 @@ td {
     border: none;
     color: white;
     border-radius: 5px;
-    width: 8vw;
-    height: 8vw;
+    width: 8vmax;
+    height: 8vmax;
 }
 
 .icon-button .icon {
-    width: 6vw;
-    height: 6vw;
+    width: 6vmax;
+    height: 6vmax;
     margin-right: 10px;
 }
 
@@ -55,8 +64,8 @@ td {
 
 
 .titlelogo {
-    width: 15vw;
-    height: 15vw;
+    width: 15vmax;
+    height: 15vmax;
     margin-top: 20vh;
 }
 
@@ -95,7 +104,9 @@ body{
 
 .collection{
     background: #3b3c36;
-    display: none;
+    display: none;	
+	margin-left: auto;
+	margin-right: auto;
 }
 
 /* Gacha */
@@ -106,8 +117,26 @@ body{
     justify-content: center;
 }
 
+.fullGame{
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+.gameOption{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .standardButton{
     background: #000;
+}
+.bigButton{
+    background: #000;
+	width: 20vw;
+	height: 20vh;
+	font-size: 4rem;
 }
 
 /* Score Board */
@@ -133,6 +162,8 @@ body{
 	width: 50vw;
 	justify-content: space-evenly;
 	margin-top: 2rem;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .move{
