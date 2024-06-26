@@ -26,10 +26,66 @@ const game = () => {
     let computerStrength = 0;
     let computerStrengthTemp = 0;
     let computerStrengthPerm = 0;
-    let song = new beepbox.Synth('9n43sbk0l00e0zt3ia7g0Hj0nr1i0o4333T8v1u1af10r9q012d02x670W7E0T1v1u52f0qwx10v311d08A1F2B4Q00b0Pf519E3b662876T1v0u92f30o21962pcq0x10w02d16A8F4B3Qd107P5a93E2b9639T5v3u54f0qwx10w411d03H__RyjsIisArsJJh0E1b6T3v0uf8f0q0x10p71d08S-IqiiiiiiiiiiiiE1biT3v0uf7f0qwx10m711d08SZIztrsrzrqiiiiiE1b6T2v3u15f10w4qw02d03w0E0b2w00008p2y6gNM9kJylbo8p2y6hHDM0000000001248gx248gw048xA28ogx248xw00000000000000000000002lboBiS26gExAqVY000000000000000000000000000048gx28o0000000000gx248gx248gx248gx248gx248g00000000000000000000004ggx448h0000000000000000000048gx248gw048gx248gx248g0000000000p2gYKqf825dll4tlkhRlh6VILGG8Td7VOtKX03Feq_06iWCJxPuhUGqJPhUaagzGGydPnWBkhVtkhRlh7jdAt6vm9JS3ndBY-GUEv-PdbukECye2LieRdqRw5w4B2eGG8WGGTdLYqyGN4FyhjlAkBbQBaGEzCgwGJw4w5NaGEzGGyeGGGGHtTN_G3O_B2yjPLll8pfOdPsv_T6mVE-9GRjrtSTtAtlkhSVJCqhVKqq_4kQAByp7DbSpullm9rrCSXIzGGyeLdJTifdTjnVV2EGGyeGG8WGEzWGG8YMteTtw1AHsSTdSVGGG8WGEzGGyfaGyf4xAHtS0Z9PnUOiDaGKHu52H2iTyocEBnCM2qjCnTt5GGxqGEnBlgzGGyeGG8V1haTtw54ITd5EGxsGq8UhhaLtw54w2Cz-4sg4th7lhhkhR4tdYDF4sehT4tl55h7khQOlKMhRAtx7lghQAs4hQQM604tN70AsMQkl4th7jv9w002VILKYerOf6jlKqf1hi4tlkhKq_kGyfbGyeGG8WpIzLDqNdKUrNfGKa7_IPiTBa9EzwHQzJjmJo1o19gzGGyeGGJPp59iyqNgFihjlAkBbQBaGEzCgwGJw4w5NaGEzGGyeGGGGHtTN_G3OZO9FmCEhKrzZwXzbsQv4Rr-SXJKX8WGEzJPrcQzOYQR-19F9bkOffnIOYGGIiSTdJTp7ll4turrKAurKCLMC8R5lkhRlh7ll4vllh7yh2DrKM0WiqfTbGZuWGGyeGG8WGEzSGEzN8paTtwfibYcAFNrMEloimYj1B4GYS0jisO-XEJlkbll2YGG4tlkhRlhUm0kQvMzy0zG8WGaayeEzFLAZ8zxOeUzGEEG8WyeCiJS2eIzI8WG2eAzwyeCC0M0zK8U4zC6yyEzG8WrVc000FHPGpi1q1sz85E5Ocwmwn8O1q1g000kQpMLEbW2ewLEbW2fg8W2ewzE8QOA2Q2Qkkkk2Q2Q2Q2w001jjB2tcV0-gjV0Z0Z0-gjV0-h9Ywuwuwv89Ywv89Ywuwuwvg7O2v87E7EE7O3zWqc04t16Ckyywmwmwn88W2f85E5E5E50000')
+    let song = new beepbox.Synth('9n43sbk0l00e0zt3ia7g0Hj0nr1i0o4333T8v1u1af10r9q012d02x670W7E0T1v1u52f0qwx10v311d08A1F2B4Q00b0Pf519E3b662876T1v0u92f30o21962pcq0x10w02d16A8F4B3Qd107P5a93E2b9639T5v3u54f0qwx10w411d03H__RyjsIisArsJJh0E1b6T3v0uf8f0q0x10p71d08S-IqiiiiiiiiiiiiE1biT3v0uf7f0qwx10m711d08SZIztrsrzrqiiiiiE1b6T2v3u15f10w4qw02d03w0E0b2w00008p2y6gNM9kJylbo8p2y6hHDM0000000001248gx248gw048xA28ogx248xw00000000000000000000002lboBiS26gExAqVY000000000000000000000000000048gx28o0000000000gx248gx248gx248gx248gx248g00000000000000000000004ggx448h0000000000000000000048gx248gw048gx248gx248g0000000000p2gYKqf825dll4tlkhRlh6VILGG8Td7VOtKX03Feq_06iWCJxPuhUGqJPhUaagzGGydPnWBkhVtkhRlh7jdAt6vm9JS3ndBY-GUEv-PdbukECye2LieRdqRw5w4B2eGG8WGGTdLYqyGN4FyhjlAkBbQBaGEzCgwGJw4w5NaGEzGGyeGGGGHtTN_G3O_B2yjPLll8pfOdPsv_T6mVE-9GRjrtSTtAtlkhSVJCqhVKqq_4kQAByp7DbSpullm9rrCSXIzGGyeLdJTifdTjnVV2EGGyeGG8WGEzWGG8YMteTtw1AHsSTdSVGGG8WGEzGGyfaGyf4xAHtS0Z9PnUOiDaGKHu52H2iTyocEBnCM2qjCnTt5GGxqGEnBlgzGGyeGG8V1haTtw54ITd5EGxsGq8UhhaLtw54w2Cz-4sg4th7lhhkhR4tdYDF4sehT4tl55h7khQOlKMhRAtx7lghQAs4hQQM604tN70AsMQkl4th7jv9w002VILKYerOf6jlKqf1hi4tlkhKq_kGyfbGyeGG8WpIzLDqNdKUrNfGKa7_IPiTBa9EzwHQzJjmJo1o19gzGGyeGGJPp59iyqNgFihjlAkBbQBaGEzCgwGJw4w5NaGEzGGyeGGGGHtTN_G3OZO9FmCEhKrzZwXzbsQv4Rr-SXJKX8WGEzJPrcQzOYQR-19F9bkOffnIOYGGIiSTdJTp7ll4turrKAurKCLMC8R5lkhRlh7ll4vllh7yh2DrKM0WiqfTbGZuWGGyeGG8WGEzSGEzN8paTtwfibYcAFNrMEloimYj1B4GYS0jisO-XEJlkbll2YGG4tlkhRlhUm0kQvMzy0zG8WGaayeEzFLAZ8zxOeUzGEEG8WyeCiJS2eIzI8WG2eAzwyeCC0M0zK8U4zC6yyEzG8WrVc000FHPGpi1q1sz85E5Ocwmwn8O1q1g000kQpMLEbW2ewLEbW2fg8W2ewzE8QOA2Q2Qkkkk2Q2Q2Q2w001jjB2tcV0-gjV0Z0Z0-gjV0-h9Ywuwuwv89Ywv89Ywuwuwvg7O2v87E7EE7O3zWqc04t16Ckyywmwmwn88W2f85E5E5E50000');
+
+    const resetVars = () => {
+        playerHealth = 10;
+        computerHealth = 10;
+        playerCharged = false;
+        playerStunTurns = 0;
+        computerCharged = false;
+        computerStunned = false;
+        computerStunTurns = 0;
+        computerChoiceNumber = 0;
+        playerArmor = 0;
+        playerArmor1 = 0;
+        playerArmor2 = 0;
+        playerArmor3 = 0;
+        playerArmorPerm = 0;
+        computerArmor = 0;
+        computerArmor1 = 0;
+        computerArmor2 = 0;
+        computerArmor3 = 0;
+        computerArmorPerm = 0;
+        playerStrength = 0;
+        playerStrengthTemp = 0;
+        playerStrengthPerm = 0;
+        computerStrength = 0;
+        computerStrengthTemp = 0;
+        computerStrengthPerm = 0;
+
+        const playerHealthDisplay = document.getElementById('playerhealth');
+        playerHealthDisplay.innerText = `Player Health: ${playerHealth}`;
+        const playerArmorDisplay = document.getElementById('playerarmor');
+        playerArmorDisplay.innerText = `Player Armor: ${playerArmor}`;
+        const playerStrengthDisplay = document.getElementById('playerstrength');
+        playerStrengthDisplay.innerText = `Player Strength: ${playerStrength}`;
+
+        const computerHealthDisplay = document.getElementById('computerhealth');
+        computerHealthDisplay.innerText = `Computer Health: ${computerHealth}`;
+        const computerArmorDisplay = document.getElementById('computerarmor');
+        computerArmorDisplay.innerText = `Computer Armor: ${computerArmor}`;
+        const computerStrengthDisplay = document.getElementById('computerstrength');
+        computerStrengthDisplay.innerText = `Computer Strength: ${computerStrength}`;
+        computerLog = [];
+        document.getElementById('computermove1').innerText = '';
+        document.getElementById('computermove2').innerText = '';
+        document.getElementById('computermove3').innerText = '';
+        document.getElementById('computermove4').innerText = '';
+        document.getElementById('computermove5').innerText = '';
+        
+    }
     if(Number(localStorage.getItem('schmeckles')) !== 0) {
         document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
     }
+    document.getElementById('playMusic').addEventListener('click', function () {
+        if (song.isPlayingSong) {
+            song.pause();
+        }
+        else {
+            song.play();
+        }
+    })
     document.getElementById('displayCollection').addEventListener('click', function () {
         if(document.getElementById('collection').style.display == 'block') {
             document.getElementById('collection').style.display = 'none';
@@ -76,15 +132,6 @@ const game = () => {
             }
             
             document.getElementById('collection').style.display = 'block';
-        }
-    })
-
-    document.getElementById('playMusic').addEventListener('click', function () {
-        if (song.isPlayingSong) {
-            song.pause();
-        }
-        else {
-            song.play();
         }
     })
 
@@ -240,11 +287,11 @@ const game = () => {
                 }
                 turnCount++;
 
-                const computerMove1 = document.getElementById('computermove1')
-                const computerMove2 = document.getElementById('computermove2')
-                const computerMove3 = document.getElementById('computermove3')
-                const computerMove4 = document.getElementById('computermove4')
-                const computerMove5 = document.getElementById('computermove5')
+                const computerMove1 = document.getElementById('computermove1');
+                const computerMove2 = document.getElementById('computermove2');
+                const computerMove3 = document.getElementById('computermove3');
+                const computerMove4 = document.getElementById('computermove4');
+                const computerMove5 = document.getElementById('computermove5');
 
                 if(computerLog.length > 0) {
                     computerMove1.innerText = computerLog[computerLog.length - 1]
@@ -561,8 +608,7 @@ const game = () => {
 			option.style.display = 'none';
 		})
 
-
-		chooseMove.innerText = 'Game Over!!'
+        chooseMove.innerText = 'Game Over';
 
 		if (playerHealth > computerHealth) {
 			result.style.fontSize = '2rem';
@@ -583,9 +629,20 @@ const game = () => {
 		}
         document.getElementById('gameInterface').style.display = 'none';
 		reloadBtn.innerText = 'Restart';
-		reloadBtn.style.display = 'flex'
+		reloadBtn.style.display = 'flex';
 		reloadBtn.addEventListener('click', () => {
-			window.location.reload();
+			// window.location.reload();
+            // reset without reloading
+            resetVars();
+            playerOptions.forEach(option => {
+                option.style.display = 'block';
+            })
+            chooseMove.innerText = 'Choose your move';
+            reloadBtn.style.display = 'none';
+            document.getElementById('gacha').style.display = 'none';
+            document.getElementById('gachaRoll').style.display = 'none';
+            result.innerText = '';
+            document.getElementById('gameInterface').style.display = 'block';
 		})
 	}
 
