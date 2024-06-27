@@ -66,7 +66,7 @@ td {
 .titlelogo {
     width: 15vmax;
     height: 15vmax;
-    margin-top: 20vh;
+    margin-top: 30vh;
 }
 
 body{
@@ -100,6 +100,7 @@ body{
 
 .endScreen{
     background: #3b3c36;
+	display: none;
 }
 
 .collection{
@@ -134,8 +135,6 @@ body{
 }
 .bigButton{
     background: #000;
-	width: 20vw;
-	height: 20vh;
 	font-size: 4rem;
 }
 

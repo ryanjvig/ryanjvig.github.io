@@ -103,7 +103,16 @@
                             <div id="playerhealth">Player Health: 10 </div>
                             <div id="playerarmor">Player Armor: 0 </div>
                             <div id="playerstrength">Player Strength: 0 </div>
+                            <div>
+                                <h2 id="levelName"></h2>
+                            </div>
+                            <div>
+                                <h3 id="enemyNum"></h3>
+                            </div>
                             <img id="enemyDisplay" class="enemy">
+                            <div>
+                                <h3 id="enemyName"></h3>
+                            </div>
                             <div id="computerhealth">Enemy Health: 10 </div>
                             <div id="computerarmor">Enemy Armor: 0 </div>
                             <div id="computerstrength">Enemy Strength: 0 </div>
@@ -208,13 +217,16 @@
                     </tr>
                 </table>
             </div>
-            <div class="endScreen">
+            <div class="endScreen" id="endScreen">
                 <!--Final result of game -->
                 <div class="result"></div>
         
                 <!--Reload the game -->
                 <div class="gameOption">
-                    <button class="reload"></button>
+                    <button id="restartButton" class="standardButton">Restart</button>
+                </div>
+                <div class="gameOption">
+                    <button id="nextRoundButton" class="standardButton">Next Round</button>
                 </div>
                 <!--Gacha-->
                 <div class="gacha" id="gacha">
@@ -230,6 +242,11 @@
         </div>
 	</section>
     <script src="beepbox_synth.js"></script>
+    <script src="enemy.js"></script>
+    <script src="level.js"></script>
+    <script src="campaign.js"></script>
+    <script src="starthelpers.js"></script>
+    <script src="changeround.js"></script>
 	<script src="crossslash.js"></script>
 </body>
 </html>
