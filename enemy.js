@@ -49,6 +49,6 @@ class Goblin extends Enemy {
 
 class GoblinKing extends Enemy {
     constructor() {
-        super('Goblin King', 'goblin.webp', 10, 1, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
+        super('Goblin King', 'goblinking.webp', 10, 1, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
     }
 }

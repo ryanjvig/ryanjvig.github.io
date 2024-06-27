@@ -1,6 +1,31 @@
 // helpers for restarting campaign and moving to next round
-const restartCampaign = () => {
-    playerHealth = 10;
+// end of round
+const gameOver = (playerOptions, playerHealth) => {
+    document.getElementById('endScreen').style.display = 'block';
+
+    playerOptions.forEach(option => {
+        option.style.display = 'none';
+    })
+
+    document.getElementById('move').innerText = 'Round Over';
+    document.getElementById('resultText').style.fontSize = '2rem';
+
+    if(playerHealth > 0) {
+        document.getElementById('resultText').innerText = 'You Win'
+        document.getElementById('resultText').style.color = '#308D46';
+        document.getElementById('gacha').style.display = 'block';
+        document.getElementById('gachaRoll').style.display = 'block';
+    }
+    else {
+        document.getElementById('resultText').innerText = 'You Lose';
+        document.getElementById('resultText').style.color = 'red';
+        document.getElementById('restartButton').style.display = 'flex';
+    }
+    document.getElementById('gameInterface').style.display = 'none';
+}
+
+// constant battle reset behavior
+const basicBattleReset = () => {
     playerCharged = false;
     playerStunTurns = 0;
     playerArmor = 0;
@@ -25,26 +50,10 @@ const restartCampaign = () => {
     playerLog = [];
     turnCount = 0;
 
-    campaign = new NormalMode();
-    curLevel = 0;
-    curEnemy = 0;
-    computerHealth = campaign.levelList[0].enemyList[0].health;
-    computerStrengthPerm = campaign.levelList[0].enemyList[0].strength;
-    computerArmorPerm = campaign.levelList[0].enemyList[0].armor;
+    document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
+    document.getElementById('playerarmor').innerText = `Player Armor: ${playerArmor}`;
+    document.getElementById('playerstrength').innerText = `Player Strength: ${playerStrength}`;
 
-    const playerHealthDisplay = document.getElementById('playerhealth');
-    playerHealthDisplay.innerText = `Player Health: ${playerHealth}`;
-    const playerArmorDisplay = document.getElementById('playerarmor');
-    playerArmorDisplay.innerText = `Player Armor: ${playerArmor}`;
-    const playerStrengthDisplay = document.getElementById('playerstrength');
-    playerStrengthDisplay.innerText = `Player Strength: ${playerStrength}`;
-
-    const computerHealthDisplay = document.getElementById('computerhealth');
-    computerHealthDisplay.innerText = `Enemy Health: ${computerHealth}`;
-    const computerArmorDisplay = document.getElementById('computerarmor');
-    computerArmorDisplay.innerText = `Enemy Armor: ${computerArmor}`;
-    const computerStrengthDisplay = document.getElementById('computerstrength');
-    computerStrengthDisplay.innerText = `Enemy Strength: ${computerStrength}`;
 
     document.getElementById('playermove1').innerText = '';
     document.getElementById('playermove2').innerText = '';
@@ -57,4 +66,41 @@ const restartCampaign = () => {
     document.getElementById('computermove3').innerText = '';
     document.getElementById('computermove4').innerText = '';
     document.getElementById('computermove5').innerText = '';
+
+    computerHealth = campaign.levelList[curLevel].enemyList[curEnemy].health;
+    computerStrengthPerm = campaign.levelList[curLevel].enemyList[curEnemy].strength;
+    computerArmorPerm = campaign.levelList[curLevel].enemyList[curEnemy].armor;
+    document.getElementById('computerhealth').innerText = `Enemy Health: ${computerHealth}`;
+    document.getElementById('computerarmor').innerText = `Enemy Armor: ${computerArmorPerm}`;
+    document.getElementById('computerstrength').innerText = `Enemy Strength: ${computerStrengthPerm}`;
+
+    document.getElementById('enemyDisplay').src = campaign.levelList[curLevel].enemyList[curEnemy].sprite;
+    document.getElementById('enemyName').innerText = campaign.levelList[curLevel].enemyList[curEnemy].name;
+    document.getElementById('levelName').innerText = `Level ${curLevel + 1}: ${campaign.levelList[curLevel].name}`;
+    document.getElementById('enemyNum').innerText = `Enemy ${curEnemy + 1}`;
+}
+
+const restartCampaign = () => {
+    campaign = new NormalMode();
+    curLevel = 0;
+    curEnemy = 0;
+    basicBattleReset();
+    playerHealth = 10;
+}
+
+// dont modify player health, increment round/level
+const nextRound = () => {
+    if (campaign.levelList[curLevel].enemyList.length > curEnemy + 1) {
+        curEnemy++;
+    }
+    else if(campaign.levelList.length > curLevel + 1) {
+        curLevel++;
+        curEnemy = 0;
+    }
+    else {
+        // display campaign win screen
+        document.getElementById('endScreen').style.display = 'none';
+        document.getElementById('winScreen').style.display = 'block';
+    }
+    basicBattleReset();
 }

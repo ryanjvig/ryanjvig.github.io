@@ -10,10 +10,7 @@ const initializeGame = () => {
         }
         document.getElementById('startGame').style.display = 'none';
         document.getElementById('game').style.display = 'block';
-        document.getElementById('enemyDisplay').src = campaign.levelList[curLevel].enemyList[curEnemy].sprite;
-        document.getElementById('enemyName').innerText = campaign.levelList[curLevel].enemyList[curEnemy].name;
-        document.getElementById('levelName').innerText = `Level ${curLevel + 1}: ${campaign.levelList[curLevel].name}`;
-        document.getElementById('enemyNum').innerText = `Enemy ${curEnemy + 1}`;
+        basicBattleReset();
     })
     document.getElementById('playMusic').addEventListener('click', function () {
         if (song.isPlayingSong) {
@@ -114,5 +111,31 @@ const initializeGame = () => {
         if(Number(localStorage.getItem('schmeckles')) !== 0) {
             document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
         }
+    })
+    document.getElementById('restartButton').addEventListener('click', () => {
+        restartCampaign();
+        playerOptions.forEach(option => {
+            option.style.display = 'block';
+        })
+        document.getElementById('move').innerText = 'Choose your move';
+        document.getElementById('restartButton').style.display = 'none';
+        document.getElementById('gacha').style.display = 'none';
+        document.getElementById('gachaRoll').style.display = 'none';
+        document.getElementById('resultText').innerText = '';
+        document.getElementById('gameInterface').style.display = 'block';
+        document.getElementById('endScreen').style.display = 'none';
+    })
+    document.getElementById('nextRoundButton').addEventListener('click', () => {
+        nextRound();
+        playerOptions.forEach(option => {
+            option.style.display = 'block';
+        })
+        document.getElementById('move').innerText = 'Choose your move';
+        document.getElementById('restartButton').style.display = 'none';
+        document.getElementById('gacha').style.display = 'none';
+        document.getElementById('gachaRoll').style.display = 'none';
+        document.getElementById('resultText').style.display = 'none';
+        document.getElementById('gameInterface').style.display = 'block';
+        document.getElementById('endScreen').style.display = 'none';
     })
 }
