@@ -8,6 +8,6 @@ class Campaign {
 
 class NormalMode extends Campaign {
     constructor() {
-        super('Normal Mode', [new MerryMeadows, new FiestyForest]);
+        super('Normal Mode', [new MerryMeadows, new FiestyForest, new MagicalMountains, new WackyWoodlands, new FinalFrontier]);
     }
 }

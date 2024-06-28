@@ -120,7 +120,7 @@ const updateState = () => {
 
     switch(playerChoice) {
         case Move.heal:
-            if (playerHealth < 10) {
+            if (playerHealth < playerMaxHealth) {
                 playerHealth += 1;
             }
             break;
@@ -150,7 +150,7 @@ const updateState = () => {
 
     switch(computerChoice) {
         case Move.heal:
-            if (computerHealth < 10) {
+            if (computerHealth < computerMaxHealth) {
                 computerHealth += 1;
             }
             break;

@@ -73,6 +73,7 @@ const basicBattleReset = () => {
     document.getElementById('computermove5').innerText = '';
 
     computerHealth = campaign.levelList[curLevel].enemyList[curEnemy].health;
+    computerMaxHealth = campaign.levelList[curLevel].enemyList[curEnemy].health;
     computerStrengthPerm = campaign.levelList[curLevel].enemyList[curEnemy].strength;
     computerArmorPerm = campaign.levelList[curLevel].enemyList[curEnemy].armor;
     document.getElementById('computerhealth').innerText = `Enemy Health: ${computerHealth}`;
@@ -91,6 +92,7 @@ const restartCampaign = () => {
     curEnemy = 0;
     basicBattleReset();
     playerHealth = 10;
+    playerMaxHealth = 10;
     document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
 }
 

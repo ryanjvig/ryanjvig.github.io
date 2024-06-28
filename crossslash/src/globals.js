@@ -9,6 +9,7 @@ let playerChoice = Move.lightAttack;
 let computerChoice = Move.lightAttack;
 
 let playerHealth = 10;
+let playerMaxHealth = 10;
 let playerCharged = false;
 let playerStunTurns = 0;
 let playerArmor = 0;
@@ -35,5 +36,6 @@ let computerStrengthTemp = 0;
 let computerStrengthPerm = 0;
 
 let computerHealth = campaign.levelList[0].enemyList[0].health;
+let computerMaxHealth = campaign.levelList[0].enemyList[0].health;
 let computerStrengthConst = campaign.levelList[0].enemyList[0].strength;
 let computerArmorConst = campaign.levelList[0].enemyList[0].armor;
