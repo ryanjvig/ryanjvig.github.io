@@ -65,7 +65,7 @@ class Unicorn extends Enemy {
 // 15 HP, 1 Strength, 1 Armor, 30% Light Attack, 30% Heal, 15% Bulk Up, 15% Armor Up, 10% Clear Enhancements
 class RainbowPhoenix extends Enemy {
     constructor() {
-        super('Rainbow Phoenix', 'crossslash/img/enemy/rainboxphoenix.webp', 10, 1, 0, [0.3, 0, 0.3, 0, 0, 0, 0, 0.15, 0.15, 0.1]);
+        super('Rainbow Phoenix', 'crossslash/img/enemy/rainboxphoenix.webp', 15, 1, 1, [0.3, 0, 0.3, 0, 0, 0, 0, 0.15, 0.15, 0.1]);
     }
 }
 
