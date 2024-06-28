@@ -1,17 +1,3 @@
-// enum for move types
-// const Move = {
-//     lightAttack: 0,
-//     defend: 1,
-//     heal: 2,
-//     sharpen: 3,
-//     heavyAttack: 4,
-//     stab: 5,
-//     counter: 6,
-//     bulkUp: 7,
-//     armorUp: 8,
-//     clearEnhancements: 9
-// }
-
 // enemy class
 class Enemy {
     constructor(name, sprite, health, strength, armor, behavior) {
@@ -43,12 +29,12 @@ class Enemy {
 
 class Goblin extends Enemy {
     constructor() {
-        super('Goblin', 'goblin.webp', 5, 0, 0, [0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0]);
+        super('Goblin', 'crossslash/img/enemy/goblin.webp', 5, 0, 0, [0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0]);
     }
 }
 
 class GoblinKing extends Enemy {
     constructor() {
-        super('Goblin King', 'goblinking.webp', 10, 1, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
+        super('Goblin King', 'crossslash/img/enemy/goblinking.webp', 10, 1, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
     }
 }

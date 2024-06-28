@@ -4,7 +4,6 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	/* background: #fff; */
 	color: #fff;
     font-family: 'Courier New', monospace;
 }
@@ -70,7 +69,7 @@ td {
 }
 
 body{
-    background-image: url('backgroundlandscape.webp');
+    background-image: url('crossslash/img/background/backgroundlandscape.webp');
     background-size: cover;
     background-position: center;
 }
@@ -185,6 +184,7 @@ body{
 .result{
 	margin-top: 20px;
 	font-size: 1.2rem;
+	text-align: center;
 }
 
 /* Responsive Design */

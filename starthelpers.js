@@ -134,7 +134,7 @@ const initializeGame = () => {
         document.getElementById('restartButton').style.display = 'none';
         document.getElementById('gacha').style.display = 'none';
         document.getElementById('gachaRoll').style.display = 'none';
-        document.getElementById('resultText').style.display = 'none';
+        document.getElementById('resultText').innerText = '';
         document.getElementById('gameInterface').style.display = 'block';
         document.getElementById('endScreen').style.display = 'none';
     })

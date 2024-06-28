@@ -1,17 +1,73 @@
 // attack.js
-const playerOptions = [document.getElementById('lightAttack'), document.getElementById('defend'),
-    document.getElementById('heal'), document.getElementById('sharpen'),
-    document.getElementById('heavyAttack'), document.getElementById('stab'),
-    document.getElementById('counter'), document.getElementById('bulkUp'),
-    document.getElementById('armorUp'), document.getElementById('clearEnhancements')];
-const computerOptions = ['lightAttack', 'defend', 'heal', 'sharpen', 'heavyAttack', 'stab', 'counter', 'bulkUp', 'armorUp', 'clearEnhancements'];
-const optionToText = {'lightAttack': 'Light Attack', 'defend': 'Defend', 'heal': 'Heal', 'sharpen': 'Sharpen', 'heavyAttack': 'Heavy Attack',
-    'stab': 'Stab', 'counter': 'Counter', 'bulkUp': 'Bulk Up', 'armorUp': 'Armor Up', 'clearEnhancements': 'Clear Enhancements'
-};
-const textToOption = {'Light Attack': 'lightAttack', 'Defend': 'defend', 'Heal': 'heal', 'Sharpen': 'sharpen', 'Heavy Attack': 'heavyAttack',
-    'Stab': 'stab', 'Counter': 'counter', 'Bulk Up': 'bulkUp', 'Armor Up': 'armorUp', 'Clear Enhancements': 'clearEnhancements'
-};
-const twoTurnOptions = ['heavyAttack', 'stab', 'counter', 'bulkUp', 'armorUp', 'clearEnhancements'];
+const writeToLog = () => {
+    if(playerStunTurns > 0) {
+        playerLog.push(`Turn ${turnCount}: You are stunned!`);
+    }
+    else if(playerCharged) {
+        playerLog.push(`Turn ${turnCount}: You are preparing a strong attack...`);
+    }
+    else {
+        playerLog.push(`Turn ${turnCount}: You used ${optionToText[playerChoice]}!`);
+    }
+
+    if(computerStunned) {
+        computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`);
+    }
+    else if(computerCharged) {
+        computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`);
+    }
+    else {
+        computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`);
+    }
+
+    turnCount++;
+}
+
+const updateInterface = () => {
+    document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
+    document.getElementById('playerarmor').innerText = `Player Armor: ${playerArmor}`;
+    document.getElementById('playerstrength').innerText = `Player Strength: ${playerStrength}`;
+
+    const computerHealthDisplay = document.getElementById('computerhealth');
+    computerHealthDisplay.innerText = `Enemy Health: ${computerHealth}`;
+    const computerArmorDisplay = document.getElementById('computerarmor');
+    computerArmorDisplay.innerText = `Enemy Armor: ${computerArmor}`;
+    const computerStrengthDisplay = document.getElementById('computerstrength');
+    computerStrengthDisplay.innerText = `Enemy Strength: ${computerStrength}`;
+
+    if(playerLog.length > 0) {
+        document.getElementById('playermove1').innerText = playerLog[playerLog.length - 1]
+    }
+    if(playerLog.length > 1) {
+        document.getElementById('playermove2').innerText = playerLog[playerLog.length - 2]
+    }
+    if(playerLog.length > 2) {
+        document.getElementById('playermove3').innerText = playerLog[playerLog.length - 3]
+    }
+    if(playerLog.length > 3) {
+        document.getElementById('playermove4').innerText = playerLog[playerLog.length - 4]
+    }
+    if(playerLog.length > 4) {
+        document.getElementById('playermove5').innerText = playerLog[playerLog.length - 5]
+    }
+
+    if(computerLog.length > 0) {
+        document.getElementById('computermove1').innerText = computerLog[computerLog.length - 1]
+    }
+    if(computerLog.length > 1) {
+        document.getElementById('computermove2').innerText = computerLog[computerLog.length - 2]
+    }
+    if(computerLog.length > 2) {
+        document.getElementById('computermove3').innerText = computerLog[computerLog.length - 3]
+    }
+    if(computerLog.length > 3) {
+        document.getElementById('computermove4').innerText = computerLog[computerLog.length - 4]
+    }
+    if(computerLog.length > 4) {
+        document.getElementById('computermove5').innerText = computerLog[computerLog.length - 5]
+    }
+}
+
 // attack logic
 playerOptions.forEach(option => {
     option.addEventListener('click', function () {
@@ -20,143 +76,32 @@ playerOptions.forEach(option => {
         }
         let computerChoice = computerOptions[computerChoiceNumber];
 
-        let playerChoice = '';
         playerChoice = this.id;
         let twoTurn = twoTurnOptions.includes(playerChoice);
         
         while(playerStunTurns > 0 && playerHealth >= 0 && computerHealth >= 0) {
             updateState('stunned', computerChoice);
-            
-            if(playerHealth >= 0 && computerHealth >= 0) {
-
-                playerLog.push(`Turn ${turnCount}: You are stunned!`);
-
-                if(computerCharged) {
-                    computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`)
-                }
-                else if(computerStunned) {
-                    computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`)
-                }
-                else {
-                    computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`)
-                }
-                turnCount++;
-                if(!computerCharged) {
-                    computerChoiceNumber = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
-                    computerChoice = computerOptions[computerChoiceNumber];
-                }
+            writeToLog();
+            if(!computerCharged) {
+                computerChoiceNumber = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
+                computerChoice = computerOptions[computerChoiceNumber];
             }
             playerStunTurns -= 1;
         }
-        // function to update state
-        if(twoTurn) {
+
+        if(playerHealth >= 0 && computerHealth >= 0) {
             updateState(playerChoice, computerChoice);
-
-            if(playerHealth >= 0 && computerHealth >= 0) {
-                playerLog.push(`Turn ${turnCount}: You are preparing a strong attack...`);
-
-                if(computerCharged) {
-                    computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`);
-                }
-                else if(computerStunned) {
-                    computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`);
-                }
-                else {
-                    computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`);
-                }
-                turnCount++;
-                console.log(computerCharged);
-                if(!computerCharged) {
-                    computerChoiceNumber = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
-                    computerChoice = computerOptions[computerChoiceNumber];
-                }
+            writeToLog();
+            if(twoTurn && playerCharged && playerHealth >= 0 && computerHealth >= 0) {
                 updateState(playerChoice, computerChoice);
+                writeToLog();
             }
         }
-        else {
-            updateState(playerChoice, computerChoice);
-        }
-        
-        const playerHealthDisplay = document.getElementById('playerhealth');
-        playerHealthDisplay.innerText = `Player Health: ${playerHealth}`;
-        const playerArmorDisplay = document.getElementById('playerarmor');
-        playerArmorDisplay.innerText = `Player Armor: ${playerArmor}`;
-        const playerStrengthDisplay = document.getElementById('playerstrength');
-        playerStrengthDisplay.innerText = `Player Strength: ${playerStrength}`;
 
-        const computerHealthDisplay = document.getElementById('computerhealth');
-        computerHealthDisplay.innerText = `Enemy Health: ${computerHealth}`;
-        const computerArmorDisplay = document.getElementById('computerarmor');
-        computerArmorDisplay.innerText = `Enemy Armor: ${computerArmor}`;
-        const computerStrengthDisplay = document.getElementById('computerstrength');
-        computerStrengthDisplay.innerText = `Enemy Strength: ${computerStrength}`;
+        updateInterface();
 
-        if(playerCharged) {
-            playerLog.push(`Turn ${turnCount}: You are preparing a strong attack...`);
-        }
-        else {
-            playerLog.push(`Turn ${turnCount}: You used ${optionToText[playerChoice]}!`);
-        }
-
-        if(computerCharged) {
-            computerLog.push(`Turn ${turnCount}: Your opponent is preparing a strong attack...`);
-        }
-        else if(computerStunned) {
-            computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`);
-        }
-        else {
-            computerLog.push(`Turn ${turnCount}: Your opponent used ${optionToText[computerChoice]}!`);
-        }
-
-        turnCount++;
-
-        const playerMove1 = document.getElementById('playermove1');
-        const playerMove2 = document.getElementById('playermove2');
-        const playerMove3 = document.getElementById('playermove3');
-        const playerMove4 = document.getElementById('playermove4');
-        const playerMove5 = document.getElementById('playermove5');
-
-        if(playerLog.length > 0) {
-            playerMove1.innerText = playerLog[playerLog.length - 1]
-        }
-        if(playerLog.length > 1) {
-            playerMove2.innerText = playerLog[playerLog.length - 2]
-        }
-        if(playerLog.length > 2) {
-            playerMove3.innerText = playerLog[playerLog.length - 3]
-        }
-        if(playerLog.length > 3) {
-            playerMove4.innerText = playerLog[playerLog.length - 4]
-        }
-        if(playerLog.length > 4) {
-            playerMove5.innerText = playerLog[playerLog.length - 5]
-        }
-
-        const computerMove1 = document.getElementById('computermove1');
-        const computerMove2 = document.getElementById('computermove2');
-        const computerMove3 = document.getElementById('computermove3');
-        const computerMove4 = document.getElementById('computermove4');
-        const computerMove5 = document.getElementById('computermove5');
-
-        if(computerLog.length > 0) {
-            computerMove1.innerText = computerLog[computerLog.length - 1]
-        }
-        if(computerLog.length > 1) {
-            computerMove2.innerText = computerLog[computerLog.length - 2]
-        }
-        if(computerLog.length > 2) {
-            computerMove3.innerText = computerLog[computerLog.length - 3]
-        }
-        if(computerLog.length > 3) {
-            computerMove4.innerText = computerLog[computerLog.length - 4]
-        }
-        if(computerLog.length > 4) {
-            computerMove5.innerText = computerLog[computerLog.length - 5]
-        }
-
-        // calling gameOver function when player or computer hp has reached 0
         if (playerHealth <= 0 || computerHealth <= 0) {
-            gameOver(playerOptions, playerHealth);
+            gameOver(playerHealth);
         }
     })
 })

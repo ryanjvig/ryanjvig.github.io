@@ -1,6 +1,6 @@
 // helpers for restarting campaign and moving to next round
 // end of round
-const gameOver = (playerOptions, playerHealth) => {
+const gameOver = () => {
     document.getElementById('endScreen').style.display = 'block';
 
     playerOptions.forEach(option => {
@@ -13,13 +13,17 @@ const gameOver = (playerOptions, playerHealth) => {
     if(playerHealth > 0) {
         document.getElementById('resultText').innerText = 'You Win'
         document.getElementById('resultText').style.color = '#308D46';
+        document.getElementById('gachaResult').innerText = 'You got:';
         document.getElementById('gacha').style.display = 'block';
         document.getElementById('gachaRoll').style.display = 'block';
+        document.getElementById('restartButton').style.display = 'none';
+        document.getElementById('nextRoundButton').style.display = 'flex';
     }
     else {
         document.getElementById('resultText').innerText = 'You Lose';
         document.getElementById('resultText').style.color = 'red';
         document.getElementById('restartButton').style.display = 'flex';
+        document.getElementById('nextRoundButton').style.display = 'none';
     }
     document.getElementById('gameInterface').style.display = 'none';
 }
@@ -86,6 +90,7 @@ const restartCampaign = () => {
     curEnemy = 0;
     basicBattleReset();
     playerHealth = 10;
+    document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
 }
 
 // dont modify player health, increment round/level
