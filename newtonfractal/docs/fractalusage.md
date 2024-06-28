@@ -4,7 +4,7 @@ The [Newton fractal visualizer](fractal.html) uses Newton’s Method in the comp
 
 **Example**
 
-![alt link](newtonfractalexample.png)
+![alt link](newtonfractal/img/newtonfractalexample.png)
 
 Function: z^8-sin(z)+e^z-1, Center point: 0, Max iterations: 50, Width: 15
 
