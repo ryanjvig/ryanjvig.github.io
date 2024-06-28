@@ -1,4 +1,4 @@
-// campaign class
+// campaign.js
 class Campaign {
     constructor(name, levelList) {
         this.name = name;
@@ -8,6 +8,6 @@ class Campaign {
 
 class NormalMode extends Campaign {
     constructor() {
-        super('Normal Mode', [new MerryMeadows, new MerryMeadows]);
+        super('Normal Mode', [new MerryMeadows, new FiestyForest]);
     }
 }

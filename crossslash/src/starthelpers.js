@@ -1,3 +1,4 @@
+// starthelpers.js
 // helpers for startup functions
 const initializeGame = () => {
     if(Number(localStorage.getItem('schmeckles')) !== 0) {

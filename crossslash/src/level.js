@@ -1,4 +1,4 @@
-// level class
+// level.js
 class Level {
     constructor(name, enemyList) {
         this.name = name;
@@ -8,6 +8,13 @@ class Level {
 
 class MerryMeadows extends Level {
     constructor() {
-        super('Merry Meadows', [new Goblin(), new Goblin(), new GoblinKing()]);
+        super('Merry Meadows', [new Slime(), new Slime(), new SlimeQueen()]);
     }
 }
+
+class FiestyForest extends Level {
+    constructor() {
+        super('Fiesty Forest', [new Goblin(), new Goblin(), new GoblinKing()]);
+    }
+}
+

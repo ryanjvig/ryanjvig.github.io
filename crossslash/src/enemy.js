@@ -27,12 +27,28 @@ class Enemy {
     }
 }
 
+// 3 HP, 25% Light Attack, 75% Heal
+class Slime extends Enemy {
+    constructor() {
+        super('Slime', 'crossslash/img/enemy/goblin.webp', 3, 0, 0, [0.25, 0, 0.75, 0, 0, 0, 0, 0, 0, 0]);
+    }
+}
+
+// 8 HP, 1 Armor, 25% Light Attack, 25% Defend, 25% Heal, 25% Bulk Up
+class SlimeQueen extends Enemy {
+    constructor() {
+        super('Slime Queen', 'crossslash/img/enemy/goblin.webp', 8, 0, 0, [0.25, 0.25, 0.25, 0, 0, 0, 0, 0.25, 0, 0]);
+    }
+}
+
+// 5 HP, 50% Light Attack, 50% Defend
 class Goblin extends Enemy {
     constructor() {
         super('Goblin', 'crossslash/img/enemy/goblin.webp', 5, 0, 0, [0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0]);
     }
 }
 
+// 10 HP, 1 Strength, 50% Heavy Attack, 50% Counter
 class GoblinKing extends Enemy {
     constructor() {
         super('Goblin King', 'crossslash/img/enemy/goblinking.webp', 10, 1, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
