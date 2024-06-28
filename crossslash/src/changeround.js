@@ -102,10 +102,13 @@ const nextRound = () => {
         curLevel++;
         curEnemy = 0;
     }
+    // won campaign: just reset for now until further implemented
     else {
-        // display campaign win screen
-        document.getElementById('endScreen').style.display = 'none';
-        document.getElementById('winScreen').style.display = 'block';
+        // // display campaign win screen
+        // document.getElementById('endScreen').style.display = 'none';
+        // document.getElementById('winScreen').style.display = 'block';
+        curLevel = 0;
+        curEnemy = 0;
     }
     basicBattleReset();
 }
