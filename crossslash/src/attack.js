@@ -1,6 +1,6 @@
 // attack.js
 const writeToLog = () => {
-    if(playerStunTurns > 0) {
+    if(playerChoice == Move.stunned) {
         playerLog.push(`Turn ${turnCount}: You are stunned!`);
     }
     else if(playerCharged) {
@@ -10,7 +10,7 @@ const writeToLog = () => {
         playerLog.push(`Turn ${turnCount}: You used ${optionToText[playerChoice]}!`);
     }
 
-    if(computerStunned) {
+    if(computerChoice == Move.stunned) {
         computerLog.push(`Turn ${turnCount}: Your opponent is stunned!`);
     }
     else if(computerCharged) {
@@ -72,28 +72,29 @@ const updateInterface = () => {
 playerOptions.forEach(option => {
     option.addEventListener('click', function () {
         if(!computerCharged) {
-            computerChoiceNumber = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
+            computerChoice = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
         }
-        let computerChoice = computerOptions[computerChoiceNumber];
 
-        playerChoice = this.id;
+        playerChoice = idToOption[this.id];
         let twoTurn = twoTurnOptions.includes(playerChoice);
         
         while(playerStunTurns > 0 && playerHealth >= 0 && computerHealth >= 0) {
-            updateState('stunned', computerChoice);
+            let tempPlayerChoice = playerChoice;
+            playerChoice = Move.stunned;
+            updateState();
             writeToLog();
+            playerChoice = tempPlayerChoice;
             if(!computerCharged) {
-                computerChoiceNumber = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
-                computerChoice = computerOptions[computerChoiceNumber];
+                computerChoice = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
             }
             playerStunTurns -= 1;
         }
 
         if(playerHealth >= 0 && computerHealth >= 0) {
-            updateState(playerChoice, computerChoice);
+            updateState();
             writeToLog();
             if(twoTurn && playerCharged && playerHealth >= 0 && computerHealth >= 0) {
-                updateState(playerChoice, computerChoice);
+                updateState();
                 writeToLog();
             }
         }
@@ -107,76 +108,77 @@ playerOptions.forEach(option => {
 })
 
 // update state after user inputs action
-const updateState = (player, computer) => {
+const updateState = () => {
     if (playerHealth <= 0 || computerHealth <= 0) {
         return
     }
     if (computerStunTurns > 0) {
-        computer = 'stunned';
+        console.log('Setting computer to stunned...')
+        computerChoice = Move.stunned;
         computerStunTurns -= 1;
-        computerStunned = true;
-    }
-    else {
-        computerStunned = false;
     }
 
-    if(player == 'heal') {
-        if (playerHealth < 10) {
-            playerHealth += 1;
-        }
-    }
-    else if(player == 'defend') {
-        playerArmor1 += 2;
-    }
-    else if(player == 'sharpen') {
-        playerStrengthTemp += 1;
-    }
-    else if(player == 'bulkUp') {
-        if(playerCharged) {
-            playerStrengthPerm += 1;
-            playerCharged = false;
-        } else {
-            playerCharged = true;
-        }
-    }
-    else if(player == 'armorUp') {
-        if(playerCharged) {
-            playerArmorPerm += 1;
-            playerCharged = false;
-        } else {
-            playerCharged = true;
-        }
-    }
-
-    if(computer == 'heal') {
-        if (computerHealth < 10) {
-            computerHealth += 1;
-        }
-    }
-    else if(computer == 'defend') {
-        computerArmor1 += 2;
-    }
-    else if(computer == 'sharpen') {
-        computerStrengthTemp += 1;
-    }
-    else if(computer == 'bulkUp') {
-        if(computerCharged) {
-            computerStrengthPerm += 1;
-            computerCharged = false;
-        } else {
-            computerCharged = true;
-        }
-    }
-    else if(computer == 'armorUp') {
-        if(computerCharged) {
-            computerArmorPerm += 1;
-            computerCharged = false;
-        } else {
-            computerCharged = true;
-        }
+    switch(playerChoice) {
+        case Move.heal:
+            if (playerHealth < 10) {
+                playerHealth += 1;
+            }
+            break;
+        case Move.defend:
+            playerArmor1 += 2;
+            break;
+        case Move.sharpen:
+            playerStrengthTemp += 1;
+            break;
+        case Move.bulkUp:
+            if(playerCharged) {
+                playerStrengthPerm += 1;
+                playerCharged = false;
+            } else {
+                playerCharged = true;
+            }
+            break;
+        case Move.armorUp:
+            if(playerCharged) {
+                playerArmorPerm += 1;
+                playerCharged = false;
+            } else {
+                playerCharged = true;
+            }
+            break;
     }
 
-    if(player == 'clearEnhancements') {
+    switch(computerChoice) {
+        case Move.heal:
+            if (computerHealth < 10) {
+                computerHealth += 1;
+            }
+            break;
+        case Move.defend:
+            computerArmor1 += 2;
+            break;
+        case Move.sharpen:
+            computerStrengthTemp += 1;
+            break;
+        case Move.bulkUp:
+            if(computerCharged) {
+                computerStrengthPerm += 1;
+                computerCharged = false;
+            } else {
+                computerCharged = true;
+            }
+            break;
+        case Move.armorUp:
+            if(computerCharged) {
+                computerArmorPerm += 1;
+                computerCharged = false;
+            } else {
+                computerCharged = true;
+            }
+            break;
+    }
+
+    if(playerChoice == Move.clearEnhancements) {
         if(playerCharged) {
             computerArmor1 = 0;
             computerArmor2 = 0;
@@ -189,7 +191,7 @@ const updateState = (player, computer) => {
             playerCharged = true;
         }
     }
-    if(computer == 'clearEnhancements') {
+    if(computerChoice == Move.clearEnhancements) {
         if(computerCharged) {
             playerArmor1 = 0;
             playerArmor2 = 0;
@@ -202,9 +204,10 @@ const updateState = (player, computer) => {
             computerCharged = true;
         }
     }
+
     let playerCounter = false;
     let computerCounter = false;
-    if(player == 'counter') {
+    if(playerChoice == Move.counter) {
         if(playerCharged) {
             playerCounter = true;
             playerCharged = false;
@@ -213,7 +216,7 @@ const updateState = (player, computer) => {
             playerCharged = true;
         }
     }
-    if(computer == 'counter') {
+    if(computerChoice == Move.counter) {
         if(computerCharged) {
             computerCounter = true;
             computerCharged = false;
@@ -222,119 +225,130 @@ const updateState = (player, computer) => {
             computerCharged = true;
         }
     }
-    if(player == 'lightAttack') {
-        let damage = 1 + playerStrengthPerm + playerStrengthTemp;
-        playerStrengthTemp = 0;
-        applyDamage(damage, true);
-        if(computerCounter) {
-            applyDamage(damage * 2, false);
-        }
-    }
-    else if(player == 'heavyAttack') {
-        if(playerCharged) {
-            computerStartHealth = computerHealth;
-            playerCharged = false;
-            let damage = 2 + playerStrengthPerm + playerStrengthTemp;
+
+    switch(playerChoice) {
+        case Move.lightAttack:
+            let damage = 1 + playerStrengthTemp + playerStrengthPerm + playerStrengthConst;
             playerStrengthTemp = 0;
             applyDamage(damage, true);
-            // apply stun
-            if (computerHealth < computerStartHealth) {
-                computerStunTurns += 1;
-            }
             if(computerCounter) {
-                playerStartHealth = playerHealth;
                 applyDamage(damage * 2, false);
-                if (playerHealth < playerStartHealth) {
-                    playerStunTurns += 2;
+            }
+            break;
+        case Move.heavyAttack:
+            if(playerCharged) {
+                playerCharged = false;
+                let computerStartHealth = computerHealth;
+                let damage = 2 + playerStrengthTemp + playerStrengthPerm + playerStrengthConst;
+                playerStrengthTemp = 0;
+                applyDamage(damage, true);
+                // apply stun
+                if (computerHealth < computerStartHealth) {
+                    computerStunTurns += 1;
+                }
+                if(computerCounter) {
+                    let playerStartHealth = playerHealth;
+                    applyDamage(damage * 2, false);
+                    if (playerHealth < playerStartHealth) {
+                        playerStunTurns += 2;
+                    }
                 }
             }
-        }
-        else {
-            playerCharged = true;
-        }
-    }
-    else if(player == 'stab') {
-        if(playerCharged) {
-            playerCharged = false;
-            let damage = 2 + playerStrengthPerm + playerStrengthTemp;
-            playerStrengthTemp = 0;
-            computerHealth -= damage;
-            if(computerCounter) {
-                playerHealth -= damage * 2;
+            else {
+                playerCharged = true;
             }
-        }
-        else {
-            playerCharged = true;
-        }
+            break;
+        case Move.stab:
+            if(playerCharged) {
+                playerCharged = false;
+                let damage = 2 + playerStrengthTemp + playerStrengthPerm + playerStrengthConst;
+                playerStrengthTemp = 0;
+                computerHealth -= damage;
+                if(computerCounter) {
+                    playerHealth -= damage * 2;
+                }
+            }
+            else {
+                playerCharged = true;
+            }
+            break;
     }
-    if(computer == 'lightAttack') {
-        let damage = 1 + computerStrengthPerm + computerStrengthTemp;
-        computerStrengthTemp = 0;
-        applyDamage(damage, false);
-        if(playerCounter) {
-            applyDamage(damage * 2, true);
-        }
-    }
-    else if(computer == 'heavyAttack') {
-        if(computerCharged) {
-            let playerStartHealth = playerHealth;
-            computerCharged = false;
-            let damage = 2 + computerStrengthPerm + computerStrengthTemp;
+
+    switch(computerChoice) {
+        case Move.lightAttack:
+            let damage = 1 + computerStrengthTemp + computerStrengthPerm + computerStrengthConst;
             computerStrengthTemp = 0;
             applyDamage(damage, false);
-            if (playerHealth < playerStartHealth) {
-                playerStunTurns += 1;
-            }
             if(playerCounter) {
                 applyDamage(damage * 2, true);
-                computerStunTurns += 2;
             }
-        }
-        else {
-            computerCharged = true;
-        }
-    }
-    else if(computer == 'stab') {
-        if(computerCharged) {
-            computerCharged = false;
-            let damage = 2 + computerStrengthPerm + computerStrengthTemp;
-            computerStrengthTemp = 0;
-            playerHealth -= damage;
-            if(playerCounter) {
-                computerHealth -= damage * 2;
+            break;
+        case Move.heavyAttack:
+            if(computerCharged) {
+                computerCharged = false;
+                let playerStartHealth = playerHealth;
+                let damage = 2 + computerStrengthTemp + computerStrengthPerm + computerStrengthConst;
+                computerStrengthTemp = 0;
+                applyDamage(damage, false);
+                if (playerHealth < playerStartHealth) {
+                    playerStunTurns += 1;
+                }
+                if(playerCounter) {
+                    let computerStartHealth = computerHealth;
+                    applyDamage(damage * 2, true);
+                    if(computerHealth < computerStartHealth) {
+                        computerStunTurns += 2;
+                    }
+                }
             }
-        }
-        else {
-            computerCharged = true;
-        }
+            else {
+                computerCharged = true;
+            }
+            break;
+        case Move.stab:
+            if(computerCharged) {
+                computerCharged = false;
+                let damage = 2 + computerStrengthTemp + computerStrengthPerm + computerStrengthConst;
+                computerStrengthTemp = 0;
+                playerHealth -= damage;
+                if(playerCounter) {
+                    computerHealth -= damage * 2;
+                }
+            }
+            else {
+                computerCharged = true;
+            }
+            break;
     }
 
     if (playerStunTurns > 0 && playerCharged) {
         playerStunTurns--;
         playerCharged = false;
+        playerChoice = Move.stunned;
     }
     if (computerStunTurns > 0 && computerCharged) {
         computerStunTurns--;
         computerCharged = false;
+        computerChoice = Move.stunned;
     }
 
     playerArmor3 = playerArmor2;
     playerArmor2 = playerArmor1;
     playerArmor1 = 0;
-    playerArmor = playerArmor2 + playerArmor3 + playerArmorPerm;
-    playerStrength = playerStrengthPerm + playerStrengthTemp;
+    playerArmor = playerArmor2 + playerArmor3 + playerArmorPerm + playerArmorConst;
+    playerStrength = playerStrengthPerm + playerStrengthTemp + playerStrengthConst;
 
     computerArmor3 = computerArmor2;
     computerArmor2 = computerArmor1;
     computerArmor1 = 0;
-    computerArmor = computerArmor2 + computerArmor3 + computerArmorPerm;
-    computerStrength = computerStrengthPerm + computerStrengthTemp;
+    computerArmor = computerArmor2 + computerArmor3 + computerArmorPerm + computerArmorConst;
+    computerStrength = computerStrengthPerm + computerStrengthTemp + computerStrengthConst;
 }
 
 const applyDamage = (damage, playerAttacking) => {
     if(playerAttacking) {
-        if(damage > computerArmorPerm) {
-            damage -= computerArmorPerm;
+        if(damage > computerArmorPerm + computerArmorConst) {
+            damage -= computerArmorPerm + computerArmorConst;
             if(damage > computerArmor3) {
                 damage -= computerArmor3;
                 computerArmor3 = 0;
@@ -360,8 +374,8 @@ const applyDamage = (damage, playerAttacking) => {
         }
     }
     else {
-        if(damage > playerArmorPerm) {
-            damage -= playerArmorPerm;
+        if(damage > playerArmorPerm + playerArmorConst) {
+            damage -= playerArmorPerm + playerArmorConst;
             if(damage > playerArmor3) {
                 damage -= playerArmor3;
                 playerArmor3 = 0;
