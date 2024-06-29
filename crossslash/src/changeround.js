@@ -114,4 +114,6 @@ const nextRound = () => {
         curEnemy = 0;
     }
     basicBattleReset();
+    // temporary until player scales more in later versions
+    playerHealth = 10;
 }

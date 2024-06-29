@@ -58,7 +58,7 @@ class GoblinKing extends Enemy {
 // 8 HP, 1 Armor, 50% Stab, 40% Heal, 10% Clear Enhancements
 class Unicorn extends Enemy {
     constructor() {
-        super('Unicorn', 'crossslash/img/enemy/unicorn.webp', 10, 1, 0, [0, 0, 0.4, 0, 0, 0.5, 0, 0, 0, 0.1]);
+        super('Unicorn', 'crossslash/img/enemy/unicorn.webp', 10, 0, 1, [0, 0, 0.4, 0, 0, 0.5, 0, 0, 0, 0.1]);
     }
 }
 
