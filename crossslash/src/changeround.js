@@ -54,10 +54,13 @@ const basicBattleReset = () => {
     computerLog = [];
     playerLog = [];
     turnCount = 0;
+    // temporary until player scales more in later versions
+    playerHealth = playerMaxHealth;
 
     document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
     document.getElementById('playerarmor').innerText = `Player Armor: ${playerArmor}`;
     document.getElementById('playerstrength').innerText = `Player Strength: ${playerStrength}`;
+
 
 
     document.getElementById('playermove1').innerText = '';
@@ -114,7 +117,4 @@ const nextRound = () => {
         curEnemy = 0;
     }
     basicBattleReset();
-    // temporary until player scales more in later versions
-    playerHealth = 10;
-    document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
 }
