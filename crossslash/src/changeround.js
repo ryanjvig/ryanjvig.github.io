@@ -116,4 +116,5 @@ const nextRound = () => {
     basicBattleReset();
     // temporary until player scales more in later versions
     playerHealth = 10;
+    document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
 }
