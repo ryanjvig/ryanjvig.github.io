@@ -244,7 +244,7 @@ const updateState = () => {
                 applyDamage(damage, true);
                 // apply stun
                 if (computerHealth < computerStartHealth) {
-                    computerStunTurns += 1;
+                    computerStunTurns++;
                 }
                 if(computerCounter) {
                     let playerStartHealth = playerHealth;
@@ -291,7 +291,7 @@ const updateState = () => {
                 computerStrengthTemp = 0;
                 applyDamage(damage, false);
                 if (playerHealth < playerStartHealth) {
-                    playerStunTurns += 1;
+                    playerStunTurns++;
                 }
                 if(playerCounter) {
                     let computerStartHealth = computerHealth;

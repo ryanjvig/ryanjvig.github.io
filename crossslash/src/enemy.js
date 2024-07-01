@@ -55,10 +55,10 @@ class GoblinKing extends Enemy {
     }
 }
 
-// 8 HP, 1 Armor, 50% Stab, 40% Heal, 10% Clear Enhancements
+// 8 HP, 1 Strength, 50% Stab, 40% Heal, 10% Clear Enhancements
 class Unicorn extends Enemy {
     constructor() {
-        super('Unicorn', 'crossslash/img/enemy/unicorn.webp', 10, 0, 1, [0, 0, 0.4, 0, 0, 0.5, 0, 0, 0, 0.1]);
+        super('Unicorn', 'crossslash/img/enemy/unicorn.webp', 10, 1, 0, [0, 0, 0.4, 0, 0, 0.5, 0, 0, 0, 0.1]);
     }
 }
 
@@ -69,10 +69,10 @@ class RainbowPhoenix extends Enemy {
     }
 }
 
-// 12 HP, 2 Strength, 40% Counter, 40% Light Attack, 20% Clear Enhancements
+// 12 HP, 1 Strength, 40% Counter, 40% Light Attack, 20% Clear Enhancements
 class Imp extends Enemy {
     constructor() {
-        super('Imp', 'crossslash/img/enemy/imp.webp', 12, 2, 0, [0.4, 0, 0, 0, 0, 0, 0.4, 0, 0, 0.2]);
+        super('Imp', 'crossslash/img/enemy/imp.webp', 12, 1, 0, [0.4, 0, 0, 0, 0, 0, 0.4, 0, 0, 0.2]);
     }
 }
 

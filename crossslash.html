@@ -100,9 +100,9 @@
                         </td>
                         <td>
                             <p id="displaySchmeckles" style="background: #3b3c36">Schmeckles: 0</p>
-                            <div id="playerhealth">Player Health: 10 </div>
-                            <div id="playerarmor">Player Armor: 0 </div>
-                            <div id="playerstrength">Player Strength: 0 </div>
+                            <div id="playerhealth" title="If reduced to 0, you lose the game">Player Health: 10 </div>
+                            <div id="playerarmor" title="Reduces damage from enemy attacks by this value">Player Armor: 0 </div>
+                            <div id="playerstrength" title="Increases damage dealt by your attacks by this value">Player Strength: 0 </div>
                             <div>
                                 <h2 id="levelName"></h2>
                             </div>
@@ -113,9 +113,9 @@
                             <div>
                                 <h3 id="enemyName"></h3>
                             </div>
-                            <div id="computerhealth">Enemy Health: 10 </div>
-                            <div id="computerarmor">Enemy Armor: 0 </div>
-                            <div id="computerstrength">Enemy Strength: 0 </div>
+                            <div id="computerhealth" title="If reduced to 0 (and your health remains above 0), you win the battle">Enemy Health: 10 </div>
+                            <div id="computerarmor" title="Reduces damage from your attacks by this value">Enemy Armor: 0 </div>
+                            <div id="computerstrength" title="Increases damage dealt by enemy attacks by this value">Enemy Strength: 0 </div>
                             <h2 id="move">Choose your move</h2>
                         </td>
                         <td>
@@ -149,26 +149,25 @@
                     <tr>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="lightAttack"  class="icon" src="crossslash/img/option/lightattackicon.webp"/>
-                                <span class="tooltiptext">This is a custom tooltip</span>
+                                <input type="image" id="lightAttack"  class="icon" src="crossslash/img/option/lightattackicon.webp" title="(1 Turn) Deal [1 + Strength] damage."/>
                             </div>
                             <span>Light Attack</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="defend" class="icon" src="crossslash/img/option/defendicon.webp" title="Gain 2 armor (Armor lasts 3 turns)"/>
+                                <input type="image" id="defend" class="icon" src="crossslash/img/option/defendicon.webp" title="(1 Turn) Gain 2 Temporary Armor. Temporary Armor lasts 3 turns, and is reduced by the amount of damage dealt by enemy attacks."/>
                             </div>
                             <span>Defend</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="heavyAttack" class="icon" src="crossslash/img/option/heavyattackicon.webp"/>
+                                <input type="image" id="heavyAttack" class="icon" src="crossslash/img/option/heavyattackicon.webp" title="(2 Turn) Deal [2 + Strength] damage. If unblocked Damage is dealt, Stuns enemy for 1 turn."/>
                             </div>
                             <span>Heavy Attack</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="stab" class="icon" src="crossslash/img/option/stabicon.webp"/>
+                                <input type="image" id="stab" class="icon" src="crossslash/img/option/stabicon.webp" title="(2 Turn) Deal [2 + Strength] damage. Ignores Armor."/>
                             </div>
                             <span>Stab</span>
                         </td>
@@ -176,25 +175,25 @@
                     <tr>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="heal" class="icon" src="crossslash/img/option/healicon.webp"/>
+                                <input type="image" id="heal" class="icon" src="crossslash/img/option/healicon.webp" title="(1 Turn) Restore 1 Health."/>
                             </div>
                             <span>Heal</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="sharpen" class="icon" src="crossslash/img/option/sharpenicon.webp"/>
+                                <input type="image" id="sharpen" class="icon" src="crossslash/img/option/sharpenicon.webp" title="(1 Turn) Gain 1 Temporary Strength. Temporary Strength is only applied to your next attack."/>
                             </div>
                             <span>Sharpen</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="counter" class="icon" src="crossslash/img/option/countericon.webp"/>
+                                <input type="image" id="counter" class="icon" src="crossslash/img/option/countericon.webp" title="(2 Turn) If enemy attacks on the same turn this move is played, deal 2 times the damage and effects of the attack to the enemy."/>
                             </div>
                             <span>Counter</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="bulkUp" class="icon" src="crossslash/img/option/bulkupicon.webp"/>
+                                <input type="image" id="bulkUp" class="icon" src="crossslash/img/option/bulkupicon.webp" title="(2 Turn) Gain 1 Permanent Strength. Permanent Strength lasts until the end of the current battle."/>
                             </div>
                             <span>Bulk Up</span>
                         </td>
@@ -204,13 +203,13 @@
                         <td></td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="armorUp" class="icon" src="crossslash/img/option/armorupicon.webp"/>
+                                <input type="image" id="armorUp" class="icon" src="crossslash/img/option/armorupicon.webp" title="(2 Turn) Gain 1 Permanent Armor. Permanent Armor lasts until the end of the current battle, and is not removed by damage from enemy attacks."/>
                             </div>
                             <span>Armor Up</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="clearEnhancements" class="icon" src="crossslash/img/option/clearenhancementsicon.webp"/>
+                                <input type="image" id="clearEnhancements" class="icon" src="crossslash/img/option/clearenhancementsicon.webp" title="(2 Turn) Remove all Strength and Armor from the enemy, besides their initial Strength and Armor."/>
                             </div>
                             <span>Clear Enhancements</span>
                         </td>
