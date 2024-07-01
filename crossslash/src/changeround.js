@@ -50,6 +50,7 @@ const basicBattleReset = () => {
     computerArmor1 = 0;
     computerArmor2 = 0;
     computerArmor3 = 0;
+    computerArmorPerm = 0;
     computerStrength = 0;
     computerStrengthTemp = 0;
     computerStrengthPerm = 0;
