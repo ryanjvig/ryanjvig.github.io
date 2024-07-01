@@ -122,11 +122,6 @@ const updateState = () => {
     }
 
     switch(playerChoice) {
-        case Move.heal:
-            if (playerHealth < playerMaxHealth) {
-                playerHealth += 1;
-            }
-            break;
         case Move.defend:
             playerArmor1 += 2;
             break;
@@ -152,11 +147,6 @@ const updateState = () => {
     }
 
     switch(computerChoice) {
-        case Move.heal:
-            if (computerHealth < computerMaxHealth) {
-                computerHealth += 1;
-            }
-            break;
         case Move.defend:
             computerArmor1 += 2;
             break;
@@ -322,6 +312,18 @@ const updateState = () => {
                 computerCharged = true;
             }
             break;
+    }
+
+    // apply heal last to allow healing damage dealt on same turn
+    if (playerChoice == Move.heal) {
+        if (playerHealth < playerMaxHealth) {
+            playerHealth += 1;
+        }
+    }
+    if (computerChoice == Move.heal) {
+        if (computerHealth < computerMaxHealth) {
+            computerHealth += 1;
+        }
     }
 
     if (playerStunTurns > 0 && playerCharged) {
