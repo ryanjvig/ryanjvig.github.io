@@ -38,6 +38,10 @@ const basicBattleReset = () => {
     playerArmor2 = 0;
     playerArmor3 = 0;
     playerArmorPerm = 0;
+    playerStrength = 0;
+    playerStrengthTemp = 0;
+    playerStrengthPerm = 0;
+
     computerCharged = false;
     computerStunned = false;
     computerStunTurns = 0;
@@ -46,11 +50,9 @@ const basicBattleReset = () => {
     computerArmor1 = 0;
     computerArmor2 = 0;
     computerArmor3 = 0;
-    playerStrength = 0;
-    playerStrengthTemp = 0;
-    playerStrengthPerm = 0;
     computerStrength = 0;
     computerStrengthTemp = 0;
+    computerStrengthPerm = 0;
     computerLog = [];
     playerLog = [];
     turnCount = 0;
@@ -58,10 +60,8 @@ const basicBattleReset = () => {
     playerHealth = playerMaxHealth;
 
     document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
-    document.getElementById('playerarmor').innerText = `Player Armor: ${playerArmor}`;
-    document.getElementById('playerstrength').innerText = `Player Strength: ${playerStrength}`;
-
-
+    document.getElementById('playerarmor').innerText = `Player Armor: ${playerArmorConst}`;
+    document.getElementById('playerstrength').innerText = `Player Strength: ${playerStrengthConst}`;
 
     document.getElementById('playermove1').innerText = '';
     document.getElementById('playermove2').innerText = '';
@@ -77,11 +77,12 @@ const basicBattleReset = () => {
 
     computerHealth = campaign.levelList[curLevel].enemyList[curEnemy].health;
     computerMaxHealth = campaign.levelList[curLevel].enemyList[curEnemy].health;
-    computerStrengthPerm = campaign.levelList[curLevel].enemyList[curEnemy].strength;
-    computerArmorPerm = campaign.levelList[curLevel].enemyList[curEnemy].armor;
-    document.getElementById('computerhealth').innerText = `Enemy Health: ${computerHealth}`;
-    document.getElementById('computerarmor').innerText = `Enemy Armor: ${computerArmorPerm}`;
-    document.getElementById('computerstrength').innerText = `Enemy Strength: ${computerStrengthPerm}`;
+    computerStrengthConst = campaign.levelList[curLevel].enemyList[curEnemy].strength;
+    computerArmorConst = campaign.levelList[curLevel].enemyList[curEnemy].armor;
+
+    document.getElementById('computerhealth').innerText = `Enemy Health: ${computerMaxHealth}`;
+    document.getElementById('computerarmor').innerText = `Enemy Armor: ${computerArmorConst}`;
+    document.getElementById('computerstrength').innerText = `Enemy Strength: ${computerStrengthConst}`;
 
     document.getElementById('enemyDisplay').src = campaign.levelList[curLevel].enemyList[curEnemy].sprite;
     document.getElementById('enemyName').innerText = campaign.levelList[curLevel].enemyList[curEnemy].name;

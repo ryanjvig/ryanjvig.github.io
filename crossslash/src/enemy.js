@@ -11,19 +11,20 @@ class Enemy {
 
     getMove() {
         const roll = Math.random();
+        console.log(`enemy move roll is ${roll}`);
         let moveNum = 0;
         let curVal = 0.0;
         while(curVal < 1.0 && moveNum < 10) {
             let nextVal = curVal + this.behavior[moveNum];
             if (roll < nextVal) {
+                console.log(`returning enemy move ${moveNum}`);
                 return moveNum;
             }
             curVal = nextVal;
             moveNum++;
         }
-        if(moveNum === 10) {
-            console.error('error: enemy move roll made, but no move selected');
-        }
+        console.error('error: enemy move roll made, but no move selected');
+        return 0;
     }
 }
 
@@ -48,10 +49,10 @@ class Goblin extends Enemy {
     }
 }
 
-// 10 HP, 1 Strength, 50% Heavy Attack, 50% Counter
+// 10 HP, 2 Strength, 50% Heavy Attack, 50% Counter
 class GoblinKing extends Enemy {
     constructor() {
-        super('Goblin King', 'crossslash/img/enemy/goblinking.webp', 10, 1, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
+        super('Goblin King', 'crossslash/img/enemy/goblinking.webp', 10, 2, 0, [0, 0, 0, 0, 0.5, 0, 0.5, 0, 0, 0]);
     }
 }
 

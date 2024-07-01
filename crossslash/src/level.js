@@ -35,5 +35,3 @@ class FinalFrontier extends Level {
         super('Final Frontier', [new Knight(), new Knight(), new Him()]);
     }
 }
-
-

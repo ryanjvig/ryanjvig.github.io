@@ -68,12 +68,18 @@ const updateInterface = () => {
     }
 }
 
+// helper for performing main turn functions once player move is known
+const performTurn = () => {
+    if(!computerCharged) {
+        computerChoice = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
+    }
+    updateState();
+    writeToLog();
+}
+
 // attack logic
 playerOptions.forEach(option => {
     option.addEventListener('click', function () {
-        if(!computerCharged) {
-            computerChoice = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
-        }
 
         playerChoice = idToOption[this.id];
         let twoTurn = twoTurnOptions.includes(playerChoice);
@@ -81,8 +87,7 @@ playerOptions.forEach(option => {
         while(playerStunTurns > 0 && playerHealth >= 0 && computerHealth >= 0) {
             let tempPlayerChoice = playerChoice;
             playerChoice = Move.stunned;
-            updateState();
-            writeToLog();
+            performTurn();
             playerChoice = tempPlayerChoice;
             if(!computerCharged) {
                 computerChoice = campaign.levelList[curLevel].enemyList[curEnemy].getMove();
@@ -91,11 +96,9 @@ playerOptions.forEach(option => {
         }
 
         if(playerHealth >= 0 && computerHealth >= 0) {
-            updateState();
-            writeToLog();
+            performTurn();
             if(twoTurn && playerCharged && playerHealth >= 0 && computerHealth >= 0) {
-                updateState();
-                writeToLog();
+                performTurn();
             }
         }
 

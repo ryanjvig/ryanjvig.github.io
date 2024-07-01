@@ -100,9 +100,9 @@
                         </td>
                         <td>
                             <p id="displaySchmeckles" style="background: #3b3c36">Schmeckles: 0</p>
-                            <div id="playerhealth" title="If reduced to 0, you lose the game">Player Health: 10 </div>
-                            <div id="playerarmor" title="Reduces damage from enemy attacks by this value">Player Armor: 0 </div>
-                            <div id="playerstrength" title="Increases damage dealt by your attacks by this value">Player Strength: 0 </div>
+                            <div id="playerhealth" title="If your health is reduced to 0, you lose the game.">Player Health: 10 </div>
+                            <div id="playerarmor" title="Your Armor reduces damage from enemy attacks by this value. Damage reduction from Permanent Armor is applied before damage reduction from Temporary Armor, and damage reduction from Temporary Armor gained on later turns is applied after damage reduction from Temporary Armor gained on previous turns.">Player Armor: 0 </div>
+                            <div id="playerstrength" title="Your Strength increases damage dealt by your attacks by this value.">Player Strength: 0 </div>
                             <div>
                                 <h2 id="levelName"></h2>
                             </div>
@@ -113,9 +113,9 @@
                             <div>
                                 <h3 id="enemyName"></h3>
                             </div>
-                            <div id="computerhealth" title="If reduced to 0 (and your health remains above 0), you win the battle">Enemy Health: 10 </div>
-                            <div id="computerarmor" title="Reduces damage from your attacks by this value">Enemy Armor: 0 </div>
-                            <div id="computerstrength" title="Increases damage dealt by enemy attacks by this value">Enemy Strength: 0 </div>
+                            <div id="computerhealth" title="If enemy health is reduced to 0 (and your health remains above 0), you win the battle.">Enemy Health: 10 </div>
+                            <div id="computerarmor" title="Enemy Armor reduces damage from your attacks by this value.  Damage reduction from Permanent Armor is applied before damage reduction from Temporary Armor, and damage reduction from Temporary Armor gained on later turns is applied after damage reduction from Temporary Armor gained on previous turns.">Enemy Armor: 0 </div>
+                            <div id="computerstrength" title="Enemy Strength increases damage dealt by enemy attacks by this value.">Enemy Strength: 0 </div>
                             <h2 id="move">Choose your move</h2>
                         </td>
                         <td>
@@ -155,13 +155,13 @@
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="defend" class="icon" src="crossslash/img/option/defendicon.webp" title="(1 Turn) Gain 2 Temporary Armor. Temporary Armor lasts 3 turns, and is reduced by the amount of damage dealt by enemy attacks."/>
+                                <input type="image" id="defend" class="icon" src="crossslash/img/option/defendicon.webp" title="(1 Turn) Gain 2 Temporary Armor. Temporary Armor lasts 3 turns, and is reduced by the amount of damage blocked."/>
                             </div>
                             <span>Defend</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="heavyAttack" class="icon" src="crossslash/img/option/heavyattackicon.webp" title="(2 Turn) Deal [2 + Strength] damage. If unblocked Damage is dealt, Stuns enemy for 1 turn."/>
+                                <input type="image" id="heavyAttack" class="icon" src="crossslash/img/option/heavyattackicon.webp" title="(2 Turn) Deal [2 + Strength] damage. If unblocked Damage is dealt, Stuns the enemy for 1 turn."/>
                             </div>
                             <span>Heavy Attack</span>
                         </td>
@@ -181,13 +181,13 @@
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="sharpen" class="icon" src="crossslash/img/option/sharpenicon.webp" title="(1 Turn) Gain 1 Temporary Strength. Temporary Strength is only applied to your next attack."/>
+                                <input type="image" id="sharpen" class="icon" src="crossslash/img/option/sharpenicon.webp" title="(1 Turn) Gain 1 Temporary Strength. Temporary Strength is removed after your next attack."/>
                             </div>
                             <span>Sharpen</span>
                         </td>
                         <td>
                             <div class="icon-button">
-                                <input type="image" id="counter" class="icon" src="crossslash/img/option/countericon.webp" title="(2 Turn) If enemy attacks on the same turn this move is played, deal 2 times the damage and effects of the attack to the enemy."/>
+                                <input type="image" id="counter" class="icon" src="crossslash/img/option/countericon.webp" title="(2 Turn) If the enemy attacks on the same turn this move is played, deal 2 times the damage and effects of that attack to the enemy."/>
                             </div>
                             <span>Counter</span>
                         </td>
@@ -244,13 +244,14 @@
         </div>
 	</section>
     <script src="crossslash/imports/beepbox_synth.js"></script>
-    <script src="crossslash/src/constants.js"></script>
+    <script src="crossslash/src/song.js"></script>
+    <script src="crossslash/src/constant.js"></script>
     <script src="crossslash/src/enemy.js"></script>
     <script src="crossslash/src/level.js"></script>
     <script src="crossslash/src/campaign.js"></script>
-    <script src="crossslash/src/globals.js"></script>
+    <script src="crossslash/src/global.js"></script>
     <script src="crossslash/src/changeround.js"></script>
-    <script src="crossslash/src/starthelpers.js"></script>
+    <script src="crossslash/src/starthelper.js"></script>
     <script src="crossslash/src/attack.js"></script>
 	<script src="crossslash/src/crossslash.js"></script>
 </body>
