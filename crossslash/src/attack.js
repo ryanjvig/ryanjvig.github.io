@@ -116,7 +116,7 @@ const updateState = () => {
         return
     }
     if (computerStunTurns > 0) {
-        console.log('Setting computer to stunned...')
+        // console.log('setting computer to stunned...');
         computerChoice = Move.stunned;
         computerStunTurns -= 1;
     }

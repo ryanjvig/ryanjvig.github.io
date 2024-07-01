@@ -11,13 +11,13 @@ class Enemy {
 
     getMove() {
         const roll = Math.random();
-        console.log(`enemy move roll is ${roll}`);
+        // console.log(`enemy move roll is ${roll}`);
         let moveNum = 0;
         let curVal = 0.0;
         while(curVal < 1.0 && moveNum < 10) {
             let nextVal = curVal + this.behavior[moveNum];
             if (roll < nextVal) {
-                console.log(`returning enemy move ${moveNum}`);
+                // console.log(`returning enemy move ${moveNum}`);
                 return moveNum;
             }
             curVal = nextVal;
