@@ -12,13 +12,21 @@ const gameOver = () => {
     document.getElementById('resultText').style.fontSize = '2rem';
 
     if(playerHealth > 0) {
-        document.getElementById('resultText').innerText = 'You Win'
+        // won campaign
+        if(curLevel + 1 == campaign.levelList.length && curEnemy + 1 == campaign.levelList[curLevel].length) {
+            document.getElementById('resultText').innerText = 'Congratulations! You are Him!';
+            document.getElementById('restartButton').style.display = 'flex';
+            document.getElementById('nextRoundButton').style.display = 'none';
+        }
+        else {
+            document.getElementById('resultText').innerText = 'You Win';
+            document.getElementById('restartButton').style.display = 'none';
+            document.getElementById('nextRoundButton').style.display = 'flex';
+        }
         document.getElementById('resultText').style.color = '#308D46';
         document.getElementById('gachaResult').innerText = 'You got:';
         document.getElementById('gacha').style.display = 'block';
         document.getElementById('gachaRoll').style.display = 'block';
-        document.getElementById('restartButton').style.display = 'none';
-        document.getElementById('nextRoundButton').style.display = 'flex';
     }
     else {
         document.getElementById('resultText').innerText = 'You Lose';
@@ -111,12 +119,12 @@ const nextRound = () => {
         curEnemy = 0;
     }
     // won campaign: just reset for now until further implemented
-    else {
-        // // display campaign win screen
-        // document.getElementById('endScreen').style.display = 'none';
-        // document.getElementById('winScreen').style.display = 'block';
-        curLevel = 0;
-        curEnemy = 0;
-    }
+    // else {
+    //     // // display campaign win screen
+    //     // document.getElementById('endScreen').style.display = 'none';
+    //     // document.getElementById('winScreen').style.display = 'block';
+    //     curLevel = 0;
+    //     curEnemy = 0;
+    // }
     basicBattleReset();
 }
