@@ -1,15 +1,34 @@
 // starthelpers.js
 // helpers for startup functions
 const initializeGame = () => {
+    document.getElementById('startNormalMode').style.display = 'none';
+    document.getElementById('startFinalBossPractice').style.display = 'none';
     if(Number(localStorage.getItem('schmeckles')) !== 0) {
         document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
     }
     document.getElementById('startGame').addEventListener('click', function () {
+        document.getElementById('startGame').style.display = 'none';
+        document.getElementById('startNormalMode').style.display = 'block';
+        document.getElementById('startFinalBossPractice').style.display = 'block';
+    })
+    document.getElementById('startNormalMode').addEventListener('click', function () {
         if (!song.isPlayingSong) {
             song.play();
         }
-        document.getElementById('startGame').style.display = 'none';
+        document.getElementById('startNormalMode').style.display = 'none';
+        document.getElementById('startFinalBossPractice').style.display = 'none';
         document.getElementById('game').style.display = 'block';
+        campaign = new NormalMode();
+        basicBattleReset();
+    })
+    document.getElementById('startFinalBossPractice').addEventListener('click', function () {
+        if (!song.isPlayingSong) {
+            song.play();
+        }
+        document.getElementById('startNormalMode').style.display = 'none';
+        document.getElementById('startFinalBossPractice').style.display = 'none';
+        document.getElementById('game').style.display = 'block';
+        campaign = new FinalBossPractice();
         basicBattleReset();
     })
     document.getElementById('playMusic').addEventListener('click', function () {

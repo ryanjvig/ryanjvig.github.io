@@ -11,3 +11,9 @@ class NormalMode extends Campaign {
         super('Normal Mode', [new MerryMeadows, new FiestyForest, new MagicalMountains, new WackyWoodlands, new FinalFrontier]);
     }
 }
+
+class FinalBossPractice extends Campaign {
+    constructor() {
+        super('Final Boss Practice', [new HimLevel]);
+    }
+}

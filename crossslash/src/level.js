@@ -35,3 +35,9 @@ class FinalFrontier extends Level {
         super('Final Frontier', [new Knight(), new Knight(), new Him()]);
     }
 }
+
+class HimLevel extends Level {
+    constructor() {
+        super('Final Boss Pracice', [new Him()]);
+    }
+}
