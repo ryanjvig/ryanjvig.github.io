@@ -167,7 +167,7 @@ const initializeGame = () => {
             option.style.display = 'block';
         })
         document.getElementById('move').innerText = 'Choose your move';
-        document.getElementById('restartButton').style.display = 'none';
+        document.getElementById('nextRoundButton').style.display = 'none';
         document.getElementById('gacha').style.display = 'none';
         document.getElementById('gachaRoll').style.display = 'none';
         document.getElementById('resultText').innerText = '';

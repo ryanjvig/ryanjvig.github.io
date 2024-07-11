@@ -138,5 +138,4 @@ const nextRound = () => {
     //     curEnemy = 0;
     // }
     basicBattleReset();
-    document.getElementById('gameInterface').style.display = 'block';
 }
