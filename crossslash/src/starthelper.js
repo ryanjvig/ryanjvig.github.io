@@ -18,7 +18,8 @@ const initializeGame = () => {
         document.getElementById('startNormalMode').style.display = 'none';
         document.getElementById('startFinalBossPractice').style.display = 'none';
         document.getElementById('game').style.display = 'block';
-        campaign = new NormalMode();
+        document.getElementById('gameInterface').style.display = 'block';
+        startNormalCampaign();
         basicBattleReset();
     })
     document.getElementById('startFinalBossPractice').addEventListener('click', function () {
@@ -28,7 +29,8 @@ const initializeGame = () => {
         document.getElementById('startNormalMode').style.display = 'none';
         document.getElementById('startFinalBossPractice').style.display = 'none';
         document.getElementById('game').style.display = 'block';
-        campaign = new FinalBossPractice();
+        document.getElementById('gameInterface').style.display = 'block';
+        startFinalBossPractice();
         basicBattleReset();
     })
     document.getElementById('playMusic').addEventListener('click', function () {
@@ -131,31 +133,33 @@ const initializeGame = () => {
             document.getElementById('displaySchmeckles').innerText = `Schmeckles: ${localStorage.getItem('schmeckles')}`;
         }
     })
-    document.getElementById('restartButton').addEventListener('click', () => {
-        restartCampaign();
-        playerOptions.forEach(option => {
-            option.style.display = 'block';
-        })
-        document.getElementById('move').innerText = 'Choose your move';
-        document.getElementById('restartButton').style.display = 'none';
-        document.getElementById('gacha').style.display = 'none';
-        document.getElementById('gachaRoll').style.display = 'none';
-        document.getElementById('resultText').innerText = '';
-        document.getElementById('gameInterface').style.display = 'block';
-        document.getElementById('endScreen').style.display = 'none';
-    })
+    // document.getElementById('restartButton').addEventListener('click', () => {
+    //     restartCampaign();
+    //     playerOptions.forEach(option => {
+    //         option.style.display = 'block';
+    //     })
+    //     document.getElementById('move').innerText = 'Choose your move';
+    //     document.getElementById('restartButton').style.display = 'none';
+    //     document.getElementById('gacha').style.display = 'none';
+    //     document.getElementById('gachaRoll').style.display = 'none';
+    //     document.getElementById('resultText').innerText = '';
+    //     document.getElementById('gameInterface').style.display = 'block';
+    //     document.getElementById('endScreen').style.display = 'none';
+    // })
     document.getElementById('mainMenuButton').addEventListener('click', () => {
         playerOptions.forEach(option => {
             option.style.display = 'block';
         })
         document.getElementById('move').innerText = 'Choose your move';
-        document.getElementById('restartButton').style.display = 'none';
+        document.getElementById('mainMenuButton').style.display = 'none';
         document.getElementById('gacha').style.display = 'none';
         document.getElementById('gachaRoll').style.display = 'none';
         document.getElementById('resultText').innerText = '';
-        document.getElementById('gameInterface').style.display = 'block';
+        document.getElementById('gachaRoll').style.display = 'none';
         document.getElementById('endScreen').style.display = 'none';
-        
+        document.getElementById('startGame').style.display = 'block';
+        document.getElementById('playMusic').style.display = 'none';
+        document.getElementById('displayCollection').style.display = 'none';
     })
     document.getElementById('nextRoundButton').addEventListener('click', () => {
         nextRound();

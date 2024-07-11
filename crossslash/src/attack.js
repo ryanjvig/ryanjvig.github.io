@@ -105,7 +105,7 @@ playerOptions.forEach(option => {
         updateInterface();
 
         if (playerHealth <= 0 || computerHealth <= 0) {
-            gameOver(playerHealth);
+            gameOver();
         }
     })
 })

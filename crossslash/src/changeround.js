@@ -15,12 +15,12 @@ const gameOver = () => {
         // won campaign
         if(curLevel + 1 == campaign.levelList.length && curEnemy + 1 == campaign.levelList[curLevel].length) {
             document.getElementById('resultText').innerText = 'Congratulations! You are Him!';
-            document.getElementById('restartButton').style.display = 'flex';
+            document.getElementById('mainMenuButton').style.display = 'flex';
             document.getElementById('nextRoundButton').style.display = 'none';
         }
         else {
             document.getElementById('resultText').innerText = 'You Win';
-            document.getElementById('restartButton').style.display = 'none';
+            document.getElementById('mainMenuButton').style.display = 'none';
             document.getElementById('nextRoundButton').style.display = 'flex';
         }
         document.getElementById('resultText').style.color = '#308D46';
@@ -31,7 +31,7 @@ const gameOver = () => {
     else {
         document.getElementById('resultText').innerText = 'You Lose';
         document.getElementById('resultText').style.color = 'red';
-        document.getElementById('restartButton').style.display = 'flex';
+        document.getElementById('mainMenuButton').style.display = 'flex';
         document.getElementById('nextRoundButton').style.display = 'none';
     }
     document.getElementById('gameInterface').style.display = 'none';
@@ -99,8 +99,19 @@ const basicBattleReset = () => {
     document.getElementById('enemyNum').innerText = `Enemy ${curEnemy + 1}`;
 }
 
-const restartCampaign = () => {
+// standardize this to reduce duplicaiton
+const startNormalCampaign = () => {
     campaign = new NormalMode();
+    curLevel = 0;
+    curEnemy = 0;
+    basicBattleReset();
+    playerHealth = 10;
+    playerMaxHealth = 10;
+    document.getElementById('playerhealth').innerText = `Player Health: ${playerHealth}`;
+}
+
+const startFinalBossPractice = () => {
+    campaign = new FinalBossPractice();
     curLevel = 0;
     curEnemy = 0;
     basicBattleReset();
@@ -127,4 +138,5 @@ const nextRound = () => {
     //     curEnemy = 0;
     // }
     basicBattleReset();
+    document.getElementById('gameInterface').style.display = 'block';
 }
