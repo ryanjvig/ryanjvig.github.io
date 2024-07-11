@@ -144,6 +144,19 @@ const initializeGame = () => {
         document.getElementById('gameInterface').style.display = 'block';
         document.getElementById('endScreen').style.display = 'none';
     })
+    document.getElementById('mainMenuButton').addEventListener('click', () => {
+        playerOptions.forEach(option => {
+            option.style.display = 'block';
+        })
+        document.getElementById('move').innerText = 'Choose your move';
+        document.getElementById('restartButton').style.display = 'none';
+        document.getElementById('gacha').style.display = 'none';
+        document.getElementById('gachaRoll').style.display = 'none';
+        document.getElementById('resultText').innerText = '';
+        document.getElementById('gameInterface').style.display = 'block';
+        document.getElementById('endScreen').style.display = 'none';
+        
+    })
     document.getElementById('nextRoundButton').addEventListener('click', () => {
         nextRound();
         playerOptions.forEach(option => {
