@@ -1,80 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Support</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-        nav {
-            background-color: #444;
-            padding: 10px 0;
-            text-align: center;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        main {
-            padding: 20px;
-        }
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MediMorph · Dose conversions made easy</title>
+  <meta name="description" content="MediMorph is a free iOS app for opioid dose conversions that shows every step of the calculation. Support and contact information.">
+  <meta property="og:title" content="MediMorph">
+  <meta property="og:description" content="Dose conversions made easy. Free for iPhone and iPad.">
+  <meta property="og:image" content="https://ryanjvig.github.io/assets/img/medimorph-icon.webp">
+  <meta name="apple-itunes-app" content="app-id=6479563936">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-    <header>
-        <h1>MediMorph Support Page</h1>
-    </header>
-    <nav>
-<!--         <a href="#faq">FAQ</a> -->
-        <a href="#contact">Contact Us</a>
-    </nav>
-    <main>
-<!--         <section id="faq">
-            <h2>Frequently Asked Questions</h2>
-            <ul>
-                <li>
-                    <h3>How do I reset my password?</h3>
-                    <p>To reset your password, go to the login page and click on the "Forgot Password" link. Follow the instructions to reset your password.</p>
-                </li>
-                <li>
-                    <h3>Can I use the app on multiple devices?</h3>
-                    <p>Yes, you can use the app on multiple devices. Simply download the app on each device and log in with your account credentials.</p>
-                </li>
-                <li>
-                    <h3>Is there a premium version of the app?</h3>
-                    <p>Yes, we offer a premium version of the app with additional features. You can upgrade to the premium version within the app.</p>
-                </li>
-            </ul>
-        </section> -->
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <p>Thanks for checking out MediMorph! If you have any questions or need assistance, please feel free to contact us at <a>medimorph@umich.edu</a></p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Ryan Vig</p>
-    </footer>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">ryanjvig</a>
+      <nav>
+        <a href="index.html#projects">projects</a>
+        <a href="https://github.com/ryanjvig">github</a>
+        <a href="https://www.linkedin.com/in/ryanjvig/">linkedin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="page">
+      <section class="app-head">
+        <img src="assets/img/medimorph-icon.webp" alt="MediMorph app icon" width="256" height="256">
+        <div>
+          <h1>MediMorph</h1>
+          <p>Dose conversions made easy. Free for iPhone and iPad.</p>
+        </div>
+      </section>
+
+      <div class="actions">
+        <a class="button" href="https://apps.apple.com/us/app/medimorph/id6479563936">Get it on the App Store ↗</a>
+        <a class="button secondary" href="#contact">Contact &amp; support</a>
+      </div>
+    </div>
+
+    <div class="shots">
+      <img src="assets/img/medimorph-1.webp" alt="MediMorph converting 10 mg oral morphine to codeine, showing the conversion factors step by step" width="540" height="1169" loading="lazy">
+      <img src="assets/img/medimorph-2.webp" alt="MediMorph history screen listing past conversions with their reduced doses" width="540" height="1169" loading="lazy">
+      <img src="assets/img/medimorph-3.webp" alt="MediMorph notes and references screen citing McPherson (2019) and the CDC opioid guideline (2022)" width="540" height="1169" loading="lazy">
+    </div>
+
+    <div class="page prose">
+      <h2 id="about">About</h2>
+      <p>MediMorph converts doses between common opioids, so equivalent doses can be worked out quickly and the math can be checked. Conversions are based on McPherson's <em>Demystifying Opioid Conversion Calculations: A Guide for Effective Dosing</em>.</p>
+      <ul>
+        <li>Conversions between common opioids, by oral (PO) and IV/SQ routes where applicable</li>
+        <li>An optional reduced-dose calculation, since the literature suggests reducing the initial dose by 25–50% when switching opioids</li>
+        <li>Each step of the conversion shown alongside the result</li>
+        <li>A history of past calculations, stored on your device</li>
+        <li>Notes, references, and the full disclaimer built in</li>
+      </ul>
+      <p class="note">MediMorph is for educational purposes only. Conversions are approximate and are not a substitute for clinical judgment.</p>
+      <p>Requires iOS or iPadOS 17.0 or later.</p>
+
+      <h2 id="contact">Contact us</h2>
+      <p>Thanks for checking out MediMorph! If you have any questions or need help, email us at <a href="mailto:medimorph@umich.edu">medimorph@umich.edu</a>.</p>
+
+      <h2 id="privacy">Privacy</h2>
+      <p>Read the <a href="medimorphprivacypolicy.html">MediMorph privacy policy</a>.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Ryan Vig</span>
+      <span><a href="medimorphprivacypolicy.html">privacy policy</a> · <a href="index.html">ryanjvig.github.io</a></span>
+    </div>
+  </footer>
 </body>
 </html>
