@@ -1,175 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ryan Vig</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1em;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #444;
-            padding: 0.5em;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: white;
-            padding: 0.5em 1em;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        nav a:hover {
-            background-color: #555;
-        }
-
-        section {
-            padding: 2em;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: #333;
-            color: white;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        .center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-        }
-        /* Navbar container */
-        .navbar {
-        overflow: hidden;
-        background-color: #333;
-        font-family: Arial;
-        }
-
-        /* Links inside the navbar */
-        .navbar a {
-        float: left;
-        font-size: 16px;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        }
-
-        /* The dropdown container */
-        .dropdown {
-        float: left;
-        overflow: hidden;
-        }
-
-        /* Dropdown button */
-        .dropdown .dropbtn {
-        font-size: 16px;
-        border: none;
-        outline: none;
-        color: white;
-        padding: 14px 16px;
-        background-color: inherit;
-        font-family: inherit; /* Important for vertical align on mobile phones */
-        margin: 0; /* Important for vertical align on mobile phones */
-        }
-
-        /* Add a red background color to navbar links on hover */
-        .navbar a:hover, .dropdown:hover .dropbtn {
-        background-color: red;
-        }
-
-        /* Dropdown content (hidden by default) */
-        .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-        }
-
-        /* Links inside the dropdown */
-        .dropdown-content a {
-        float: none;
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        text-align: left;
-        }
-
-        /* Add a grey background color to dropdown links on hover */
-        .dropdown-content a:hover {
-        background-color: #ddd;
-        }
-
-        /* Show the dropdown menu on hover */
-        .dropdown:hover .dropdown-content {
-        display: block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ryan Vig</title>
+  <meta name="description" content="Projects by Ryan Vig: a game-theoretic Euchre solver, the MediMorph iOS app, and an interactive Newton fractal visualizer.">
+  <meta property="og:title" content="Ryan Vig">
+  <meta property="og:description" content="Software, math, and games: a Euchre solver, the MediMorph iOS app, and a Newton fractal visualizer.">
+  <meta property="og:image" content="https://ryanjvig.github.io/assets/img/fractal-1.webp">
+  <meta property="og:url" content="https://ryanjvig.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/site.css">
 </head>
-
 <body>
-
-    <header>
-        <h1>Ryan Vig</h1>
-        <p>Coding is fun!</p>
-    </header>
-
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <div class="dropdown">
-          <button class="dropbtn">Newton's Method
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="fractal.html">Newton fractal visualizer</a>
-            <a href="fractalusage.html">Newton fractal usage guide</a>
-            <a href="newtongraph.html">Newton graph visualizer</a>
-            <a href="newtongraphgalois.html">Newton graph visualizer (with field extensions)</a>
-            <a href="newtonreport.pdf">Newton's method report</a>
-          </div>
-        </div>
-        <a href="crossslash.html">Cross Slash!</a>
-        <a href="https://github.com/ryanjvig">GitHub</a>
-        <a href="https://www.linkedin.com/in/ryanjvig/">LinkedIn</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">ryanjvig</a>
+      <nav>
+        <a href="#projects">projects</a>
+        <a href="https://github.com/ryanjvig">github</a>
+        <a href="https://www.linkedin.com/in/ryanjvig/">linkedin</a>
+      </nav>
     </div>
+  </header>
 
-    <section>
-        <h2>Welcome to my personal website!</h2>
-        <p>Included on here are some web-based personal projects of mine, which include Cross Slash, a browser game I am actively developing, and visualizations of Newton's method (found in the "Newton's Method" dropdown). Thanks for taking a look and feel free to explore!</p>
-        <p>Below are a few images with some of the more exciting to look at fractal patterns generated by the fractal visualizer.</p>
-        <img src="newtonfractal/img/fun_fractal_1.png" alt="fractal image 1" title="fun fractal example from fractal visualizer" class="center"></img>
-        <img src="newtonfractal/img/fun_fractal_4.png" alt="fractal image 4" title="cool fractal with attracting cycle" class="center"></img>
-        <img src="newtonfractal/img/fun_fractal_2.png" alt="fractal image 2" title="another fun fractal example from fractal visualizer" class="center"></img>
-        <img src="newtonfractal/img/fun_fractal_3.png" alt="fractal image 3" title="another fun fractal; this one is drawn about its boundary rather than colored as in the above images" class="center"></img>
+  <main class="wrap">
+    <section class="intro">
+      <h1>Ryan Vig — software, math, and games.</h1>
+      <p>I build solvers, apps, and interactive math tools. Here are a few of them.</p>
     </section>
 
-    <footer>
-        &copy; 2024 Ryan Vig. All rights reserved.
-    </footer>
+    <section id="projects" aria-labelledby="projects-label">
+      <p class="section-label" id="projects-label">// selected projects</p>
+      <!--
+        One <li class="project"> per project. A new solver on solver.gg is a copy of the
+        Euchre entry with kind "solver.gg" and its own subdomain.
+      -->
+      <ul class="projects">
+        <li class="project">
+          <div class="kind">solver.gg</div>
+          <div>
+            <h2><a href="https://euchre.solver.gg/">Euchre Solver</a></h2>
+            <p>An approximate game-theoretic strategy for four-player euchre, trained by self-play reinforcement learning. Play hands against it and see the expected value of every decision, analyze any position, or climb the ranked leaderboards.</p>
+            <div class="links">
+              <a href="https://euchre.solver.gg/">euchre.solver.gg ↗</a>
+            </div>
+          </div>
+          <a class="thumb" href="https://euchre.solver.gg/" tabindex="-1" aria-hidden="true">
+            <img src="assets/img/euchre-solver.webp" alt="" width="1280" height="800" loading="lazy">
+          </a>
+        </li>
 
+        <li class="project">
+          <div class="kind">ios</div>
+          <div>
+            <h2><a href="medimorph.html">MediMorph</a></h2>
+            <p>Opioid dose conversions with every step of the math shown, based on published conversion guidance. Free on the App Store for iPhone and iPad.</p>
+            <div class="links">
+              <a href="https://apps.apple.com/us/app/medimorph/id6479563936">app store ↗</a>
+              <a href="medimorph.html">about &amp; support</a>
+              <a href="medimorphprivacypolicy.html">privacy</a>
+            </div>
+          </div>
+          <a class="thumb thumb-phone" href="medimorph.html" tabindex="-1" aria-hidden="true">
+            <img src="assets/img/medimorph-1.webp" alt="" width="540" height="1169" loading="lazy">
+          </a>
+        </li>
+
+        <li class="project">
+          <div class="kind">web</div>
+          <div>
+            <h2><a href="fractal.html">Newton Fractals</a></h2>
+            <p>Render Newton's-method fractals in the browser for polynomials and some transcendental functions. Zoom in, change the coloring, and estimate the fractal dimension by box-counting.</p>
+            <div class="links">
+              <a href="fractal.html">open visualizer</a>
+              <a href="fractalusage.html">usage guide</a>
+            </div>
+          </div>
+          <a class="thumb" href="fractal.html" tabindex="-1" aria-hidden="true">
+            <img src="assets/img/fractal-4.webp" alt="" width="640" height="640" loading="lazy">
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="more" aria-labelledby="more-label">
+      <p class="section-label" id="more-label">// more</p>
+      <ul>
+        <li><a href="newtongraph.html">Newton graph visualizer</a> <span>· Newton's method as a directed graph over the integers mod n</span></li>
+        <li><a href="newtongraphgalois.html">Newton graph visualizer, with field extensions</a> <span>· the same, over finite fields GF(p<sup>k</sup>)</span></li>
+        <li><a href="newtonreport.pdf">Newton's method report</a> <span>· PDF</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Ryan Vig</span>
+      <span><a href="https://github.com/ryanjvig">github</a> · <a href="https://www.linkedin.com/in/ryanjvig/">linkedin</a></span>
+    </div>
+  </footer>
 </body>
-
 </html>
