@@ -1,4 +1,4 @@
-/* ryanjvig.github.io — shared styles. "Minimal mono": white page, monospace details, one accent. */
+/* ryanjvig.github.io — shared styles. "Minimal mono": white page (light only), monospace details, one accent. */
 
 :root {
   --bg: #ffffff;
@@ -12,20 +12,9 @@
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --measure: 960px;
   --prose: 720px;
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0e0f11;
-    --ink: #ececec;
-    --muted: #a3a3a3;
-    --faint: #777;
-    --line: #26282c;
-    --panel: #17191c;
-    --accent: #6ea0ff;
-  }
-}
 
 *, *::before, *::after { box-sizing: border-box; }
 
